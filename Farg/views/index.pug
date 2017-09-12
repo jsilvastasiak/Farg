@@ -1,1 +1,11 @@
-﻿extends layout  
+﻿extends master/master.pug
+
+append infoPage
+    title Login
+
+append scripts
+    script(src='/javascripts/index.js')
+
+append content
+    div(ng-app="indexApp")
+        h1(ng-controller="titleCtrl") Bem-vindo {{profile}}
