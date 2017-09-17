@@ -1,6 +1,6 @@
-﻿angular.module("indexApp", []);
+﻿//angular.module("currentApp", []);
 
-angular.module("indexApp").controller("titleCtrl", function ($scope, $http) {
+angular.module("currentApp").controller("titleCtrl", function ($scope, $http) {
 
     var getProfile = function (http) {
         return http.get('/getProfile');            

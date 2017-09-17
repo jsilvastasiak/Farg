@@ -47,16 +47,34 @@ User.prototype = {
                 type: Sequelize.QueryTypes.SELECT
             });
     },
+
+    getUsers: function () {
+        //Objeto de retorno
+        return Sequelize.query(getSelectUsers(),
+            {                
+                type: Sequelize.QueryTypes.SELECT
+            });
+    }
 }
 
 module.exports = User;
 
 var getSelectUserByLogin = function () {
-    return "select c.codigo"
-        + ", c.senha"
-        +", case when c.tipo = 1 then 'S' else 'N' end \"isAdmin\""
-        +", case when c.tipo = 2 then 'S' else 'N' end \"isAgent\""
-        +", case when c.tipo = 3 then 'S' else 'N' end \"isClient\""
-        +" from usuarios c"
-        +" where upper(c.login) like upper(:login)";
+    return "select c.cdg_usuario \"codigo\""
+        + ", c.snh_usuario \"senha\""
+        + ", c.idc_administrador \"isAdmin\""
+        + ", c.idc_representante \"isAgente\""
+        + ", c.idc_cliente \"isClient\""
+        + " from \"Usuarios\" c"
+        + " where upper(c.nom_login) like upper(:login)";
+};
+
+var getSelectUsers = function () {
+    return "select c.cdg_usuario \"code\""
+        + ", c.nom_login \"login\""
+        + ", c.idc_administrador \"isAdmin\""
+        + ", c.idc_representante \"isAgent\""
+        + ", c.idc_cliente \"isClient\""
+        + ", c.idc_ativo \"isActive\""
+        + " from \"Usuarios\" c";
 }

@@ -30,7 +30,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
-    <Compile Include="model\client.js">
+    <Compile Include="model\clientModel.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="model\connectionFactory.js">
@@ -39,7 +39,16 @@
     <Compile Include="model\authenticate\authenticate.js">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="model\user.js">
+    <Compile Include="model\refcodesModel.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="model\userModel.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="public\javascripts\basicregistration\users.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="public\javascripts\common\master.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="public\javascripts\index.js">
@@ -59,6 +68,10 @@
     </Compile>
     <Compile Include="routes\index.js" />
     <Compile Include="routes\users.js" />
+    <Content Include="public\images\btn-add-min.png" />
+    <Content Include="public\images\btn-dele-min.png" />
+    <Content Include="public\images\btn-edit-min.png" />
+    <Content Include="public\images\icons-preview.png" />
     <Content Include="public\lib\bootstrap\css\bootstrap-grid.css" />
     <Content Include="public\lib\bootstrap\css\bootstrap-grid.css.map" />
     <Content Include="public\lib\bootstrap\css\bootstrap-grid.min.css" />
@@ -74,9 +87,11 @@
     <Content Include="public\stylesheets\login.css">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="views\basicregistration\users.pug">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="views\error.pug" />
     <Content Include="views\index.pug" />
-    <Content Include="views\layout.pug" />
     <Content Include="package.json" />
     <Content Include="public\stylesheets\main.css" />
     <Content Include="README.md" />
@@ -91,11 +106,14 @@
   <ItemGroup>
     <Folder Include="model\" />
     <Folder Include="model\authenticate\" />
+    <Folder Include="public\javascripts\basicregistration\" />
+    <Folder Include="public\javascripts\common\" />
     <Folder Include="public\lib\" />
     <Folder Include="public\lib\angular\" />
     <Folder Include="public\lib\bootstrap\" />
     <Folder Include="public\lib\bootstrap\css\" />
     <Folder Include="public\lib\bootstrap\js\" />
+    <Folder Include="typings\modules\angular-ui-bootstrap\" />
     <Folder Include="typings\modules\bluebird\" />
     <Folder Include="typings\modules\passport-local\" />
     <Folder Include="typings\modules\pg\" />
@@ -126,6 +144,7 @@
     <Folder Include="typings\modules\morgan\" />
     <Folder Include="typings\modules\serve-favicon\" />
     <Folder Include="views\master\" />
+    <Folder Include="views\basicregistration\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="typings\globals\body-parser\index.d.ts" />
@@ -139,6 +158,7 @@
     <TypeScriptCompile Include="typings\globals\serve-favicon\index.d.ts" />
     <TypeScriptCompile Include="typings\globals\serve-static\index.d.ts" />
     <TypeScriptCompile Include="typings\index.d.ts" />
+    <TypeScriptCompile Include="typings\modules\angular-ui-bootstrap\index.d.ts" />
     <TypeScriptCompile Include="typings\modules\bluebird\index.d.ts" />
     <TypeScriptCompile Include="typings\modules\body-parser\index.d.ts" />
     <TypeScriptCompile Include="typings\modules\cookie-parser\index.d.ts" />

@@ -3,6 +3,17 @@
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+.container{
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+}
+.table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>td, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>thead>tr>th{
+    padding: 0px !important;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+}
+
 a {
     color: #00B7FF;
 }
@@ -22,4 +33,64 @@ a {
 footer {
     background-color: #f2f2f2;
     padding: 25px;
+}
+.btn-edit-min, .btn-dele-min, .btn-add-min{    
+    width: 23px;
+    height: 20px;
+    border: none;
+}
+.btn-edit-min, .btn-add-min, .btn-dele-min:focus{
+    outline: none;
+}
+
+.btn-dele-min{
+    background: url("../images/btn-dele-min.png");
+}
+.btn-edit-min{
+    background: url("../images/btn-edit-min.png");
+}
+.btn-add-min{
+    background: url("../images/btn-add-min.png");
+}
+.col-sm-3-grid{
+    width: 25px;
+    padding: 0;
+}
+.col-sm-4-grid{
+    width: 50px;    
+}
+.pager-style{
+    clear: both;
+    float: right;
+}
+
+.iptLogin {
+    text-transform: uppercase;
+}
+
+form > .messageForm, form > .form-group > .messageForm{
+    font-size: 10.5px;
+    color: red;
+    display: block;
+    position: relative;
+    margin-top: -15px;
+}
+
+input.ng-invalid {
+    border-color: red;
+    border-width: 2px;
+}
+
+.message-user{    
+    position: relative;
+    bottom: 2px;
+}
+.align-rigth{
+    text-align: right;
+}
+.align-center{
+    text-align: center;
+}
+.align-left{
+    text-align: left;
 }

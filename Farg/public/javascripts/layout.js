@@ -1,10 +1,10 @@
-﻿angular.module("LayoutApp", []);
+﻿//angular.module("LayoutApp", []);
 
-angular.module("LayoutApp").controller("HelloCtrl", function ($scope) {
+angular.module("currentApp").controller("HelloCtrl", function ($scope) {
     $scope.message = "Olá";
 });
 
-angular.module("LayoutApp").controller("BtnPost", function ($scope, $http) {
+angular.module("currentApp").controller("BtnPost", function ($scope, $http) {
     $scope.message = "Olá";
 
     $scope.BtnPost_Click = function () {

@@ -1,8 +1,8 @@
 ﻿'use strict';
 var express = require('express');
 var router = express.Router();
-var User = require('../model/user');
-var Client = require('../model/client');
+var User = require('../model/userModel');
+var Client = require('../model/clientModel');
 var auth = require('../model/authenticate/authenticate');
 
 router.get('/', function (req, res) {

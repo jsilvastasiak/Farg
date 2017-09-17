@@ -1,7 +1,7 @@
 ﻿var util = require('util');
 var Sequelize = require('./connectionFactory');
 var DataTypes = require('sequelize');
-var User = (new (require('./user'))).definition;
+var User = (new (require('./userModel'))).definition;
 //var thisUser = new User();
 
 //Definição da tabela de clientes

@@ -1,6 +1,6 @@
-﻿angular.module("loginFormApp", []);
+﻿//angular.module("loginFormApp", []);
 
-angular.module("loginFormApp").controller("frmLoginCtrl", function ($scope, $http) {
+angular.module("currentApp").controller("frmLoginCtrl", function ($scope, $http) {
 
     $scope.doLogin = function (loginInfo) {
         $http.post('/login', {

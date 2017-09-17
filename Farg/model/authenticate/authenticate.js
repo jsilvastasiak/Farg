@@ -1,4 +1,4 @@
-﻿var User = require('../user');
+﻿var User = require('../userModel');
 
 var isValidPassword = function (password, comparepass) {
     return password === comparepass;
