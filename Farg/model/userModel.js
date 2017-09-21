@@ -1,6 +1,7 @@
 ﻿var util = require('util');
 var Sequelize = require('./connectionFactory');
 var DataTypes = require('sequelize');
+var QueryBuilder = require('../model/common/queryBuilder');
 
 //Definição da tabela de usuario
 var userDefinition = Sequelize.define('Usuarios', {
@@ -48,9 +49,11 @@ User.prototype = {
             });
     },
 
-    getUsers: function () {
+    getUsers: function (parans) {
+        var queryBuilder = new QueryBuilder(getSelectUsers(), parans);
+        
         //Objeto de retorno
-        return Sequelize.query(getSelectUsers(),
+        return Sequelize.query(queryBuilder.createQuery(),
             {                
                 type: Sequelize.QueryTypes.SELECT
             });

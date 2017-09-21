@@ -2,21 +2,28 @@
 var express = require('express');
 var auth = require('../model/authenticate/authenticate');
 var User = require('../model/userModel');
+var paransBuilder = require('./common/paransBuilder');
 var RefCodes = require('../model/refcodesModel');
+
 var router = express.Router();
 
 router.get('/', auth.isAuthenticated, function (req, res) {
-
     res.render('basicregistration/users', { title: 'Usuários' });
 });
 
 /* GET users listing. */
 router.get('/getUsersList', auth.isAuthenticated, function (req, res) {
-
+    
     var user = new User();
+    var paransQuery = paransBuilder.createParansModel(req.query);
+    
+    user.getUsers(paransQuery).then(function (usersList) {
+        var result = {};
+        if (usersList) {
+            result = paransBuilder.createParansResponse(usersList);                       
+        }
 
-    user.getUsers().then(function (usersList) {
-        res.send(usersList);
+        res.send(result);
     }).catch(function (err) {
         new Error(err);
     });

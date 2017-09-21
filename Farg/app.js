@@ -9,8 +9,17 @@ var bodyParser = require('body-parser');
 var expressionSession = require('express-session');
 var flash = require('connect-flash');
 
-var app = express();
+/**
+ * Manipulação da base de dados ao iniciar sistema sempre
+ */
+var clientModel = require('./model/clientModel');
+var userModel = require('./model/userModel');
 
+(new userModel()).getDefinition();
+(new clientModel()).getDefinition();
+
+var app = express();
+    
 //Parte de autenticação sistema
 app.use(expressionSession({
     secret: 'dnfkdn',

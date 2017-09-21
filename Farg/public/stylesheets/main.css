@@ -1,5 +1,6 @@
 ﻿body {
-    padding: 50px;
+    padding: 25px;
+    height: 100%;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -20,11 +21,22 @@ a {
 
 /* Remove the navbar's default rounded borders and increase the bottom margin */
 .navbar {
-    margin-bottom: 50px;
+    margin-bottom: 0px !important;
     border-radius: 0;
 }
-    
-/* Remove the jumbotron's default bottom margin */ 
+.panel{
+    margin: 0px !important;
+}
+.panel, .panel-default{
+    padding: 5px;
+    padding-top: 20px;
+    min-height: 100%;
+    height: auto;
+}
+.table-large{
+    height: 88%;
+}
+/* Remove the jumbotron's default bottom margin */
 .jumbotron {
     margin-bottom: 0;
 }
@@ -81,9 +93,11 @@ input.ng-invalid {
     border-width: 2px;
 }
 
-.message-user{    
-    position: relative;
-    bottom: 2px;
+.message-user {
+    position: absolute;
+    bottom: 0px;
+    width: 96%;
+    z-index: 1000;
 }
 .align-rigth{
     text-align: right;

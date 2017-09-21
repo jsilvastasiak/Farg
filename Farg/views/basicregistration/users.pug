@@ -1,89 +1,85 @@
 ﻿extends ../master/master.pug
 
 append infoPage
-    title Login
+    title Usuários
 
 append scripts
     script(src='/javascripts/basicregistration/users.js')    
 
 block content
-    
-    div
-        div.table-responsive
-            table.table.table-hover.table-striped.table-condensed(ng-controller="tblUsers")
-                thead
-                    tr
-                        th.col-sm-3-grid &nbsp
-                        th.col-sm-3-grid 
-                            button.btn-add-min(type="button", ng-click="newUser()", title="Novo Usuário")
-                        th.col-sm-4-grid Código
-                        th.col-sm-3 Login
-                        th.col-sm-3 Administrador
-                        th.col-sm-3 Representante
-                        th.col-sm-3 Cliente
-                        th.col-sm-4-grid Ativo
-                tbody
-                    tr(ng-repeat="user in usersList")
-                        td
-                           button.btn-dele-min(type="button", ng-click="deleteUser(user)", title="Excluir Usuário") 
-                        td
-                           button.btn-edit-min(type="button", ng-click="editUser(user)", title="Editar Usuário") 
-                        td.align-rigth {{user.code}}
-                        td {{user.login}}
-                        td {{user.isAdmin}}
-                        td {{user.isAgent}}
-                        td {{user.isClient}}
-                        td {{user.isActive}}
+    div.table-responsive.table-large
+        table.table.table-hover.table-striped.table-condensed(ng-controller="tblUsers")
+            thead
+                tr
+                    th.col-sm-3-grid &nbsp
+                    th.col-sm-3-grid 
+                        button.btn-add-min(type="button", ng-click="newUser()", title="Novo Usuário")
+                    th.col-sm-4-grid Código
+                    th.col-sm-3 Login
+                    th.col-sm-3 Administrador
+                    th.col-sm-3 Representante
+                    th.col-sm-3 Cliente
+                    th.col-sm-4-grid Ativo
+            tbody
+                tr(ng-repeat="user in usersList")
+                    td
+                        button.btn-dele-min(type="button", ng-click="deleteUser(user)", title="Excluir Usuário") 
+                    td
+                        button.btn-edit-min(type="button", ng-click="editUser(user)", title="Editar Usuário") 
+                    td.align-rigth {{user.code}}
+                    td {{user.login}}
+                    td {{user.isAdmin}}
+                    td {{user.isAgent}}
+                    td {{user.isClient}}
+                    td {{user.isActive}}
 
-            ul.pagination-sm.pager-style(uib-pagination, total-items="getPagerInfo('pgUsers').bigTotalItems", ng-model="getPagerInfo('pgUsers').bigCurrentPage"
-            , max-size="5", boundary-links="true", force-ellipses="true", boundary-link-numbers="true", items-per-page="30", ng-change="pageChanged('pgUsers')")
-            
-            label {{getUserPager().bigTotalItems}}                     
+    ul.pagination-sm.pager-style(uib-pagination, total-items="getPagerInfo('pgUsers').bigTotalItems", ng-model="getPagerInfo('pgUsers').bigCurrentPage"
+    , max-size="5", boundary-links="true", force-ellipses="true", boundary-link-numbers="true", items-per-page="itemsPerPage", ng-change="pageChanged('pgUsers')")
 
-        div.modal-demo
-            script(type="text/ng-template", id="myModal.html")
-                div.modal-header
-                    h3.modal-title {{isEdit ? "Editar Usuário" : "Cadastrar Usuário"}}
-                div.modal-body(id="modal-body")
-                    form.form-horizontal(name="frmUser")
-                        div.form-group
-                            label.control-label.col-sm-2 Código
-                            div.col-sm-10
-                                input.form-control(type="text", name="iptCode", ng-model="code", ng-disabled="true")
-                        div.form-group
-                            label.control-label.col-sm-2 Login
-                            div.col-sm-10
-                                input.form-control.iptLogin(type="text", name="iptLogin", ng-model="login", ng-required="true")
-                                span(ng-show="frmUser.iptLogin.$touched && frmUser.iptLogin.$invalid") 'Login' é um campo de preenchimento obrigatório
-                        div.form-group
-                            label.control-label.col-sm-2 Senha
-                            div.col-sm-10
-                                input.form-control(type="password", name="iptPassword", ng-model="password", ng-required="{{!isEdit}}")
-                        div.form-group
-                            div.col-sm-offset-2.col-sm-10
-                                div.checkbox
-                                    label
-                                        input(type="checkbox", name="chIsAdm", ng-model="isAdm", ng-checked="{{isAdm}}") 
-                                        | Administrador
-                        div.form-group
-                            div.col-sm-offset-2.col-sm-10
-                                div.checkbox
-                                    label
-                                        input(type="checkbox", name="chIsAgent", ng-model="isAgent", ng-checked="{{isAgent}}")
-                                        | Representante
-                        div.form-group
-                            div.col-sm-offset-2.col-sm-10
-                                div.checkbox
-                                    label
-                                        input(type="checkbox", name="chIsClient", ng-model="isClient", ng-checked="{{isClient}}")
-                                        | Cliente
-                        div.form-group
-                            label.control-label.col-sm-2(for="dbStatus") Situação
-                            div.col-sm-10
-                                select.form-control(id="dbStatus", name="dbStatus", ng-model="statusUser", required)
-                                    option(ng-repeat="status in statusOptions", value="{{status.domainValue}}" ) {{status.domainMeaning}}
-                                span(ng-show="frmUser.dbStatus.$touched && frmUser.dbStatus.$invalid") 'Situação' é um campo de preenchimento obrigatório
+    div.modal-demo
+        script(type="text/ng-template", id="myModal.html")
+            div.modal-header
+                h3.modal-title {{isEdit ? "Editar Usuário" : "Cadastrar Usuário"}}
+            div.modal-body(id="modal-body")
+                form.form-horizontal(name="frmUser")
+                    div.form-group
+                        label.control-label.col-sm-2 Código
+                        div.col-sm-10
+                            input.form-control(type="text", name="iptCode", ng-model="code", ng-disabled="true")
+                    div.form-group
+                        label.control-label.col-sm-2 Login
+                        div.col-sm-10
+                            input.form-control.iptLogin(type="text", name="iptLogin", ng-model="login", ng-required="true")
+                            span(ng-show="frmUser.iptLogin.$touched && frmUser.iptLogin.$invalid") 'Login' é um campo de preenchimento obrigatório
+                    div.form-group
+                        label.control-label.col-sm-2 Senha
+                        div.col-sm-10
+                            input.form-control(type="password", name="iptPassword", ng-model="password", ng-required="{{!isEdit}}")
+                    div.form-group
+                        div.col-sm-offset-2.col-sm-10
+                            div.checkbox
+                                label
+                                    input(type="checkbox", name="chIsAdm", ng-model="isAdm", ng-checked="{{isAdm}}") 
+                                    | Administrador
+                    div.form-group
+                        div.col-sm-offset-2.col-sm-10
+                            div.checkbox
+                                label
+                                    input(type="checkbox", name="chIsAgent", ng-model="isAgent", ng-checked="{{isAgent}}")
+                                    | Representante
+                    div.form-group
+                        div.col-sm-offset-2.col-sm-10
+                            div.checkbox
+                                label
+                                    input(type="checkbox", name="chIsClient", ng-model="isClient", ng-checked="{{isClient}}")
+                                    | Cliente
+                    div.form-group
+                        label.control-label.col-sm-2(for="dbStatus") Situação
+                        div.col-sm-10
+                            select.form-control(id="dbStatus", name="dbStatus", ng-model="statusUser", required)
+                                option(ng-repeat="status in statusOptions", value="{{status.domainValue}}" ) {{status.domainMeaning}}
+                            span(ng-show="frmUser.dbStatus.$touched && frmUser.dbStatus.$invalid") 'Situação' é um campo de preenchimento obrigatório
                             
-                div.modal-footer
-                    button.btn.btn-primary(type="button", ng-click="save(frmUser)", ng-disabled="frmUser.$invalid") Salvar
-                    button.btn.btn-warning(type="button", ng-click="cancel()") Cancelar
+            div.modal-footer
+                button.btn.btn-primary(type="button", ng-click="save(frmUser)", ng-disabled="frmUser.$invalid") Salvar
+                button.btn.btn-warning(type="button", ng-click="cancel()") Cancelar

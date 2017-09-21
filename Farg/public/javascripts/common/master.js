@@ -4,6 +4,7 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
     $scope.messageUser = undefined;
     $scope._alerts = [];
     $scope._listsToPage = [];
+    $scope.itemsPerPage = 30;
 
     $scope.showMessageUser = function (args) {
         $scope._alerts.push({
@@ -13,11 +14,14 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
     };
     
     $scope.closeMessageUser = function (index) {
-        $scope.alerts.splice(index, 1);
+        $scope._alerts.splice(index, 1);
     };
 
-    $scope.get = function (path, data, next, nextErr) {        
-        $http.get(path, data).then(function (res) {
+    $scope.get = function (path, data, next, nextErr) {
+        var parameters = data;
+        var config = { params: parameters };
+
+        $http.get(path, config).then(function (res) {
             next(res);
         }).catch(function (res) {
             $scope.showMessageUser({
@@ -43,19 +47,29 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
     };
 
     /*Adiciona informações de paginador*/
-    $scope.addPager = function (id, next) {
+    $scope.addPager = function (id, parans) {
+        var _itemsPerPage = $scope.itemsPerPage;
+        var _next = null;
+
+        if (parans) {
+            if (parans.itemsPerPage)
+                _itemsPerPage = parans.itemsPerPage;
+            if (parans.changedCallback)
+                _next = parans.changedCallback;
+        }
+
         var pager = {           
             maxSize: 5,
-            bigTotalItems: 1000,
+            bigTotalItems: 0,
             bigCurrentPage: 1,
-            numPages: 30
+            itemsPerPage: _itemsPerPage
         };
 
         $scope._listsToPage.push({
             id: id,
             info: pager,
             //Método para ser chamado após alterações no paginador
-            next: next
+            next: _next
         });
     };
 
@@ -89,3 +103,38 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
         pager.next();
     }
 });
+
+/**
+ * Funções de inicialização da página
+ */
+function Page() {
+
+}
+
+Page.prototype = {
+    /**
+     * Seta largura automática para container
+     */
+    setHeightPanel: function() {
+        var jq = angular.element(document);
+
+        if (jq.find('nav.navbar').length > 0) {
+            var windowHeight = window.innerHeight;
+            var menuHeight = jq.find('nav.navbar')[0].offsetHeight;
+            //var bodyPadding = parseInt(jq.find('body')[0].style.padding.replace('px',''));
+            var containerEl = jq.find('div.panel.panel-default')[0];
+
+            var heightToContainer = windowHeight - menuHeight - 50;
+
+            containerEl.style.height = heightToContainer + "px";
+        }
+    },
+
+    start: function () {
+        this.setHeightPanel();
+    }
+}
+
+var page = new Page();
+window.pageControl = page;
+window.onresize = window.pageControl.setHeightPanel;

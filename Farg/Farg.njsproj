@@ -33,6 +33,9 @@
     <Compile Include="model\clientModel.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="model\common\queryBuilder.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="model\connectionFactory.js">
       <SubType>Code</SubType>
     </Compile>
@@ -64,6 +67,9 @@
     <Compile Include="public\lib\bootstrap\js\bootstrap.js" />
     <Compile Include="public\lib\bootstrap\js\bootstrap.min.js" />
     <Compile Include="routes\cadastro.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="routes\common\paransBuilder.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes\index.js" />
@@ -106,6 +112,7 @@
   <ItemGroup>
     <Folder Include="model\" />
     <Folder Include="model\authenticate\" />
+    <Folder Include="model\common\" />
     <Folder Include="public\javascripts\basicregistration\" />
     <Folder Include="public\javascripts\common\" />
     <Folder Include="public\lib\" />
@@ -113,6 +120,7 @@
     <Folder Include="public\lib\bootstrap\" />
     <Folder Include="public\lib\bootstrap\css\" />
     <Folder Include="public\lib\bootstrap\js\" />
+    <Folder Include="routes\common\" />
     <Folder Include="typings\modules\angular-ui-bootstrap\" />
     <Folder Include="typings\modules\bluebird\" />
     <Folder Include="typings\modules\passport-local\" />

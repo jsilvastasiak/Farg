@@ -8,12 +8,14 @@ angular.module("currentApp").controller("tblUsers", function ($scope, $http, $ui
                 pagerInfo: $scope.getPagerInfo(pagerUserId)
             },
             function (res) {
-                if (res)
-                    $scope.usersList = res.data;
+                if (res) {
+                    $scope.getPagerInfo(pagerUserId).bigTotalItems = res.data.totalItems;
+                    $scope.usersList = res.data.result;
+                }
             },
             function (err) {
                 console.log(err);
-            });        
+            });
     };
     /*Modo Edição*/
     $scope.editUser = function (user) {
@@ -115,7 +117,9 @@ angular.module("currentApp").controller("tblUsers", function ($scope, $http, $ui
         return $scope.getPagerInfo(pagerUserId).info;
     };
 
-    $scope.addPager(pagerUserId, $scope.dataBind);
+    $scope.addPager(pagerUserId, {        
+        changedCallback: $scope.dataBind
+    });
     $scope.dataBind();
 });
 
