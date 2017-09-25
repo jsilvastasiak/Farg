@@ -74,9 +74,11 @@
     </Compile>
     <Compile Include="routes\index.js" />
     <Compile Include="routes\users.js" />
+    <Content Include="public\images\asc-direction.png" />
     <Content Include="public\images\btn-add-min.png" />
     <Content Include="public\images\btn-dele-min.png" />
     <Content Include="public\images\btn-edit-min.png" />
+    <Content Include="public\images\desc-direction.png" />
     <Content Include="public\images\icons-preview.png" />
     <Content Include="public\lib\bootstrap\css\bootstrap-grid.css" />
     <Content Include="public\lib\bootstrap\css\bootstrap-grid.css.map" />

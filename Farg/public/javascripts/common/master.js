@@ -4,7 +4,72 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
     $scope.messageUser = undefined;
     $scope._alerts = [];
     $scope._listsToPage = [];
+    $scope._datasources = [];
     $scope.itemsPerPage = 30;
+
+    //Implementa a lógica de um objeto que será o datasource das tabelas
+    $scope.ObjectDataSource = function (id, scope, pathReq, pagerId) {
+        this._pathReq = pathReq;
+        this._pagerId = pagerId;
+        this._scope = scope;
+        this._id = id;
+        this._next = scope._posReqDataSource;
+        this._scope._datasources.push({
+            id: this._id,
+            object: this
+        });
+
+        this.List = {};
+        this.filters = {};
+        this.orderByField = null;
+        this.orderByDirection = null;
+    };
+    $scope.ObjectDataSource.prototype = {
+        dataBind: function () {
+            this._scope.get(this._pathReq,
+                {
+                    datasourceId: this._id,
+                    pagerInfo: this._scope.getPagerInfo(this._pagerId),
+                    filters: this.filters,
+                    orderByField: this.orderByField,
+                    orderByDirection: this.orderByDirection
+                },
+                this._next,                
+                function (err) {
+                    console.log(err);
+                });
+        },
+        getScope: function () {
+            return this._scope;
+        },
+        getPagerId: function () {
+            return this._pagerId;
+        },
+        setList: function (data) {
+            this.List = data;
+        },
+        setFilters: function (filter) {
+            this.filters = filter;
+        },
+        getFilters: function () {
+            return this.filters;
+        }
+    };
+    //Função implementa lógica para receber o retorno das requisições no servidor
+    $scope._posReqDataSource = function (res) {
+        if (res) {
+            var filter = $scope._datasources.filter(function (el) {
+                return el["id"] = res.data.datasourceId;
+            });
+
+            if (filter.length > 0) {
+                var datasource = filter[0].object;
+
+                datasource.getScope().getPagerInfo(datasource.getPagerId()).bigTotalItems = res.data.totalItems;
+                datasource.setList(res.data.result);
+            }
+        }
+    };
 
     $scope.showMessageUser = function (args) {
         $scope._alerts.push({
@@ -72,7 +137,7 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
             next: _next
         });
     };
-
+    
     /*Seleciona pager pelo id*/
     $scope._getPager = function (idPager) {
         var filter = $scope._listsToPage.filter(function (el) {
@@ -101,6 +166,61 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
         var pager = $scope._getPager(idPager);
                 
         pager.next();
+    }    
+});
+
+angular.module("currentApp").directive('headerGrid', function () {
+    return {
+        link: function (scope, element, attrs) {            
+            var parentDatasource = element.closest('table').attr('ng-model');
+            var direction = '';
+
+            if (!parentDatasource) {
+                console.log("O header deve possuir uma tabela como pai com um atributo ng-model indicando o datasource da tabela.");
+                return null;
+            }
+
+            var datasource = scope.$eval(parentDatasource);            
+            
+            //Cria atributos para controle
+            element.attr('orderByField', parentDatasource + ".orderByField");
+
+            attrs.$observe('orderByField', function (value) {
+                if (attrs.orderByField != attrs.fieldOrder) {
+                    
+                }
+            });
+            
+            element.click(function () {
+                if (direction === 'asc') {
+                    direction = 'desc';
+                    element.find('span.asc-direction').removeClass('displayed');
+                    element.find('span.desc-direction').addClass('displayed');
+                }
+                else if (direction === 'desc') {
+                    direction = '';
+                    element.find('span.desc-direction').removeClass('displayed');
+                    element.find('span.asc-direction').removeClass('displayed');
+                }
+                else if (direction === '') {
+                    direction = 'asc';
+                    element.find('span.desc-direction').removeClass('displayed');
+                    element.find('span.asc-direction').addClass('displayed');
+                }
+
+                datasource.orderByField = attrs.fieldOrder;
+                datasource.orderByDirection = direction;
+                datasource.dataBind();
+            });
+
+            var tagA = $('<a>', { href: "#", class: "header-text" }).text(attrs.headerText);
+            var spanAsc = $('<span>', { class: 'asc-direction' });
+            var spanDesc = $('<span>', { class: 'desc-direction' });
+            var mainSpan = $('<span>').append(spanAsc).append(spanDesc);
+
+            tagA.append(mainSpan);
+            element.append(tagA);
+        }
     }
 });
 

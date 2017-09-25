@@ -20,7 +20,7 @@ router.get('/getUsersList', auth.isAuthenticated, function (req, res) {
     user.getUsers(paransQuery).then(function (usersList) {
         var result = {};
         if (usersList) {
-            result = paransBuilder.createParansResponse(usersList);                       
+            result = paransBuilder.createParansResponse(usersList, req);                       
         }
 
         res.send(result);

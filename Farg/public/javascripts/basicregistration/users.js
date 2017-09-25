@@ -1,22 +1,8 @@
 ﻿
 angular.module("currentApp").controller("tblUsers", function ($scope, $http, $uibModal) {
     const pagerUserId = 'pgUsers';
-
-    $scope.dataBind = function () {
-        $scope.get('/basicregistration/users/getUsersList',
-            {
-                pagerInfo: $scope.getPagerInfo(pagerUserId)
-            },
-            function (res) {
-                if (res) {
-                    $scope.getPagerInfo(pagerUserId).bigTotalItems = res.data.totalItems;
-                    $scope.usersList = res.data.result;
-                }
-            },
-            function (err) {
-                console.log(err);
-            });
-    };
+    $scope.dtUsers = new $scope.ObjectDataSource('dtUsers', $scope, '/basicregistration/users/getUsersList', pagerUserId);
+    
     /*Modo Edição*/
     $scope.editUser = function (user) {
         if (user) {
@@ -26,8 +12,12 @@ angular.module("currentApp").controller("tblUsers", function ($scope, $http, $ui
                 templateUrl: 'myModal.html',
                 controller: 'ModalCtrl',
                 resolve: {
-                    userEdit: function () {
-                        return $scope.selectedUser;
+                    parans: function () {
+                        return {
+                            isFind: false,
+                            userEdit: $scope.selectedUser,
+                            title: 'Editar Usuário'
+                        };
                     }
                 }
             });
@@ -52,7 +42,8 @@ angular.module("currentApp").controller("tblUsers", function ($scope, $http, $ui
                                 message: res.data,
                                 type: 'success'
                             });
-                            $scope.dataBind();
+                            //$scope.dataBind();
+                            $scope.dtUsers.dataBind();
                         });
                 }
             });
@@ -67,8 +58,11 @@ angular.module("currentApp").controller("tblUsers", function ($scope, $http, $ui
             templateUrl: 'myModal.html',
             controller: 'ModalCtrl',
             resolve: {
-                userEdit: function () {
-                    return undefined;
+                parans: function () {
+                    return {
+                        isFind: false,
+                        title: 'Cadastrar Usuário'
+                    };
                 }
             }
         });
@@ -93,8 +87,41 @@ angular.module("currentApp").controller("tblUsers", function ($scope, $http, $ui
                             message: response.data,
                             type: 'success'
                         });
-                        $scope.dataBind();
+                        //$scope.dataBind();
+                        $scope.dtUsers.dataBind();
                     });
+            }
+        });
+    };
+    /*Modo Busca*/
+    $scope.findUser = function () {
+        $scope.modalInstance = $uibModal.open({
+            templateUrl: 'myModal.html',
+            controller: 'ModalCtrl',
+            resolve: {
+                parans: function () {
+                    return {
+                        isFind: true,
+                        title: 'Procurar'
+                    };
+                }
+            }
+        });
+
+        $scope.modalInstance.result.then(function (userToFind) {
+            if (userToFind) {
+                var _filter = {
+                    code: userToFind.iptCode.$modelValue,
+                    login: userToFind.iptLogin.$modelValue,
+                    password: userToFind.iptPassword.$modelValue,
+                    isAdmin: userToFind.chIsAdm.$modelValue,
+                    isAgent: userToFind.chIsAgent.$modelValue,
+                    isClient: userToFind.chIsClient.$modelValue,
+                    statusUser: userToFind.dbStatus.$modelValue
+                };
+
+                $scope.dtUsers.setFilters(_filter);
+                $scope.dtUsers.dataBind();
             }
         });
     };
@@ -108,7 +135,8 @@ angular.module("currentApp").controller("tblUsers", function ($scope, $http, $ui
                     message: response.data,
                     type: 'success'
                 });
-                $scope.dataBind();
+                
+                $scope.dtUsers.dataBind();
             });
     };
 
@@ -117,32 +145,42 @@ angular.module("currentApp").controller("tblUsers", function ($scope, $http, $ui
         return $scope.getPagerInfo(pagerUserId).info;
     };
 
-    $scope.addPager(pagerUserId, {        
-        changedCallback: $scope.dataBind
-    });
-    $scope.dataBind();
-});
-
-angular.module("currentApp").controller('ModalCtrl', function ($scope, $http, $uibModalInstance, userEdit) {
-
-    var getUserStatusOptions = function (http) {
-        return http.get('/basicregistration/users/getUserStatusOptions');
-    };
-
-    getUserStatusOptions($http).then(function (res) {
-        $scope.statusOptions = res.data;
+    $scope.addPager(pagerUserId, {
+        changedCallback: $scope.dtUsers.dataBind
     });
     
-    if (userEdit) {
-        $scope.code = userEdit.code;
-        $scope.login = userEdit.login;
-        $scope.isAdm = userEdit.isAdmin == 'S' ? true : false;
-        $scope.isAgent = userEdit.isAgent == 'S' ? true : false;
-        $scope.isClient = userEdit.isClient == 'S' ? true : false;
-        $scope.statusUser = userEdit.isActive;
-        $scope.isEdit = true;
-    } else {
+    $scope.dtUsers.dataBind();
+});
+
+angular.module("currentApp").controller('ModalCtrl', function ($scope, $http, $uibModalInstance, parans) {
+
+    if (parans) {
+        $scope.isFind = false;
         $scope.isEdit = false;
+        $scope.titleModal = parans.title;
+
+        var getUserStatusOptions = function (http) {
+            return http.get('/basicregistration/users/getUserStatusOptions');
+        };
+
+        getUserStatusOptions($http).then(function (res) {
+            $scope.statusOptions = res.data;
+        });
+    
+        if (parans.userEdit) {
+            $scope.code = userEdit.code;
+            $scope.login = userEdit.login;
+            $scope.isAdm = userEdit.isAdmin == 'S' ? true : false;
+            $scope.isAgent = userEdit.isAgent == 'S' ? true : false;
+            $scope.isClient = userEdit.isClient == 'S' ? true : false;
+            $scope.statusUser = userEdit.isActive;
+            $scope.isEdit = true;
+        } else {
+            $scope.isFind = parans.isFind;
+            $scope.isEdit = false;
+        }
+    } else {
+        console.log("Modal deve receber parâmetros.");
     }
 
     $scope.save = function (frmUser) {        

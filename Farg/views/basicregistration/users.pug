@@ -8,20 +8,21 @@ append scripts
 
 block content
     div.table-responsive.table-large
-        table.table.table-hover.table-striped.table-condensed(ng-controller="tblUsers")
+        table.table.table-hover.table-striped.table-condensed(ng-controller="tblUsers", ng-model="dtUsers")
             thead
                 tr
-                    th.col-sm-3-grid &nbsp
+                    th.col-sm-3-grid
+                        button.btn-find-min(type="button", ng-click="findUser()", title="Encontrar")
                     th.col-sm-3-grid 
                         button.btn-add-min(type="button", ng-click="newUser()", title="Novo Usuário")
-                    th.col-sm-4-grid Código
-                    th.col-sm-3 Login
-                    th.col-sm-3 Administrador
-                    th.col-sm-3 Representante
-                    th.col-sm-3 Cliente
-                    th.col-sm-4-grid Ativo
+                    th.col-sm-4-grid(header-grid, header-text="Código", field-order="code")
+                    th.col-sm-3(header-grid, header-text="Login", field-order="login") 
+                    th.col-sm-3(header-grid, header-text="Administrador", field-order="isAdmin") 
+                    th.col-sm-3(header-grid, header-text="Representante", field-order="isAgent")
+                    th.col-sm-3(header-grid, header-text="Cliente", field-order="isClient") 
+                    th.col-sm-4-grid(header-grid, header-text="Ativo", field-order="isActive") 
             tbody
-                tr(ng-repeat="user in usersList")
+                tr(ng-repeat="user in dtUsers.List")
                     td
                         button.btn-dele-min(type="button", ng-click="deleteUser(user)", title="Excluir Usuário") 
                     td
@@ -39,22 +40,22 @@ block content
     div.modal-demo
         script(type="text/ng-template", id="myModal.html")
             div.modal-header
-                h3.modal-title {{isEdit ? "Editar Usuário" : "Cadastrar Usuário"}}
+                h3.modal-title {{titleModal}}
             div.modal-body(id="modal-body")
                 form.form-horizontal(name="frmUser")
                     div.form-group
                         label.control-label.col-sm-2 Código
                         div.col-sm-10
-                            input.form-control(type="text", name="iptCode", ng-model="code", ng-disabled="true")
+                            input.form-control(type="text", name="iptCode", ng-model="code", ng-disabled="!isFind")
                     div.form-group
                         label.control-label.col-sm-2 Login
                         div.col-sm-10
-                            input.form-control.iptLogin(type="text", name="iptLogin", ng-model="login", ng-required="true")
+                            input.form-control.iptLogin(type="text", name="iptLogin", ng-model="login", ng-required="!isFind")
                             span(ng-show="frmUser.iptLogin.$touched && frmUser.iptLogin.$invalid") 'Login' é um campo de preenchimento obrigatório
                     div.form-group
                         label.control-label.col-sm-2 Senha
                         div.col-sm-10
-                            input.form-control(type="password", name="iptPassword", ng-model="password", ng-required="{{!isEdit}}")
+                            input.form-control(type="password", name="iptPassword", ng-model="password", ng-disabled="isFind", ng-required="{{!isEdit && !isFind}}")
                     div.form-group
                         div.col-sm-offset-2.col-sm-10
                             div.checkbox
@@ -76,10 +77,11 @@ block content
                     div.form-group
                         label.control-label.col-sm-2(for="dbStatus") Situação
                         div.col-sm-10
-                            select.form-control(id="dbStatus", name="dbStatus", ng-model="statusUser", required)
+                            select.form-control(id="dbStatus", name="dbStatus", ng-model="statusUser", ng-required="!isFind")
                                 option(ng-repeat="status in statusOptions", value="{{status.domainValue}}" ) {{status.domainMeaning}}
                             span(ng-show="frmUser.dbStatus.$touched && frmUser.dbStatus.$invalid") 'Situação' é um campo de preenchimento obrigatório
                             
             div.modal-footer
-                button.btn.btn-primary(type="button", ng-click="save(frmUser)", ng-disabled="frmUser.$invalid") Salvar
+                button.btn.btn-primary(type="button", ng-click="save(frmUser)", ng-disabled="frmUser.$invalid", ng-show="!isFind") Salvar
+                button.btn.btn-primary(type="button", ng-click="save(frmUser)", ng-show="isFind") Buscar
                 button.btn.btn-warning(type="button", ng-click="cancel()") Cancelar

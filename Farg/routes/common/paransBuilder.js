@@ -8,12 +8,14 @@ function CreateParansModel(req) {
         var pagerInfo = JSON.parse(req.pagerInfo);
         parans.startRowIndex = (pagerInfo.bigCurrentPage - 1) * pagerInfo.itemsPerPage
         parans.maximumRows = pagerInfo.itemsPerPage;
+        parans.orderByField = req.orderByField;
+        parans.orderByDirection = req.orderByDirection;
     }
 
     return parans;
 };
 
-function createParansResponse(resultList) {
+function createParansResponse(resultList, req) {
     var finalResult = {};
 
     if (resultList.length > 0) {
@@ -26,6 +28,7 @@ function createParansResponse(resultList) {
     });
 
     finalResult.result = resultList;
+    finalResult.datasourceId = req.query.datasourceId;
     
     return finalResult;
 };
