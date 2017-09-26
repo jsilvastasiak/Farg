@@ -90,6 +90,8 @@ angular.module("currentApp").controller("tblUsers", function ($scope, $http, $ui
                         //$scope.dataBind();
                         $scope.dtUsers.dataBind();
                     });
+
+                $scope.dtUsers.cancelFilters();
             }
         });
     };
@@ -168,12 +170,12 @@ angular.module("currentApp").controller('ModalCtrl', function ($scope, $http, $u
         });
     
         if (parans.userEdit) {
-            $scope.code = userEdit.code;
-            $scope.login = userEdit.login;
-            $scope.isAdm = userEdit.isAdmin == 'S' ? true : false;
-            $scope.isAgent = userEdit.isAgent == 'S' ? true : false;
-            $scope.isClient = userEdit.isClient == 'S' ? true : false;
-            $scope.statusUser = userEdit.isActive;
+            $scope.code = parans.userEdit.code;
+            $scope.login = parans.userEdit.login;
+            $scope.isAdm = parans.userEdit.isAdmin == 'S' ? true : false;
+            $scope.isAgent = parans.userEdit.isAgent == 'S' ? true : false;
+            $scope.isClient = parans.userEdit.isClient == 'S' ? true : false;
+            $scope.statusUser = parans.userEdit.isActive;
             $scope.isEdit = true;
         } else {
             $scope.isFind = parans.isFind;

@@ -24,6 +24,10 @@ html
     //Boostrap
     script(src='/lib/bootstrap/js/bootstrap.min.js')
 
+    script(src='../bower_components/cpf_cnpj/build/cpf.js')
+    script(src='../bower_components/cpf_cnpj/build/cnpj.js')
+    script(src='../bower_components/ng-cpf-cnpj/lib/ngCpfCnpj.js')
+
     block scripts
         script(src='/javascripts/common/master.js')
         
@@ -48,9 +52,13 @@ body(ng-app="currentApp", ng-controller="masterCtrl", onload="page.start()")
                 div.collapse.navbar-collapse(id="myNavbar")
                     ul.nav.navbar-nav
                         li.active
-                            a(href="#") Home
-                        li
-                            a(href="") Cadastros
+                            a(href="/") Home
+                        li.dropdown
+                            a.dropdown-toggle(data-toggle="dropdown", href="#") Cadastros
+                                span.caret
+                            ul.dropdown-menu
+                                li
+                                    a(href="/basicregistration/users") Usuários
                         li
                             a(href="#") Deals
                         li

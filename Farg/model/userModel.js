@@ -49,14 +49,24 @@ User.prototype = {
             });
     },
 
-    getUsers: function (parans) {
-        var queryBuilder = new QueryBuilder(getSelectUsers(), parans);
+    getUsers: function (parans) {        
+        var queryBuilder = new QueryBuilder(getSelectUsers(), false, parans);
+
+        if (parans.filters) {
+            var filters = JSON.parse(parans.filters);
+            //Verifica se existem filtros com valores
+            if (Object.keys(filters).length > 0) {
+                queryBuilder.addFilter("c", "cdg_usuario", filters.code, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("c", "nom_login", filters.login);
+                queryBuilder.addFilter("c", "idc_administrador", filters.isAdmin);
+                queryBuilder.addFilter("c", "idc_representante", filters.isAgent);
+                queryBuilder.addFilter("c", "idc_cliente", filters.isClient);
+                queryBuilder.addFilter("c", "idc_ativo", filters.statusUser);
+            }
+        }
         
         //Objeto de retorno
-        return Sequelize.query(queryBuilder.createQuery(),
-            {                
-                type: Sequelize.QueryTypes.SELECT
-            });
+        return queryBuilder.executeBuilder(Sequelize);
     }
 }
 

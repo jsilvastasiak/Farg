@@ -95,6 +95,9 @@
     <Content Include="public\stylesheets\login.css">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="views\basicregistration\clients.pug">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="views\basicregistration\users.pug">
       <SubType>Code</SubType>
     </Content>

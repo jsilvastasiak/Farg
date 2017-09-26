@@ -53,6 +53,9 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
         },
         getFilters: function () {
             return this.filters;
+        },
+        cancelFilters: function () {
+            this.filters = {};
         }
     };
     //Função implementa lógica para receber o retorno das requisições no servidor
@@ -244,7 +247,7 @@ Page.prototype = {
             //var bodyPadding = parseInt(jq.find('body')[0].style.padding.replace('px',''));
             var containerEl = jq.find('div.panel.panel-default')[0];
 
-            var heightToContainer = windowHeight - menuHeight - 50;
+            var heightToContainer = windowHeight - menuHeight - 60;
 
             containerEl.style.height = heightToContainer + "px";
         }

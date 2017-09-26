@@ -10,6 +10,7 @@ function CreateParansModel(req) {
         parans.maximumRows = pagerInfo.itemsPerPage;
         parans.orderByField = req.orderByField;
         parans.orderByDirection = req.orderByDirection;
+        parans.filters = req.filters;
     }
 
     return parans;

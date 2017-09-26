@@ -33,6 +33,9 @@ a {
     min-height: 100%;
     height: auto;
 }
+.table-responsive{
+    overflow-y: auto !important;
+}
 .table-large{
     height: 88%;
 }

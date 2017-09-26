@@ -1,0 +1,22 @@
+{
+  "name": "farg",
+  "description": "Sistema de Gerencimanento de Pedidos",
+  "main": "master",
+  "authors": [
+    "Jonas"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/jsilvastasiak/Farg",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ng-cpf-cnpj": "^0.0.5",
+    "cpf_cnpj": "^0.2.0"
+  }
+}
