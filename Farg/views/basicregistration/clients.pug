@@ -46,18 +46,30 @@ block content
                     div.form-group
                         label.control-label.col-sm-2 Nome
                         div.col-sm-10
-                            input.form-control.iptLogin(type="text", name="iptClientName", ng-model="clientName", ng-required="!isFind")
+                            input.form-control(type="text", name="iptClientName", ng-model="clientName", ng-required="!isFind")
                             span(ng-show="frmClient.iptLogin.$touched && frmUser.iptClientName.$invalid") 'Nome' é um campo de preenchimento obrigatório
+                    div.form-group
+                        label.control-label.col-sm-2 CPF
+                        div.col-sm-10
+                            input(name="cpf", ng-model="cpf", ng-cpf, ui-mask="999.999.999-99") myForm.cpf.$valid: {{ frmClient.cpf.$valid }}
+                    div.form-group
+                        label.control-label.col-sm-2 CNPJ
+                        div.col-sm-10
+                            input(name="cnpj", ng-model="cnpj", ng-cnpj, ui-mask="99.999.999/9999-99") myForm.cnpj.$valid: {{ frmClient.cnpj.$valid }}
                     div.form-group
                         label.control-label.col-sm-2 E-mail
                         div.col-sm-10
-                            input.form-control.iptLogin(type="text", name="iptEmail", ng-model="email", ng-required="!isFind")
+                            input.form-control(type="text", name="iptEmail", ng-model="email", ng-required="!isFind")
                             span(ng-show="frmClient.iptLogin.$touched && frmUser.iptEmail.$invalid") 'E-mail' é um campo de preenchimento obrigatório
                     div.form-group
                         label.control-label.col-sm-2 Percentual Desconto
                         div.col-sm-10
-                            input.form-control.iptLogin(type="text", name="iptDiscountValue", ng-model="discountValue")                            
+                            input.form-control(type="text", name="iptDiscountValue", ng-model="discountValue")                            
                             span %
+                    div.form-group
+                        label.control-label.col-sm-2 Data Cadastro
+                        div.col-sm-10
+                            input.form-control(ui-date, name="iptRegisterDate", ng-model="discountValue", ng-disabled="!isFind")
                     div.form-group
                         label.control-label.col-sm-2 Código de Usuário
                         div.col-sm-10

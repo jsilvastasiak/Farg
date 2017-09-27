@@ -1,4 +1,4 @@
-﻿angular.module("currentApp", ['ngAnimate', 'ngSanitize', 'ui.bootstrap']);
+﻿angular.module("currentApp", ['ngAnimate', 'ngSanitize', 'ui.bootstrap','ngCpfCnpj', 'ui.mask', 'ui.date']);
 
 angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
     $scope.messageUser = undefined;

@@ -66,6 +66,9 @@
     <Compile Include="public\lib\angular\angular.js" />
     <Compile Include="public\lib\bootstrap\js\bootstrap.js" />
     <Compile Include="public\lib\bootstrap\js\bootstrap.min.js" />
+    <Compile Include="public\lib\jquery\jquery-config.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="routes\cadastro.js">
       <SubType>Code</SubType>
     </Compile>
@@ -125,6 +128,7 @@
     <Folder Include="public\lib\bootstrap\" />
     <Folder Include="public\lib\bootstrap\css\" />
     <Folder Include="public\lib\bootstrap\js\" />
+    <Folder Include="public\lib\jquery\" />
     <Folder Include="routes\common\" />
     <Folder Include="typings\modules\angular-ui-bootstrap\" />
     <Folder Include="typings\modules\bluebird\" />

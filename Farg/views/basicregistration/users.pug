@@ -80,6 +80,23 @@ block content
                             select.form-control(id="dbStatus", name="dbStatus", ng-model="statusUser", ng-required="!isFind")
                                 option(ng-repeat="status in statusOptions", value="{{status.domainValue}}" ) {{status.domainMeaning}}
                             span(ng-show="frmUser.dbStatus.$touched && frmUser.dbStatus.$invalid") 'Situação' é um campo de preenchimento obrigatório
+
+                    div.form-group
+                        label.control-label.col-sm-2 CPF
+                        div.col-sm-10
+                            input(name="cpf", ng-model="cpf", ng-cpf, ui-mask="999.999.999-99") 
+                            label myForm.cpf.$valid: {{ frmUser.cpf.$valid }}
+                            
+                    div.form-group
+                        label.control-label.col-sm-2 CNPJ
+                        div.col-sm-10
+                            input(name="cnpj", ng-model="cnpj", ng-cnpj, ui-mask="99.999.999/9999-99")
+                            label myForm.cnpj.$valid: {{ frmUser.cnpj.$valid }}
+
+                    div.form-group
+                        label.control-label.col-sm-2 Data Cadastro
+                        div.col-sm-10
+                            input.form-control(ui-date, name="iptRegisterDate", ui-date-format="DD, MM, yyyy", ng-model="discountValue", ng-disabled="!isFind")
                             
             div.modal-footer
                 button.btn.btn-primary(type="button", ng-click="save(frmUser)", ng-disabled="frmUser.$invalid", ng-show="!isFind") Salvar
