@@ -1,9 +1,9 @@
 ﻿'use strict';
 var express = require('express');
-var auth = require('../model/authenticate/authenticate');
-var User = require('../model/userModel');
-var paransBuilder = require('./common/paransBuilder');
-var RefCodes = require('../model/refcodesModel');
+var auth = require('../../model/authenticate/authenticate');
+var User = require('../../model/userModel');
+var paransBuilder = require('../common/paransBuilder');
+var RefCodes = require('../../model/refcodesModel');
 
 var router = express.Router();
 
@@ -92,13 +92,14 @@ router.post('/deleteUser', auth.isAuthenticated, function (req, res) {
             where: {
                 cdg_usuario: req.body.user.code
             }
-        }).then(function () {
-            res.send("Registro deletado com sucesso!");
+        }).then(function (instance) {
+            res.send(paransBuilder.deleteMessageToResponse(instance));
             res.end();
         }).catch(function (err) {
+            res.send(paransBuilder.deleteMessageToResponse(null, err));
             console.log(err);
+            res.end();
         });
-
     });
 });
 

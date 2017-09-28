@@ -7,98 +7,99 @@ append scripts
     script(src='/javascripts/basicregistration/users.js')    
 
 block content
-    div.table-responsive.table-large
-        table.table.table-hover.table-striped.table-condensed(ng-controller="tblUsers", ng-model="dtUsers")
-            thead
-                tr
-                    th.col-sm-3-grid
-                        button.btn-find-min(type="button", ng-click="findUser()", title="Encontrar")
-                    th.col-sm-3-grid 
-                        button.btn-add-min(type="button", ng-click="newUser()", title="Novo Usuário")
-                    th.col-sm-4-grid(header-grid, header-text="Código", field-order="code")
-                    th.col-sm-3(header-grid, header-text="Login", field-order="login") 
-                    th.col-sm-3(header-grid, header-text="Administrador", field-order="isAdmin") 
-                    th.col-sm-3(header-grid, header-text="Representante", field-order="isAgent")
-                    th.col-sm-3(header-grid, header-text="Cliente", field-order="isClient") 
-                    th.col-sm-4-grid(header-grid, header-text="Ativo", field-order="isActive") 
-            tbody
-                tr(ng-repeat="user in dtUsers.List")
-                    td
-                        button.btn-dele-min(type="button", ng-click="deleteUser(user)", title="Excluir Usuário") 
-                    td
-                        button.btn-edit-min(type="button", ng-click="editUser(user)", title="Editar Usuário") 
-                    td.align-rigth {{user.code}}
-                    td {{user.login}}
-                    td {{user.isAdmin}}
-                    td {{user.isAgent}}
-                    td {{user.isClient}}
-                    td {{user.isActive}}
+    div.panel.panel-default
+        div.table-responsive.table-large
+            table.table.table-hover.table-striped.table-condensed(ng-controller="tblUsers", ng-model="dtUsers")
+                thead
+                    tr
+                        th.col-sm-3-grid
+                            button.btn-find-min(type="button", ng-click="findUser()", title="Encontrar")
+                        th.col-sm-3-grid 
+                            button.btn-add-min(type="button", ng-click="newUser()", title="Novo Usuário")
+                        th.col-sm-4-grid(header-grid, header-text="Código", field-order="code")
+                        th.col-sm-3(header-grid, header-text="Login", field-order="login") 
+                        th.col-sm-3(header-grid, header-text="Administrador", field-order="isAdmin") 
+                        th.col-sm-3(header-grid, header-text="Representante", field-order="isAgent")
+                        th.col-sm-3(header-grid, header-text="Cliente", field-order="isClient") 
+                        th.col-sm-4-grid(header-grid, header-text="Ativo", field-order="isActive") 
+                tbody
+                    tr(ng-repeat="user in dtUsers.List")
+                        td
+                            button.btn-dele-min(type="button", ng-click="deleteUser(user)", title="Excluir Usuário") 
+                        td
+                            button.btn-edit-min(type="button", ng-click="editUser(user)", title="Editar Usuário") 
+                        td.align-rigth {{user.code}}
+                        td {{user.login}}
+                        td {{user.isAdmin}}
+                        td {{user.isAgent}}
+                        td {{user.isClient}}
+                        td {{user.isActive}}
 
-    ul.pagination-sm.pager-style(uib-pagination, total-items="getPagerInfo('pgUsers').bigTotalItems", ng-model="getPagerInfo('pgUsers').bigCurrentPage"
-    , max-size="5", boundary-links="true", force-ellipses="true", boundary-link-numbers="true", items-per-page="itemsPerPage", ng-change="pageChanged('pgUsers')")
+        ul.pagination-sm.pager-style(uib-pagination, total-items="getPagerInfo('pgUsers').bigTotalItems", ng-model="getPagerInfo('pgUsers').bigCurrentPage"
+        , max-size="5", boundary-links="true", force-ellipses="true", boundary-link-numbers="true", items-per-page="itemsPerPage", ng-change="pageChanged('pgUsers')")
 
-    div.modal-demo
-        script(type="text/ng-template", id="myModal.html")
-            div.modal-header
-                h3.modal-title {{titleModal}}
-            div.modal-body(id="modal-body")
-                form.form-horizontal(name="frmUser")
-                    div.form-group
-                        label.control-label.col-sm-2 Código
-                        div.col-sm-10
-                            input.form-control(type="text", name="iptCode", ng-model="code", ng-disabled="!isFind")
-                    div.form-group
-                        label.control-label.col-sm-2 Login
-                        div.col-sm-10
-                            input.form-control.iptLogin(type="text", name="iptLogin", ng-model="login", ng-required="!isFind")
-                            span(ng-show="frmUser.iptLogin.$touched && frmUser.iptLogin.$invalid") 'Login' é um campo de preenchimento obrigatório
-                    div.form-group
-                        label.control-label.col-sm-2 Senha
-                        div.col-sm-10
-                            input.form-control(type="password", name="iptPassword", ng-model="password", ng-disabled="isFind", ng-required="{{!isEdit && !isFind}}")
-                    div.form-group
-                        div.col-sm-offset-2.col-sm-10
-                            div.checkbox
-                                label
-                                    input(type="checkbox", name="chIsAdm", ng-model="isAdm", ng-checked="{{isAdm}}") 
-                                    | Administrador
-                    div.form-group
-                        div.col-sm-offset-2.col-sm-10
-                            div.checkbox
-                                label
-                                    input(type="checkbox", name="chIsAgent", ng-model="isAgent", ng-checked="{{isAgent}}")
-                                    | Representante
-                    div.form-group
-                        div.col-sm-offset-2.col-sm-10
-                            div.checkbox
-                                label
-                                    input(type="checkbox", name="chIsClient", ng-model="isClient", ng-checked="{{isClient}}")
-                                    | Cliente
-                    div.form-group
-                        label.control-label.col-sm-2(for="dbStatus") Situação
-                        div.col-sm-10
-                            select.form-control(id="dbStatus", name="dbStatus", ng-model="statusUser", ng-required="!isFind")
-                                option(ng-repeat="status in statusOptions", value="{{status.domainValue}}" ) {{status.domainMeaning}}
-                            span(ng-show="frmUser.dbStatus.$touched && frmUser.dbStatus.$invalid") 'Situação' é um campo de preenchimento obrigatório
+        div.modal-demo
+            script(type="text/ng-template", id="myModal.html")
+                div.modal-header
+                    h3.modal-title {{titleModal}}
+                div.modal-body(id="modal-body")
+                    form.form-horizontal(name="frmUser")
+                        div.form-group
+                            label.control-label.col-sm-2 Código
+                            div.col-sm-10
+                                input.form-control(type="text", name="iptCode", ng-model="code", ng-disabled="!isFind")
+                        div.form-group
+                            label.control-label.col-sm-2 Login
+                            div.col-sm-10
+                                input.form-control.iptLogin(type="text", name="iptLogin", ng-model="login", ng-required="!isFind")
+                                span(ng-show="frmUser.iptLogin.$touched && frmUser.iptLogin.$invalid") 'Login' é um campo de preenchimento obrigatório
+                        div.form-group
+                            label.control-label.col-sm-2 Senha
+                            div.col-sm-10
+                                input.form-control(type="password", name="iptPassword", ng-model="password", ng-disabled="isFind", ng-required="{{!isEdit && !isFind}}")
+                        div.form-group
+                            div.col-sm-offset-2.col-sm-10
+                                div.checkbox
+                                    label
+                                        input(type="checkbox", name="chIsAdm", ng-model="isAdm", ng-checked="{{isAdm}}") 
+                                        | Administrador
+                        div.form-group
+                            div.col-sm-offset-2.col-sm-10
+                                div.checkbox
+                                    label
+                                        input(type="checkbox", name="chIsAgent", ng-model="isAgent", ng-checked="{{isAgent}}")
+                                        | Representante
+                        div.form-group
+                            div.col-sm-offset-2.col-sm-10
+                                div.checkbox
+                                    label
+                                        input(type="checkbox", name="chIsClient", ng-model="isClient", ng-checked="{{isClient}}")
+                                        | Cliente
+                        div.form-group
+                            label.control-label.col-sm-2(for="dbStatus") Situação
+                            div.col-sm-10
+                                select.form-control(id="dbStatus", name="dbStatus", ng-model="statusUser", ng-required="!isFind")
+                                    option(ng-repeat="status in statusOptions", value="{{status.domainValue}}" ) {{status.domainMeaning}}
+                                span(ng-show="frmUser.dbStatus.$touched && frmUser.dbStatus.$invalid") 'Situação' é um campo de preenchimento obrigatório
 
-                    div.form-group
-                        label.control-label.col-sm-2 CPF
-                        div.col-sm-10
-                            input(name="cpf", ng-model="cpf", ng-cpf, ui-mask="999.999.999-99") 
-                            label myForm.cpf.$valid: {{ frmUser.cpf.$valid }}
+                        div.form-group
+                            label.control-label.col-sm-2 CPF
+                            div.col-sm-10
+                                input(name="cpf", ng-model="cpf", ng-cpf, ui-mask="999.999.999-99") 
+                                label myForm.cpf.$valid: {{ frmUser.cpf.$valid }}
                             
-                    div.form-group
-                        label.control-label.col-sm-2 CNPJ
-                        div.col-sm-10
-                            input(name="cnpj", ng-model="cnpj", ng-cnpj, ui-mask="99.999.999/9999-99")
-                            label myForm.cnpj.$valid: {{ frmUser.cnpj.$valid }}
+                        div.form-group
+                            label.control-label.col-sm-2 CNPJ
+                            div.col-sm-10
+                                input(name="cnpj", ng-model="cnpj", ng-cnpj, ui-mask="99.999.999/9999-99")
+                                label myForm.cnpj.$valid: {{ frmUser.cnpj.$valid }}
 
-                    div.form-group
-                        label.control-label.col-sm-2 Data Cadastro
-                        div.col-sm-10
-                            input.form-control(ui-date, name="iptRegisterDate", ui-date-format="DD, MM, yyyy", ng-model="discountValue", ng-disabled="!isFind")
+                        div.form-group
+                            label.control-label.col-sm-2 Data Cadastro
+                            div.col-sm-10
+                                input.form-control(ui-date, name="iptRegisterDate", ui-date-format="DD, MM, yyyy", ng-model="discountValue", ng-disabled="!isFind")
                             
-            div.modal-footer
-                button.btn.btn-primary(type="button", ng-click="save(frmUser)", ng-disabled="frmUser.$invalid", ng-show="!isFind") Salvar
-                button.btn.btn-primary(type="button", ng-click="save(frmUser)", ng-show="isFind") Buscar
-                button.btn.btn-warning(type="button", ng-click="cancel()") Cancelar
+                div.modal-footer
+                    button.btn.btn-primary(type="button", ng-click="save(frmUser)", ng-disabled="frmUser.$invalid", ng-show="!isFind") Salvar
+                    button.btn.btn-primary(type="button", ng-click="save(frmUser)", ng-show="isFind") Buscar
+                    button.btn.btn-warning(type="button", ng-click="cancel()") Cancelar

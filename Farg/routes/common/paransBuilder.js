@@ -34,7 +34,38 @@ function createParansResponse(resultList, req) {
     return finalResult;
 };
 
+/**
+ * Cria objeto com a mensagem que deverá ser enviada como resposta no caso de operação de delete de
+   um registro
+ */
+function deleteMessageToResponse(instance, err) {
+    var responseMessage = {};
+
+    if(instance && instance != null)
+
+        if (instance == 0) {
+            responseMessage.message = "Não foi possível excluir o registro.";
+            responseMessage.type = 'danger';
+        } else {
+            responseMessage.message = "Registro deletado com sucesso!";
+            responseMessage.type = 'success';
+        }
+    else {
+        if (err) {
+            if (err.name == "SequelizeForeignKeyConstraintError")
+                responseMessage.message = "Não é possível excluir o registro pois existem registros que dependem do mesmo.";
+            else
+                responseMessage.message = err.message;
+
+            responseMessage.type = 'danger';
+        }
+    }
+
+    return responseMessage;
+}
+
 module.exports = {
     createParansModel: CreateParansModel,
-    createParansResponse: createParansResponse
+    createParansResponse: createParansResponse,
+    deleteMessageToResponse: deleteMessageToResponse
 };

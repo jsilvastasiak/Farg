@@ -1,4 +1,6 @@
-﻿function QueryBuilder(queryBase, hasWhereClause, parans) {
+﻿var Moment = require('moment-timezone');
+
+function QueryBuilder(queryBase, hasWhereClause, parans) {
     this._mainQuery = queryBase;
     this._hasWhereClause = hasWhereClause;
     this._queryParans = parans;
@@ -9,7 +11,8 @@
         TEXT: 1,
         NUMBER: 2,
         DATE: 3,
-        BOOLEAN: 4
+        BOOLEAN: 4,
+        DATE: 5
     };
 }
 
@@ -78,7 +81,11 @@ QueryBuilder.prototype = {
                 colName: colName
             };
 
-            if (colType === this.COLUMN_TYPE.TEXT) {
+            //Tratamento para data
+            if (colType === this.COLUMN_TYPE.DATE) {
+                clause = "DATE_TRUNC('day', " + alias + "." + colName + ") = TO_DATE(:" + alias + colName + ", 'DD/MM/yyyy')";
+            }
+            else if (colType === this.COLUMN_TYPE.TEXT) {
                 clause = "UPPER(" + alias + "." + colName + ") like (UPPER(:" + alias + colName + "))";            
             }
             else if (colType === this.COLUMN_TYPE.NUMBER) {

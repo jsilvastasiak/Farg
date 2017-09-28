@@ -1,4 +1,4 @@
-﻿angular.module("currentApp", ['ngAnimate', 'ngSanitize', 'ui.bootstrap','ngCpfCnpj', 'ui.mask', 'ui.date']);
+﻿angular.module("currentApp", ['ngAnimate', 'ngSanitize', 'ui.bootstrap','ngCpfCnpj', 'ui.mask', 'ui.date','ng-currency', 'percentage', 'ng-percent']);
 
 angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
     $scope.messageUser = undefined;
@@ -6,6 +6,12 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
     $scope._listsToPage = [];
     $scope._datasources = [];
     $scope.itemsPerPage = 30;
+
+    $scope.dateOptions = {
+        dateFormat: "dd/mm/yyyy",
+        altFormat: "dd/mm/yyyy",
+        showButtonPanel: true
+    }
 
     //Implementa a lógica de um objeto que será o datasource das tabelas
     $scope.ObjectDataSource = function (id, scope, pathReq, pagerId) {
@@ -167,9 +173,24 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
     */
     $scope.pageChanged = function (idPager) {
         var pager = $scope._getPager(idPager);
-                
+
         pager.next();
-    }    
+    };
+
+    //Retira problema de undefined das variáveis
+    $scope.getValueOrDefault = function (property) {
+        if (property) {
+            if (typeof property === "object")
+                if (property.toLocaleDateString)
+                    return property.toLocaleDateString();
+                else
+                    return property;
+            else
+                return property;
+        }
+
+        return null;
+    }
 });
 
 angular.module("currentApp").directive('headerGrid', function () {

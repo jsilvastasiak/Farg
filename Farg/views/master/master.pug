@@ -31,6 +31,9 @@ html
     script(src='/bower_components/cpf_cnpj/build/cnpj.js')
     script(src='/bower_components/ng-cpf-cnpj/lib/ngCpfCnpj.js')
     script(type="text/javascript", src='/bower_components/angular-ui-date/dist/date.js')
+    script(type="text/javascript", src='/bower_components/ng-currency/dist/ng-currency.js')
+    script(type="text/javascript", src='/bower_components/angular-percentage-filter/percentage.js')
+    script(type="text/javascript", src='/bower_components/ng-percent/dist/ng-percent.min.js')
 
     block scripts
         script(src='/javascripts/common/master.js')
@@ -63,6 +66,8 @@ body(ng-app="currentApp", ng-controller="masterCtrl", onload="page.start()")
                             ul.dropdown-menu
                                 li
                                     a(href="/basicregistration/users") Usuários
+                                li
+                                    a(href="/basicregistration/clients") Clientes
                         li
                             a(href="#") Deals
                         li
@@ -78,7 +83,7 @@ body(ng-app="currentApp", ng-controller="masterCtrl", onload="page.start()")
                                 span.glyphicon.glyphicon-shopping-cart Cart
     
         div.container
-            div.panel.panel-default
+            
                 block content
 
         div

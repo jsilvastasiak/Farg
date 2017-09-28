@@ -26,10 +26,11 @@ router.get('/', function (req, res) {
     //    });
     //});
 
-    var client = new Client();
-    client.getDefinition().then(function (client) {
-        res.send('Tabela Clientes Criada');
-    });
+    //var client = new Client();
+    //client.testeData().then(function (result) {
+    //    res.send(result);
+    //    res.end();
+    //});
 });
 
 module.exports = router;

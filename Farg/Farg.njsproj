@@ -30,6 +30,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
+    <Compile Include="model\categoryModel.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="model\clientModel.js">
       <SubType>Code</SubType>
     </Compile>
@@ -42,10 +45,25 @@
     <Compile Include="model\authenticate\authenticate.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="model\formPaymentModel.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="model\gradeModel.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="model\productModel.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="model\refcodesModel.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="model\requestModel.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="model\userModel.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="public\javascripts\basicregistration\clients.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="public\javascripts\basicregistration\users.js">
@@ -69,6 +87,9 @@
     <Compile Include="public\lib\jquery\jquery-config.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="routes\basicregistration\clients.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="routes\cadastro.js">
       <SubType>Code</SubType>
     </Compile>
@@ -76,7 +97,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes\index.js" />
-    <Compile Include="routes\users.js" />
+    <Compile Include="routes\basicregistration\users.js" />
     <Content Include="public\images\asc-direction.png" />
     <Content Include="public\images\btn-add-min.png" />
     <Content Include="public\images\btn-dele-min.png" />
@@ -130,6 +151,7 @@
     <Folder Include="public\lib\bootstrap\js\" />
     <Folder Include="public\lib\jquery\" />
     <Folder Include="routes\common\" />
+    <Folder Include="routes\basicregistration\" />
     <Folder Include="typings\modules\angular-ui-bootstrap\" />
     <Folder Include="typings\modules\bluebird\" />
     <Folder Include="typings\modules\passport-local\" />

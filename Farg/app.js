@@ -14,9 +14,19 @@ var flash = require('connect-flash');
  */
 var clientModel = require('./model/clientModel');
 var userModel = require('./model/userModel');
+var formPayment = require('./model/formPaymentModel');
+var request = require('./model/requestModel');
+var category = require('./model/categoryModel');
+var product = require('./model/productModel');
+var grade = require('./model/gradeModel');
 
 (new userModel()).getDefinition();
 (new clientModel()).getDefinition();
+(new formPayment()).getDefinition();
+(new request()).getDefinition();
+(new category()).getDefinition();
+(new product()).getDefinition();
+(new grade()).getDefinition();
 
 var app = express();
     
@@ -32,7 +42,8 @@ app.use(expressionSession({
 //app.use(flash());
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var users = require('./routes/basicregistration/users');
+var clients = require('./routes/basicregistration/clients');
 var cadastro = require('./routes/cadastro');
 
 // view engine setup
@@ -49,9 +60,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/', routes);
-app.use('/users', users);
 app.use('/cadastro', cadastro);
 app.use('/basicregistration/users', users);
+app.use('/basicregistration/clients', clients);
 
 
 

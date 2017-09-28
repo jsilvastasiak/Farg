@@ -1,12 +1,14 @@
 ﻿var pg = require('pg');
 var Sequelize = require('sequelize');
-var connection = new Sequelize('postgres://postgres:1234@localhost:1234/Farg');
+var connection = new Sequelize('postgres://postgres:1234@localhost:1234/Farg', { timezone: 'America/Sao_Paulo' });
 
 connection.authenticate().then(function () {
     console.log('Conexão estabelecida com sucesso.');
 }).catch(function (err) {
     console.error('Erro ao conectar base', err);
 });
+
+//connection.query("SET datestyle TO SQL, MDY");
 
 //var conString = "postgres://postgres:1234@localhost:1234/Farg";
 module.exports = connection;

@@ -134,8 +134,8 @@ angular.module("currentApp").controller("tblUsers", function ($scope, $http, $ui
                 user: user
             }, function (response) {
                 $scope.showMessageUser({
-                    message: response.data,
-                    type: 'success'
+                    message: response.data.message,
+                    type: response.data.type
                 });
                 
                 $scope.dtUsers.dataBind();

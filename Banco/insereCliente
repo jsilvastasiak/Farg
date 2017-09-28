@@ -1,0 +1,69 @@
+create or replace function InsereCliente(nom_cliente "Clientes".nom_cliente%TYPE
+                                           ,tip_pessoa  "Clientes".tip_pessoa%TYPE
+                                           ,nro_cnpj    "Clientes".nro_cnpj%TYPE
+                                           ,nro_cpf     "Clientes".nro_cpf%TYPE
+                                           ,per_desconto "Clientes".per_desconto%TYPE
+                                           ,end_email   "Clientes".end_email%TYPE
+                                           ,cdg_usu_cad "Clientes".cdg_representante%TYPE)
+returns integer as $$
+declare
+
+	ww_cdg_usuario integer;
+
+begin
+  INSERT INTO public."Usuarios"(cdg_usuario
+                                , nom_login
+                                , snh_usuario
+                                , idc_administrador
+                                , idc_representante
+                                , idc_cliente
+                                , idc_ativo
+                                , "createdAt"
+                                , "updatedAt")
+	VALUES (nextval('"Usuarios_cdg_usuario_seq"'::regclass)
+            , end_email
+            , '1234'
+            , 'N'
+            , 'N'
+            , 'S'
+            , 'A'
+            , Current_date
+            , Current_date) returning cdg_usuario into ww_cdg_usuario;
+  
+  if ww_cdg_usuario is not null then
+      INSERT INTO public."Clientes"(cdg_cliente
+                                    , nom_cliente
+                                    , tip_pessoa
+                                    , per_desconto
+                                    , nro_cnpj
+                                    , nro_cpf
+                                    , dta_cadastro
+                                    , end_email
+                                    , cdg_representante
+                                    , cdg_usuario
+                                    , "createdAt"
+                                    , "updatedAt")
+        VALUES (nextval('"Clientes_cdg_cliente_seq"'::regclass)
+               , nom_cliente
+               , tip_pessoa
+               , per_desconto
+               , nro_cnpj
+               , nro_cpf
+               , Current_date
+               , end_email
+               , cdg_usu_cad
+               , ww_cdg_usuario
+               , Current_date
+               , Current_date);
+  end if;
+  
+  return 1;
+  
+exception
+  when others then
+  	raise exception 'Erro genérico na stored procedure InsereCliente --> %', SQLERRM
+    	  using hint = 'Erro Stored Procedure';
+    return 0;
+    --result_message := 'Erro genérico na stored procedure InsereCliente -> ' || MESSAGE_TEXT || ' ' || PG_EXCEPTION_DETAIL;
+end;
+$$ language plpgsql;
