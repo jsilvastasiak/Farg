@@ -1,6 +1,6 @@
 ﻿var pg = require('pg');
 var Sequelize = require('sequelize');
-var connection = new Sequelize('postgres://postgres:1234@localhost:1234/Farg', { timezone: 'America/Sao_Paulo' });
+var connection = new Sequelize('postgres://postgres:1234@localhost:1234/Farg');
 
 connection.authenticate().then(function () {
     console.log('Conexão estabelecida com sucesso.');

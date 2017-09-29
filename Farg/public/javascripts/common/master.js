@@ -5,6 +5,7 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
     $scope._alerts = [];
     $scope._listsToPage = [];
     $scope._datasources = [];
+    $scope._tabmanagers = [];
     $scope.itemsPerPage = 30;
 
     $scope.dateOptions = {
@@ -29,9 +30,13 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
         this.filters = {};
         this.orderByField = null;
         this.orderByDirection = null;
+        this.onSelecting = null;
     };
     $scope.ObjectDataSource.prototype = {
         dataBind: function () {
+            if (this.onSelecting)
+                this.onSelecting(this.filters);
+
             this._scope.get(this._pathReq,
                 {
                     datasourceId: this._id,
@@ -62,13 +67,13 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
         },
         cancelFilters: function () {
             this.filters = {};
-        }
+        }        
     };
     //Função implementa lógica para receber o retorno das requisições no servidor
     $scope._posReqDataSource = function (res) {
         if (res) {
             var filter = $scope._datasources.filter(function (el) {
-                return el["id"] = res.data.datasourceId;
+                return el["id"] === res.data.datasourceId;
             });
 
             if (filter.length > 0) {
@@ -77,6 +82,60 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
                 datasource.getScope().getPagerInfo(datasource.getPagerId()).bigTotalItems = res.data.totalItems;
                 datasource.setList(res.data.result);
             }
+        }
+    };
+
+    //Implementa lógica para um TabManager
+    //$scope.TabManager = function (id) {
+    //    this.Keys = {};
+    //    this.Tabs = [];
+    //    $scope._tabmanagers.push({ id: id, object: this });
+    //};
+    //$scope.TabManager.prototype = {
+    //    setDataKey: function (keyName, value) {
+    //        this.Keys[keyName] = value;
+    //    },
+    //    getDataKey: function (keyName) {
+    //        return this.Keys[keyName];
+    //    },
+    //    addTab: function (options) {
+    //        this.Tabs.push({
+    //            name: options.name,
+    //            tabFather: options.tabFather ? options.tabFather : null,
+    //            //Se não passar o status, será verificado se a tab tem tab pai, senão é sempre habilitada
+    //            status: options.status ? options.status : options.tabFather ? false : true,
+    //            controller: options.controller
+    //        });
+    //    },
+    //    enableChildrenTabs: function (tabName) {
+    //        var childrens = this.Tabs.filter(function (el) {
+    //            return el["tabFather"] === tabName;
+    //        });
+
+    //        childrens.forEach(function (el) {
+    //            el["status"] = true;
+    //            if (el["controller"])
+    //                angular.module('currentApp').controller(el.controller).loadData();
+    //        })
+    //    }
+    //};
+    //Recupera instância TabManager do id passado
+    $scope.getTabManager = function (id) {
+        
+        var tabmanagers = $scope._tabmanagers.filter(function (el) {
+            return el["id"] === id;
+        });
+
+        if (tabmanagers.length > 0)
+            return tabmanagers[0].object;
+        else {
+            var message = 'TabManager ' + id + ' não está registrado no momento de sua chamada.';
+            $scope.showMessageUser({
+                message: message,
+                type: 'danger'
+            });
+            console.log(message);
+            return undefined;
         }
     };
 
@@ -190,7 +249,16 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
         }
 
         return null;
-    }
+    },
+
+    /**Formata string na máscar passada*/
+    $scope.format = function format(mask, number) {
+        var s = '' + number, r = '';
+        for (var im = 0, is = 0; im < mask.length && is < s.length; im++) {
+            r += mask.charAt(im) == 'X' ? s.charAt(is++) : mask.charAt(im);
+        }
+        return r;
+    } 
 });
 
 angular.module("currentApp").directive('headerGrid', function () {
@@ -244,10 +312,66 @@ angular.module("currentApp").directive('headerGrid', function () {
 
             tagA.append(mainSpan);
             element.append(tagA);
+            if(attrs.width)
+                element.attr({ style: 'width: ' + attrs.width + "px" });
         }
     }
 });
 
+angular.module("currentApp").factory("TabManager", function () {
+    var Keys = {};
+    var Tabs = [];
+    var onChangeListeners = [];
+    return {       
+        setDataKey: function (keyName, value) {
+            Keys[keyName] = value;
+        },
+        getDataKey: function (keyName) {
+            return Keys[keyName];
+        },
+        addTab: function (options) {
+            Tabs.push({
+                name: options.name,
+                tabFather: options.tabFather ? options.tabFather : null,
+                //Se não passar o status, será verificado se a tab tem tab pai, senão é sempre habilitada
+                status: options.status ? options.status : options.tabFather ? false : true,
+                controller: options.controller
+            });
+        },
+        enableChildrenTabs: function (tabName) {
+            var childrens = Tabs.filter(function (el) {
+                return el["tabFather"] === tabName;
+            });
+
+            childrens.forEach(function (el) {
+                el["status"] = true;                
+            })
+        },
+        getTab: function (tabName) {
+            var tab = Tabs.filter(function (el) {
+                return el["name"] === tabName;
+            });
+
+            if(tab.length > 0)
+                return tab[0];
+            else {
+                var message = 'TabManager ' + id + ' não está registrado no momento de sua chamada.';
+                console.log(message);
+                return undefined;
+            }
+        },
+        //Eventos para quando seleção das abas for usada
+        onChangeSelection: function (listener) {
+            onChangeListeners.push(listener);
+        },
+        ChangedSelection: function () {
+            //Chama métodos registrados
+            onChangeListeners.forEach(function (el) {
+                el();
+            })
+        }
+    }
+});
 /**
  * Funções de inicialização da página
  */

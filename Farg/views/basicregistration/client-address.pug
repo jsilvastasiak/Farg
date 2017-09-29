@@ -1,0 +1,106 @@
+﻿div.table-responsive.table-large
+    table.table.table-hover.table-striped.table-condensed(ng-controller="tblAddress", ng-model="dtClientAddress")
+        thead
+            tr
+                th.col-sm-3-grid
+                    button.btn-find-min(type="button", ng-click="findAddress()", title="Encontrar")
+                th.col-sm-3-grid 
+                    button.btn-add-min(type="button", ng-click="newAddress()", title="Novo Endereço")
+                th.col-sm-4-grid(header-grid, header-text="Tipo", field-order="addressType", width="25" )
+                th.col-sm-4(header-grid, header-text="Cidade", field-order="cityName", width="150") 
+                th.col-sm-3(header-grid, header-text="Rua", field-order="streetName", style="width: auto") 
+                th.col-sm-4(header-grid, header-text="Número", field-order="streetNumber", width="75")
+                th.col-sm-4(header-grid, header-text="Bairro", field-order="districtName", width="150")
+                th.col-sm-4(header-grid, header-text="CEP", field-order="cepNumber", width="75")
+        tbody
+            tr(ng-repeat="address in dtClientAddress.List")
+                td
+                    button.btn-dele-min(type="button", ng-click="deleteAddress(address)", title="Excluir Endereço") 
+                td
+                    button.btn-edit-min(type="button", ng-click="editAddress(address)", title="Editar Endereço") 
+                td.align-rigth {{address.addressType}}
+                td {{address.cityName}}
+                td {{address.streetName}}
+                td {{address.streetNumber}}
+                td {{address.districtName}}
+                td {{ format('XXXXX-XXX', address.cepNumber) }}
+
+ul.pagination-sm.pager-style(uib-pagination, total-items="getPagerInfo('pgClientAddress').bigTotalItems", ng-model="getPagerInfo('pgClientAddress').bigCurrentPage"
+, max-size="5", boundary-links="true", force-ellipses="true", boundary-link-numbers="true", items-per-page="itemsPerPage", ng-change="pageChanged('pgClientAddress')")
+
+div.modal-demo
+    script(type="text/ng-template", id="myAddress.html")
+        div.modal-header
+            h3.modal-title {{titleModal}}
+        div.modal-body(id="modal-body")
+            form.form-horizontal(name="frmAddress")
+                div.form-group
+                    label.control-label.col-sm-4 Tipo
+                    div.col-sm-7
+                        input.form-control(type="text", name="iptAddressType", ng-model="addressType", ng-disabled="!isFind")
+
+                div.form-group
+                    label.control-label.col-sm-4 CEP
+                    div.col-sm-7
+                        input.form-control(type="text", name="iptCepNumber", ng-model="cepNumber", ui-mask="99999-999")                        
+
+                div.form-group
+                    label.control-label.col-sm-4 Sigla UF
+                    div.col-sm-7
+                        input.form-control(type="text", name="iptUf", ng-model="uf", ng-required="!isFind")
+                        span(ng-show="frmAddress.iptClientName.$touched && frmAddress.iptClientName.$invalid") 'Sigla UF' é um campo de preenchimento obrigatório
+                
+                div.form-group
+                    label.control-label.col-sm-4 Cidade
+                    div.col-sm-7
+                        input.form-control(type="text", name="iptCityName", ng-model="cityName", ng-required="!isFind")
+                        span(ng-show="frmAddress.iptCityName.$touched && frmAddress.iptCityName.$invalid") 'Cidade' é um campo de preenchimento obrigatório
+
+                div.form-group
+                    label.control-label.col-sm-4 Bairro
+                    div.col-sm-7
+                        input.form-control(type="text", name="iptDistrict", ng-model="districtName", ng-required="!isFind")
+                        span(ng-show="frmAddress.iptDistrict.$touched && frmAddress.iptDistrict.$invalid") 'Bairro' é um campo de preenchimento obrigatório
+
+                div.form-group
+                    label.control-label.col-sm-4 Rua
+                    div.col-sm-7
+                        input.form-control(type="text", name="iptStreet", ng-model="streetName", ng-required="!isFind")
+                        span(ng-show="frmAddress.iptStreet.$touched && frmAddress.iptStreet.$invalid") 'Rua' é um campo de preenchimento obrigatório
+
+                div.form-group
+                    label.control-label.col-sm-4 Número
+                    div.col-sm-7
+                        input.form-control(type="text", name="iptStreetNumber", ng-model="streetNumber", ng-required="!isFind")
+                        span(ng-show="frmAddress.iptStreetNumber.$touched && frmAddress.iptStreetNumber.$invalid") 'Número' é um campo de preenchimento obrigatório
+
+                div.form-group
+                    label.control-label.col-sm-4 Complemento
+                    div.col-sm-7
+                        input.form-control(type="text", name="iptCompAddress", ng-model="compAddress")                        
+
+                div.form-group
+                    label.control-label.col-sm-4 Telefone 1
+                    div.col-sm-3
+                        input.form-control(type="text", name="iptPriDDDNumber", ng-model="priDDDNumber", ui-mask="(99)")
+                    div.col-sm-3
+                        input.form-control(type="text", name="iptPriFoneNumber", ng-model="priFoneNumber", ui-mask="99999-9999")
+                
+                div.form-group
+                    label.control-label.col-sm-4 Telefone 2
+                    div.col-sm-3
+                        input.form-control(type="text", name="iptSecDDDNumber", ng-model="secDDDNumber", ui-mask="(99)")
+                    div.col-sm-3
+                        input.form-control(type="text", name="iptSecFoneNumber", ng-model="secFoneNumber", ui-mask="99999-9999")  
+                
+                div.form-group
+                    label.control-label.col-sm-4 Celular
+                    div.col-sm-3
+                        input.form-control(type="text", name="iptCelDDDNumber", ng-model="celDDDNumber", ui-mask="(99)")
+                    div.col-sm-3
+                        input.form-control(type="text", name="iptCelFoneNumber", ng-model="celFoneNumber", ui-mask="99999-9999")
+
+        div.modal-footer
+            button.btn.btn-primary(type="button", ng-click="save(frmAddress)", ng-disabled="frmAddress.$invalid", ng-show="!isFind") Salvar
+            button.btn.btn-primary(type="button", ng-click="save(frmAddress)", ng-show="isFind") Buscar
+            button.btn.btn-warning(type="button", ng-click="cancel()") Cancelar

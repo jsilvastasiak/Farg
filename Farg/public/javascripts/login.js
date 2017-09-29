@@ -8,8 +8,15 @@ angular.module("currentApp").controller("frmLoginCtrl", function ($scope, $http)
             password: loginInfo.password.$modelValue
         }).then(function (res) {
             if (res) {
-                if (typeof res.data.redirect == 'string')
-                    window.location = res.data.redirect;
+                if (res.data.message) {
+                    $scope.showMessageUser({
+                        type: res.data.type,
+                        message: res.data.message
+                    });
+                }
+                else
+                    if (typeof res.data.redirect == 'string')
+                        window.location = res.data.redirect;
             }
         });
     }

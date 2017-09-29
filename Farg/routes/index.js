@@ -36,7 +36,7 @@ router.post('/login', function (req, res) {
         if (success) {
             res.send({ redirect: '/' });
         } else {
-            res.send({ redirect: '/login' });
+            res.send({ redirect: '/login', message: msg, type: 'danger' });
         }
 
         res.end();

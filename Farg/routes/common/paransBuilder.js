@@ -62,10 +62,48 @@ function deleteMessageToResponse(instance, err) {
     }
 
     return responseMessage;
+};
+
+/**
+ * Cria objeto com a mensagem que deverá ser enviada como resposta no caso de operação de update de
+   um registro
+ */
+function updateMessageToResponse(err) {
+    var responseMessage = {};
+
+    if (err) {
+        responseMessage.message = "Não foi possível atualizar o registro. " + err.message;
+        responseMessage.type = 'danger';
+    }else {
+        responseMessage.message = "Registro deletado com sucesso!";
+        responseMessage.type = 'success';
+    }
+
+    return responseMessage;
+};
+
+/**
+ * Cria objeto com a mensagem que deverá ser enviada como resposta no caso de operação de insert de
+   um registro
+ */
+function insertMessageToResponse(err) {
+    var responseMessage = {};
+
+    if (err) {
+        responseMessage.message = "Não foi possível inserir o registro. " + err.message;
+        responseMessage.type = 'danger';
+    } else {
+        responseMessage.message = "Registro inserido com sucesso!";
+        responseMessage.type = 'success';
+    }
+
+    return responseMessage;
 }
 
 module.exports = {
     createParansModel: CreateParansModel,
     createParansResponse: createParansResponse,
-    deleteMessageToResponse: deleteMessageToResponse
+    deleteMessageToResponse: deleteMessageToResponse,
+    updateMessageToResponse: updateMessageToResponse,
+    insertMessageToResponse: insertMessageToResponse
 };

@@ -11,6 +11,10 @@ router.get('/', auth.isAuthenticated, function (req, res) {
     res.render('basicregistration/clients', { title: 'Clientes' });
 });
 
+router.get('/client-control', auth.isAuthenticated, function (req, res) {
+    res.render('basicregistration/client-control');
+});
+
 /* GET users listing. */
 router.get('/getClientList', auth.isAuthenticated, function (req, res) {
 

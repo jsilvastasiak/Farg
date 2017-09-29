@@ -33,6 +33,9 @@
     <Compile Include="model\categoryModel.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="model\clientAddressModel.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="model\clientModel.js">
       <SubType>Code</SubType>
     </Compile>
@@ -63,6 +66,9 @@
     <Compile Include="model\userModel.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="public\javascripts\basicregistration\client-address.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="public\javascripts\basicregistration\clients.js">
       <SubType>Code</SubType>
     </Compile>
@@ -85,6 +91,9 @@
     <Compile Include="public\lib\bootstrap\js\bootstrap.js" />
     <Compile Include="public\lib\bootstrap\js\bootstrap.min.js" />
     <Compile Include="public\lib\jquery\jquery-config.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="routes\basicregistration\client-address.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes\basicregistration\clients.js">
@@ -117,6 +126,12 @@
     <Content Include="public\lib\bootstrap\css\bootstrap.min.css" />
     <Content Include="public\lib\bootstrap\css\bootstrap.min.css.map" />
     <Content Include="public\stylesheets\login.css">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\basicregistration\client-control.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\basicregistration\client-address.pug">
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\basicregistration\clients.pug">

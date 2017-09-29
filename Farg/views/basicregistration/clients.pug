@@ -4,94 +4,15 @@ append infoPage
     title Clientes
 
 append scripts
-    script(src='/javascripts/basicregistration/clients.js')    
+    script(src='/javascripts/basicregistration/clients.js')       
+    script(src='/javascripts/basicregistration/client-address.js') 
 
 block content
-    div.panel.panel-default
-        div.table-responsive.table-large
-            table.table.table-hover.table-striped.table-condensed(ng-controller="tblClient", ng-model="dtClient")
-                thead
-                    tr
-                        th.col-sm-3-grid
-                            button.btn-find-min(type="button", ng-click="findClient()", title="Encontrar")
-                        th.col-sm-3-grid 
-                            button.btn-add-min(type="button", ng-click="newClient()", title="Novo Cliente")
-                        th.col-sm-4-grid(header-grid, header-text="Código", field-order="code")
-                        th.col-sm-3(header-grid, header-text="Nome", field-order="clientName", style="width: auto") 
-                        th.col-sm-3(header-grid, header-text="E-mail", field-order="email") 
-                        th.col-sm-3(header-grid, header-text="Representante", field-order="agentName")                    
-                tbody
-                    tr(ng-repeat="client in dtClient.List")
-                        td
-                            button.btn-dele-min(type="button", ng-click="deleteClient(client)", title="Excluir Cliente") 
-                        td
-                            button.btn-edit-min(type="button", ng-click="editClient(client)", title="Editar Cliente") 
-                        td.align-rigth {{client.code}}
-                        td {{client.clientName}}
-                        td {{client.email}}
-                        td {{client.agentName}}
+    div.panel.panel-default(ng-controller="tabManager")
+        label {{TabManager.getTab('Address').status}}
+        uib-tabset(active="activeForm")
+            uib-tab(index="0", heading="Geral", disable="!TabManager.getTab('General').status", select="onSelect()")
+                client-control
 
-        ul.pagination-sm.pager-style(uib-pagination, total-items="getPagerInfo('pgClient').bigTotalItems", ng-model="getPagerInfo('pgClient').bigCurrentPage"
-        , max-size="5", boundary-links="true", force-ellipses="true", boundary-link-numbers="true", items-per-page="itemsPerPage", ng-change="pageChanged('pgClient')")
-
-        div.modal-demo
-            script(type="text/ng-template", id="myClient.html")
-                div.modal-header
-                    h3.modal-title {{titleModal}}
-                div.modal-body(id="modal-body")
-                    form.form-horizontal(name="frmClient")
-                        div.form-group
-                            label.control-label.col-sm-4 Código
-                            div.col-sm-7
-                                input.form-control(type="text", name="iptCode", ng-model="code", ng-disabled="!isFind")
-                        div.form-group
-                            label.control-label.col-sm-4 Nome
-                            div.col-sm-7
-                                input.form-control(type="text", name="iptClientName", ng-model="clientName", ng-required="!isFind")
-                                span(ng-show="frmClient.iptClientName.$touched && frmUser.iptClientName.$invalid") 'Nome' é um campo de preenchimento obrigatório
-                        div.form-group
-                            label.control-label.col-sm-4 Tipo Pessoa
-                            div.col-sm-7
-                                label.radio-inline
-                                    input(type="radio", name="chPersonType", ng-model="personType", value="F")
-                                    | Física
-                                label.radio-inline
-                                    input(type="radio", name="chPersonType", ng-model="personType", value="J")
-                                    | Jurídica
-                        div.form-group(ng-show="personType=='F'")
-                            label.control-label.col-sm-4 CPF
-                            div.col-sm-7
-                                input.form-control(name="iptCpf", ng-model="cpfNumber", ng-cpf, ui-mask="999.999.999-99", ng-required="personType=='F'")
-                                span(ng-show="frmClient.iptCpf.$touched && frmClient.iptCpf.$error.required") 'CPF' é um campo de preenchimento obrigatório
-                                span(ng-show="frmClient.iptCpf.$touched && frmClient.iptCpf.$invalid && !frmClient.iptCpf.$error.required") 'CPF' informado não é válido
-
-                        div.form-group(ng-show="personType=='J'")
-                            label.control-label.col-sm-4 CNPJ
-                            div.col-sm-7
-                                input.form-control(name="iptCnpj", ng-model="cnpjNumber", ng-cnpj, ui-mask="99.999.999/9999-99" ng-required="personType=='J'")
-                                span(ng-show="frmClient.iptCnpj.$touched && frmClient.iptCnpj.$error.required") 'CNPJ' é um campo de preenchimento obrigatório
-                                span(ng-show="frmClient.iptCnpj.$touched && frmClient.iptCnpj.$invalid && !frmClient.iptCnpj.$error.required") 'CNPJ' informado não é válido
-
-                        div.form-group
-                            label.control-label.col-sm-4 E-mail
-                            div.col-sm-7
-                                input.form-control(type="text", name="iptEmail", ng-model="email", ng-required="!isFind")
-                                span(ng-show="frmClient.iptLogin.$touched && frmUser.iptEmail.$invalid") 'E-mail' é um campo de preenchimento obrigatório
-                        div.form-group
-                            label.control-label.col-sm-4 Percentual Desconto
-                            div.col-sm-7
-                                input.form-control(type="text", name="iptDiscountValue", ng-model="discountValue", ng-percent, min="0", max="100", fraction="2")
-                        div.form-group
-                            label.control-label.col-sm-4 Data Cadastro
-                            div.col-sm-7
-                                input.form-control(ui-date="dateOptions", name="iptRegisterDate", ng-model="registerDate", ng-disabled="!isFind")
-                        div.form-group
-                            label.control-label.col-sm-4 Código de Usuário
-                            div.col-sm-7
-                                input.form-control(type="text", name="iptUserCode", ng-model="clientUserCode", ng-disabled="!isFind")
-                    
-                            
-                div.modal-footer
-                    button.btn.btn-primary(type="button", ng-click="save(frmClient)", ng-disabled="frmClient.$invalid", ng-show="!isFind") Salvar
-                    button.btn.btn-primary(type="button", ng-click="save(frmClient)", ng-show="isFind") Buscar
-                    button.btn.btn-warning(type="button", ng-click="cancel()") Cancelar
+            uib-tab(index="1", heading="Endereços", disable="!TabManager.getTab('Address').status", select="onSelect()")        
+                client-address

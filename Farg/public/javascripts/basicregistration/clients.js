@@ -1,7 +1,29 @@
-﻿
-angular.module("currentApp").controller("tblClient", function ($scope, $http, $uibModal) {
+﻿angular.module('currentApp').controller("tabManager", function ($scope, TabManager) {
+            
+    TabManager.addTab({
+        name: 'General',
+        controller: 'tblClient'
+    });
+    TabManager.addTab({
+        name: 'Address',
+        tabFather: 'General',
+        status: false,
+        controller: 'tblAddress'
+    });
+
+    $scope.TabManager = TabManager;
+
+    $scope.onSelect = function () {
+        TabManager.ChangedSelection();
+    }
+});
+
+angular.module("currentApp").controller("tblClient", function ($scope, $http, $uibModal, TabManager) {
     const pagerClientId = 'pgUsers';
-    $scope.dtClient = new $scope.ObjectDataSource('dtClient', $scope, '/basicregistration/clients/getClientList', pagerClientId);
+    $scope.dtClient = new $scope.ObjectDataSource('dtClient', $scope, '/basicregistration/clients/getClientList', pagerClientId);    
+    $scope.loadData = function () {
+        $scope.dtClient.dataBind();
+    };
 
     /*Modo Edição*/
     $scope.editClient = function (client) {
@@ -142,6 +164,12 @@ angular.module("currentApp").controller("tblClient", function ($scope, $http, $u
             });
     };
 
+    //ao clicar em qualquer linha da tabela, habilita aba de endereços
+    $scope.tblClient_OnSelectedRow = function (client) {
+        TabManager.setDataKey('clientCode', client.code);
+        TabManager.enableChildrenTabs('General');
+    }
+
     /*Recupera do pager na página*/
     $scope.getClientPager = function () {
         return $scope.getPagerInfo(pagerClientId).info;
@@ -188,4 +216,16 @@ angular.module("currentApp").controller('ModalCtrl', function ($scope, $http, $u
     $scope.cancel = function () {
         $uibModalInstance.close();
     };
+});
+
+angular.module("currentApp").directive('clientAddress', function () {
+    return {
+        templateUrl: '/basicregistration/clients/address/client-address'
+    }
+});
+
+angular.module("currentApp").directive('clientControl', function () {
+    return {
+        templateUrl: '/basicregistration/clients/client-control'
+    }
 });

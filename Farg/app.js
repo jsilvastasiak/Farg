@@ -13,6 +13,7 @@ var flash = require('connect-flash');
  * Manipulação da base de dados ao iniciar sistema sempre
  */
 var clientModel = require('./model/clientModel');
+var addressClientModel = require('./model/clientAddressModel');
 var userModel = require('./model/userModel');
 var formPayment = require('./model/formPaymentModel');
 var request = require('./model/requestModel');
@@ -22,6 +23,7 @@ var grade = require('./model/gradeModel');
 
 (new userModel()).getDefinition();
 (new clientModel()).getDefinition();
+(new addressClientModel()).getDefinition();
 (new formPayment()).getDefinition();
 (new request()).getDefinition();
 (new category()).getDefinition();
@@ -44,6 +46,7 @@ app.use(expressionSession({
 var routes = require('./routes/index');
 var users = require('./routes/basicregistration/users');
 var clients = require('./routes/basicregistration/clients');
+var clientAddress = require('./routes/basicregistration/client-address');
 var cadastro = require('./routes/cadastro');
 
 // view engine setup
@@ -63,8 +66,7 @@ app.use('/', routes);
 app.use('/cadastro', cadastro);
 app.use('/basicregistration/users', users);
 app.use('/basicregistration/clients', clients);
-
-
+app.use('/basicregistration/clients/address', clientAddress);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
