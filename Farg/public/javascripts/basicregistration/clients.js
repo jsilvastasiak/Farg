@@ -21,9 +21,11 @@
 angular.module("currentApp").controller("tblClient", function ($scope, $http, $uibModal, TabManager) {
     const pagerClientId = 'pgUsers';
     $scope.dtClient = new $scope.ObjectDataSource('dtClient', $scope, '/basicregistration/clients/getClientList', pagerClientId);    
-    $scope.loadData = function () {
-        $scope.dtClient.dataBind();
-    };
+    
+    $scope.dtClient.addOnDataBound(function () {
+        TabManager.clearDataKeys();
+        TabManager.clearTabRef('General');
+    });
 
     /*Modo Edição*/
     $scope.editClient = function (client) {
@@ -179,7 +181,9 @@ angular.module("currentApp").controller("tblClient", function ($scope, $http, $u
         changedCallback: $scope.dtClient.dataBind
     });
 
+
     $scope.dtClient.dataBind();
+
 });
 
 angular.module("currentApp").controller('ModalCtrl', function ($scope, $http, $uibModalInstance, parans) {

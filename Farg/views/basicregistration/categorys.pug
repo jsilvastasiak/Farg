@@ -1,0 +1,61 @@
+﻿extends ../master/master.pug
+
+append infoPage
+    title Formas de Pagamento
+
+append scripts
+    script(src='/javascripts/basicregistration/categorys.js')    
+
+block content
+    div.panel.panel-default
+        div.table-responsive.table-large
+            table.table.table-hover.table-striped.table-condensed(ng-controller="tblCategorys", ng-model="dtCategorys")
+                thead
+                    tr
+                        th.col-sm-3-grid
+                            button.btn-find-min(type="button", ng-click="findCategorys()", title="Encontrar")
+                        th.col-sm-3-grid 
+                            button.btn-add-min(type="button", ng-click="newCategorys()", title="Nova Categoria")
+                        th.col-sm-4-grid(header-grid, header-text="Código", field-order="code", width="50")
+                        th.col-sm-3(header-grid, header-text="Descrição", field-order="descForm") 
+                        th.col-sm-4-grid(header-grid, header-text="Ativo", field-order="isActive", width="150") 
+                tbody
+                    tr(ng-repeat="category in dtCategorys.List")
+                        td
+                            button.btn-dele-min(type="button", ng-click="deleteCategorys(category)", title="Excluir Categoria") 
+                        td
+                            button.btn-edit-min(type="button", ng-click="editCategorys(category)", title="Editar Categoria") 
+                        td.align-rigth {{category.code}}
+                        td {{category.descForm}}
+                        td {{category.idcActive}}                        
+
+        ul.pagination-sm.pager-style(uib-pagination, total-items="getPagerInfo('pgCategory').bigTotalItems", ng-model="getPagerInfo('pgCategory').bigCurrentPage"
+        , max-size="5", boundary-links="true", force-ellipses="true", boundary-link-numbers="true", items-per-page="itemsPerPage", ng-change="pageChanged('pgCategory')")
+
+        div.modal-demo
+            script(type="text/ng-template", id="myCategory.html")
+                div.modal-header
+                    h3.modal-title {{titleModal}}
+                div.modal-body(id="modal-body")
+                    form.form-horizontal(name="frmCategory")
+                        div.form-group
+                            label.control-label.col-sm-4 Código
+                            div.col-sm-7
+                                input.form-control(type="number", name="iptCode", ng-model="code", ng-disabled="!isFind")
+                        div.form-group
+                            label.control-label.col-sm-4 Nome
+                            div.col-sm-7
+                                input.form-control(type="text", name="iptCategoryName", ng-model="categoryName", ng-required="!isFind")
+                                span(ng-show="frmCategory.iptDescForm.$touched && frmCategory.iptDescForm.$invalid") 'Nome' é um campo de preenchimento obrigatório
+                        
+                        div.form-group
+                            label.control-label.col-sm-4(for="dbStatus") Situação
+                            div.col-sm-7
+                                select.form-control(id="dbStatus", name="dbStatus", ng-model="idcActive", ng-required="!isFind")
+                                    option(ng-repeat="status in statusOptions", value="{{status.domainValue}}" ) {{status.domainMeaning}}
+                                span(ng-show="frmFormPayment.dbStatus.$touched && frmFormPayment.dbStatus.$invalid") 'Situação' é um campo de preenchimento obrigatório
+                            
+                div.modal-footer
+                    button.btn.btn-primary(type="button", ng-click="save(frmCategory)", ng-disabled="frmCategory.$invalid", ng-show="!isFind") Salvar
+                    button.btn.btn-primary(type="button", ng-click="save(frmCategory)", ng-show="isFind") Buscar
+                    button.btn.btn-warning(type="button", ng-click="cancel()") Cancelar

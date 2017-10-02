@@ -47,6 +47,9 @@ var routes = require('./routes/index');
 var users = require('./routes/basicregistration/users');
 var clients = require('./routes/basicregistration/clients');
 var clientAddress = require('./routes/basicregistration/client-address');
+var grades = require('./routes/basicregistration/grades');
+var formPayments = require('./routes/basicregistration/form-payments');
+var categorys = require('./routes/basicregistration/categorys');
 var cadastro = require('./routes/cadastro');
 
 // view engine setup
@@ -67,6 +70,9 @@ app.use('/cadastro', cadastro);
 app.use('/basicregistration/users', users);
 app.use('/basicregistration/clients', clients);
 app.use('/basicregistration/clients/address', clientAddress);
+app.use('/basicregistration/grades', grades);
+app.use('/basicregistration/form-payments', formPayments);
+app.use('/basicregistration/categorys', categorys);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

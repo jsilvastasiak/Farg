@@ -7,12 +7,10 @@ angular.module("currentApp").controller("tblAddress", function ($scope, $http, $
         parans.clientCode = TabManager.getDataKey('clientCode');
     };
 
-    $scope.loadData = function () {
+    //No momento em que houver a seleção desta tab recarrega os dados
+    TabManager.onChangeSelection(function () {
         $scope.dtClientAddress.dataBind();
-    };
-
-    TabManager.onChangeSelection($scope.loadData);
-
+    });
     /*Modo Edição*/
     $scope.editAddress = function (address) {
         if (address) {
@@ -36,7 +34,8 @@ angular.module("currentApp").controller("tblAddress", function ($scope, $http, $
                 if (addressToUpdate) {
                     var _address = {
                         clientCode: TabManager.getDataKey('clientCode'),
-                        addressType: addressToUpdate.iptAddressType.$modelValue,
+                        addressCode: addressToUpdate.iptCode.$modelValue,
+                        addressType: addressToUpdate.dbAddressType.$modelValue,
                         cepNumber: $scope.getValueOrDefault(addressToUpdate.iptCepNumber.$modelValue),
                         uf: addressToUpdate.iptUf.$modelValue,
                         cityName: addressToUpdate.iptCityName.$modelValue,
@@ -57,8 +56,8 @@ angular.module("currentApp").controller("tblAddress", function ($scope, $http, $
                     },
                         function (res) {
                             $scope.showMessageUser({
-                                message: res.data,
-                                type: 'success'
+                                message: res.data.message,
+                                type: res.data.type
                             });
                             //$scope.dataBind();
                             $scope.dtClientAddress.dataBind();
@@ -88,20 +87,20 @@ angular.module("currentApp").controller("tblAddress", function ($scope, $http, $
             if (addressToInsert) {
                 var _address = {
                     clientCode: TabManager.getDataKey('clientCode'),
-                    addressType: addressToUpdate.iptAddressType.$modelValue,
-                    cepNumber: $scope.getValueOrDefault(addressToUpdate.iptCepNumber.$modelValue),
-                    uf: addressToUpdate.iptUf.$modelValue,
-                    cityName: addressToUpdate.iptCityName.$modelValue,
-                    districtName: addressToUpdate.iptDistrict.$modelValue,
-                    streetName: addressToUpdate.iptStreet.$modelValue,
-                    streetNumber: addressToUpdate.iptStreetNumber.$modelValue,
-                    compAddress: $scope.getValueOrDefault(addressToUpdate.iptCompAddress.$modelValue),
-                    priDDDNumber: $scope.getValueOrDefault(addressToUpdate.iptPriDDDNumber.$modelValue),
-                    priFoneNumber: $scope.getValueOrDefault(addressToUpdate.iptPriFoneNumber.$modelValue),
-                    secDDDNumber: $scope.getValueOrDefault(addressToUpdate.iptSecDDDNumber.$modelValue),
-                    secFoneNumber: $scope.getValueOrDefault(addressToUpdate.iptSecFoneNumber.$modelValue),
-                    celDDDNumber: $scope.getValueOrDefault(addressToUpdate.iptCelDDDNumber.$modelValue),
-                    celFoneNumber: $scope.getValueOrDefault(addressToUpdate.iptCelFoneNumber.$modelValue)
+                    addressType: addressToInsert.dbAddressType.$modelValue,
+                    cepNumber: $scope.getValueOrDefault(addressToInsert.iptCepNumber.$modelValue),
+                    uf: addressToInsert.iptUf.$modelValue,
+                    cityName: addressToInsert.iptCityName.$modelValue,
+                    districtName: addressToInsert.iptDistrict.$modelValue,
+                    streetName: addressToInsert.iptStreet.$modelValue,
+                    streetNumber: addressToInsert.iptStreetNumber.$modelValue,
+                    compAddress: $scope.getValueOrDefault(addressToInsert.iptCompAddress.$modelValue),
+                    priDDDNumber: $scope.getValueOrDefault(addressToInsert.iptPriDDDNumber.$modelValue),
+                    priFoneNumber: $scope.getValueOrDefault(addressToInsert.iptPriFoneNumber.$modelValue),
+                    secDDDNumber: $scope.getValueOrDefault(addressToInsert.iptSecDDDNumber.$modelValue),
+                    secFoneNumber: $scope.getValueOrDefault(addressToInsert.iptSecFoneNumber.$modelValue),
+                    celDDDNumber: $scope.getValueOrDefault(addressToInsert.iptCelDDDNumber.$modelValue),
+                    celFoneNumber: $scope.getValueOrDefault(addressToInsert.iptCelFoneNumber.$modelValue)
                 };
 
                 $scope.post('/basicregistration/clients/address/insertAddress',
@@ -109,8 +108,8 @@ angular.module("currentApp").controller("tblAddress", function ($scope, $http, $
                         address: _address
                     }, function (response) {
                         $scope.showMessageUser({
-                            message: response.data,
-                            type: 'success'
+                            message: response.data.message,
+                            type: response.data.type
                         });
                         //$scope.dataBind();
                         $scope.dtClientAddress.dataBind();
@@ -139,20 +138,21 @@ angular.module("currentApp").controller("tblAddress", function ($scope, $http, $
             if (clientToFind) {
                 var _filter = {
                     clientCode: TabManager.getDataKey('clientCode'),
-                    addressType: addressToUpdate.iptAddressType.$modelValue,
-                    cepNumber: $scope.getValueOrDefault(addressToUpdate.iptCepNumber.$modelValue),
-                    uf: addressToUpdate.iptUf.$modelValue,
-                    cityName: addressToUpdate.iptCityName.$modelValue,
-                    districtName: addressToUpdate.iptDistrict.$modelValue,
-                    streetName: addressToUpdate.iptStreet.$modelValue,
-                    streetNumber: addressToUpdate.iptStreetNumber.$modelValue,
-                    compAddress: $scope.getValueOrDefault(addressToUpdate.iptCompAddress.$modelValue),
-                    priDDDNumber: $scope.getValueOrDefault(addressToUpdate.iptPriDDDNumber.$modelValue),
-                    priFoneNumber: $scope.getValueOrDefault(addressToUpdate.iptPriFoneNumber.$modelValue),
-                    secDDDNumber: $scope.getValueOrDefault(addressToUpdate.iptSecDDDNumber.$modelValue),
-                    secFoneNumber: $scope.getValueOrDefault(addressToUpdate.iptSecFoneNumber.$modelValue),
-                    celDDDNumber: $scope.getValueOrDefault(addressToUpdate.iptCelDDDNumber.$modelValue),
-                    celFoneNumber: $scope.getValueOrDefault(addressToUpdate.iptCelFoneNumber.$modelValue)
+                    addressCode: clientToFind.iptCode.$modelValue,
+                    addressType: clientToFind.dbAddressType.$modelValue,
+                    cepNumber: $scope.getValueOrDefault(clientToFind.iptCepNumber.$modelValue),
+                    uf: clientToFind.iptUf.$modelValue,
+                    cityName: clientToFind.iptCityName.$modelValue,
+                    districtName: clientToFind.iptDistrict.$modelValue,
+                    streetName: clientToFind.iptStreet.$modelValue,
+                    streetNumber: clientToFind.iptStreetNumber.$modelValue,
+                    compAddress: $scope.getValueOrDefault(clientToFind.iptCompAddress.$modelValue),
+                    priDDDNumber: $scope.getValueOrDefault(clientToFind.iptPriDDDNumber.$modelValue),
+                    priFoneNumber: $scope.getValueOrDefault(clientToFind.iptPriFoneNumber.$modelValue),
+                    secDDDNumber: $scope.getValueOrDefault(clientToFind.iptSecDDDNumber.$modelValue),
+                    secFoneNumber: $scope.getValueOrDefault(clientToFind.iptSecFoneNumber.$modelValue),
+                    celDDDNumber: $scope.getValueOrDefault(clientToFind.iptCelDDDNumber.$modelValue),
+                    celFoneNumber: $scope.getValueOrDefault(clientToFind.iptCelFoneNumber.$modelValue)
                 };
 
                 $scope.dtClientAddress.setFilters(_filter);
@@ -183,12 +183,22 @@ angular.module("currentApp").controller("tblAddress", function ($scope, $http, $
 angular.module("currentApp").controller('AddressClientModalCtrl', function ($scope, $http, $uibModalInstance, parans) {
 
     if (parans) {
+
+        var getAddressTypeOptions = function (http) {
+            return http.get('/basicregistration/clients/address/getAddressTypeOptions');
+        };
+
+        getAddressTypeOptions($http).then(function (res) {
+            $scope.addressTypeOptions = res.data;
+        });
+
         $scope.isFind = false;
         $scope.isEdit = false;
         $scope.titleModal = parans.title;
 
         if (parans.addressEdit) {
             $scope.addressType = parans.addressEdit.addressType;
+            $scope.addressCode = parans.addressEdit.addressCode;
             $scope.cepNumber = parans.addressEdit.cepNumber;
             $scope.uf = parans.addressEdit.uf;
             $scope.cityName = parans.addressEdit.cityName;
@@ -217,5 +227,25 @@ angular.module("currentApp").controller('AddressClientModalCtrl', function ($sco
 
     $scope.cancel = function () {
         $uibModalInstance.close();
+    };
+
+    $scope.findCep = function (iptCep) {
+        if (iptCep.$modelValue && iptCep.$modelValue.length == 8) {
+            //Webservice correio para encontrar endereço consultado cep
+            const webService = "http://viacep.com.br/ws/{0}/json";
+            var path = webService.replace('{0}', iptCep.$modelValue);
+            $http.get(path).then(function (response) {
+                if (response && response.data) {
+                    $scope.uf = response.data.uf;
+                    $scope.cityName = response.data.localidade;
+                    $scope.districtName = response.data.bairro;
+                    $scope.streetName = response.data.logradouro + response.data.complemento;
+                }
+            }).catch(function (res) {
+                window.alert(res.message);
+
+                return null;
+            });           
+        }
     };
 });

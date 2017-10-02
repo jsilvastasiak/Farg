@@ -9,10 +9,8 @@ append scripts
 
 block content
     div.panel.panel-default(ng-controller="tabManager")
-        label {{TabManager.getTab('Address').status}}
-        uib-tabset(active="activeForm")
-            uib-tab(index="0", heading="Geral", disable="!TabManager.getTab('General').status", select="onSelect()")
+        uib-tabset.tab-control(active="activeForm")
+            uib-tab(index="0", heading="Geral", disable="!TabManager.getTab('General').status")
                 client-control
-
             uib-tab(index="1", heading="Endereços", disable="!TabManager.getTab('Address').status", select="onSelect()")        
                 client-address

@@ -43,7 +43,19 @@ a {
 .jumbotron {
     margin-bottom: 0;
 }
-   
+.tab-control, .tab-pane{
+    height: 100%;
+}
+.tab-content{
+    height: 93%;
+}
+.modal-content{
+    max-height: 720px;
+}
+.modal-body{
+    max-height: 575px;
+    overflow-x: auto;
+}
 /* Add a gray background color and some padding to the footer */
 footer {
     background-color: #f2f2f2;
@@ -121,6 +133,7 @@ input.ng-invalid {
 .header-text, .header-text:hover, .header-text:focus {
     color: black;
 }
+/*Classes de diretivas*/
 .displayed {
     display: inline-block !important;
     width: 15px;
@@ -137,4 +150,12 @@ input.ng-invalid {
 }
 .asc-direction {
     background-image: url(../images/asc-direction.png);
+}
+
+.selectable-row:hover {
+    cursor: pointer;
+    color: #929292 !important;
+}
+.selected-row {
+    background-color: darkkhaki !important;
 }

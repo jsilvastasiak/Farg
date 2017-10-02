@@ -75,7 +75,7 @@ function updateMessageToResponse(err) {
         responseMessage.message = "Não foi possível atualizar o registro. " + err.message;
         responseMessage.type = 'danger';
     }else {
-        responseMessage.message = "Registro deletado com sucesso!";
+        responseMessage.message = "Registro atualizado com sucesso!";
         responseMessage.type = 'success';
     }
 

@@ -66,10 +66,19 @@
     <Compile Include="model\userModel.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="public\javascripts\basicregistration\categorys.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="public\javascripts\basicregistration\client-address.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="public\javascripts\basicregistration\clients.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="public\javascripts\basicregistration\form-payments.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="public\javascripts\basicregistration\grades.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="public\javascripts\basicregistration\users.js">
@@ -93,10 +102,19 @@
     <Compile Include="public\lib\jquery\jquery-config.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="routes\basicregistration\categorys.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="routes\basicregistration\client-address.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes\basicregistration\clients.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="routes\basicregistration\form-payments.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="routes\basicregistration\grades.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes\cadastro.js">
@@ -128,6 +146,9 @@
     <Content Include="public\stylesheets\login.css">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="views\basicregistration\categorys.pug">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="views\basicregistration\client-control.pug">
       <SubType>Code</SubType>
     </Content>
@@ -135,6 +156,12 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\basicregistration\clients.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\basicregistration\form-payments.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\basicregistration\grades.pug">
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\basicregistration\users.pug">

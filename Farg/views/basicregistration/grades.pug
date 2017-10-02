@@ -1,0 +1,76 @@
+﻿extends ../master/master.pug
+
+append infoPage
+    title Grades
+
+append scripts
+    script(src='/javascripts/basicregistration/grades.js')    
+
+block content
+    div.panel.panel-default
+        div.table-responsive.table-large
+            table.table.table-hover.table-striped.table-condensed(ng-controller="tblGrades", ng-model="dtGrades")
+                thead
+                    tr
+                        th.col-sm-3-grid
+                            button.btn-find-min(type="button", ng-click="findGrade()", title="Encontrar")
+                        th.col-sm-3-grid 
+                            button.btn-add-min(type="button", ng-click="newGrade()", title="Nova Grade")
+                        th.col-sm-4-grid(header-grid, header-text="Código", field-order="gradeCode", width="50")
+                        th.col-sm-3(header-grid, header-text="Descrição", field-order="descGrade") 
+                        th.col-sm-3(header-grid, header-text="Desconto", field-order="discountValue", width="100") 
+                        th.col-sm-3(header-grid, header-text="Qtd. Mínima", field-order="minQuantity", width="100")
+                        th.col-sm-4-grid(header-grid, header-text="Ativo", field-order="isActive", width="100") 
+                tbody
+                    tr(ng-repeat="grade in dtGrades.List")
+                        td
+                            button.btn-dele-min(type="button", ng-click="deleteGrade(grade)", title="Excluir Grade") 
+                        td
+                            button.btn-edit-min(type="button", ng-click="editGrade(grade)", title="Editar Grade") 
+                        td.align-rigth {{grade.gradeCode}}
+                        td {{grade.descGrade}}
+                        td {{grade.discountValue}}
+                        td {{grade.minQuantity}}
+                        td {{grade.idcActive}}                        
+
+        ul.pagination-sm.pager-style(uib-pagination, total-items="getPagerInfo('pgGrade').bigTotalItems", ng-model="getPagerInfo('pgGrade').bigCurrentPage"
+        , max-size="5", boundary-links="true", force-ellipses="true", boundary-link-numbers="true", items-per-page="itemsPerPage", ng-change="pageChanged('pgGrade')")
+
+        div.modal-demo
+            script(type="text/ng-template", id="myGrade.html")
+                div.modal-header
+                    h3.modal-title {{titleModal}}
+                div.modal-body(id="modal-body")
+                    form.form-horizontal(name="frmGrade")
+                        div.form-group
+                            label.control-label.col-sm-4 Código
+                            div.col-sm-7
+                                input.form-control(type="number", name="iptCode", ng-model="gradeCode", ng-disabled="!isFind")
+                        div.form-group
+                            label.control-label.col-sm-4 Descrição
+                            div.col-sm-7
+                                input.form-control.iptLogin(type="text", name="iptDescGrade", ng-model="descGrade", ng-required="!isFind")
+                                span(ng-show="frmGrade.iptDescGrade.$touched && frmGrade.iptDescGrade.$invalid") 'Descrição' é um campo de preenchimento obrigatório
+                        
+                        div.form-group
+                            label.control-label.col-sm-4 Percentual Desconto
+                            div.col-sm-7
+                                input.form-control(type="text", name="iptDiscountValue", ng-model="discountValue", ng-percent, min="0", max="100", fraction="2")
+
+                        div.form-group
+                            label.control-label.col-sm-4 Qtd. Mínima
+                            div.col-sm-7
+                                input.form-control(type="number", name="iptMinQuantity", ng-model="minQuantity", min="0", ng-required="!isFind")
+                                span(ng-show="frmGrade.iptMinQuantity.$touched && frmGrade.iptMinQuantity.$invalid") 'Qtd. Mínima' é um campo de preenchimento obrigatório
+
+                        div.form-group
+                            label.control-label.col-sm-4(for="dbStatus") Situação
+                            div.col-sm-7
+                                select.form-control(id="dbStatus", name="dbStatus", ng-model="idcActive", ng-required="!isFind")
+                                    option(ng-repeat="status in statusOptions", value="{{status.domainValue}}" ) {{status.domainMeaning}}
+                                span(ng-show="frmGrade.dbStatus.$touched && frmGrade.dbStatus.$invalid") 'Situação' é um campo de preenchimento obrigatório
+                            
+                div.modal-footer
+                    button.btn.btn-primary(type="button", ng-click="save(frmGrade)", ng-disabled="frmGrade.$invalid", ng-show="!isFind") Salvar
+                    button.btn.btn-primary(type="button", ng-click="save(frmGrade)", ng-show="isFind") Buscar
+                    button.btn.btn-warning(type="button", ng-click="cancel()") Cancelar

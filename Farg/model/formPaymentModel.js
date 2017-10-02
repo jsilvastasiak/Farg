@@ -39,7 +39,33 @@ FormPayment.prototype = {
         return this.definition.findOne({
             where: { cdg_forma: parans.code }
         });
+    },
+
+    getFormPayments: function (parans) {
+        var queryBuilder = new QueryBuilder(getSelectFormPayments(), false, parans);
+
+        if (parans.filters) {
+            var filters = JSON.parse(parans.filters);
+            //Verifica se existem filtros com valores
+            if (Object.keys(filters).length > 0) {
+                queryBuilder.addFilter("pag", "cdg_forma", filters.code, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("pag", "dsc_forma", filters.descForm);
+                queryBuilder.addFilter("pag", "per_desconto", filters.discountValue, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("pag", "idc_ativo", filters.idcActive);
+            }
+        }
+
+        //Objeto de retorno
+        return queryBuilder.executeBuilder(Sequelize);
     }
 };
 
 module.exports = FormPayment;
+
+var getSelectFormPayments = function () {
+    return "select pag.cdg_forma \"code\""
+        +  "     , pag.dsc_forma \"descForm\""
+        +  "     , pag.per_desconto \"discountValue\""
+        +  "     , pag.idc_ativo \"idcActive\""
+        +  " from \"Formas_pagamentos\" pag";
+}

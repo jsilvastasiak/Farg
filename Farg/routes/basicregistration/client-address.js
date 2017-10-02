@@ -29,11 +29,29 @@ router.get('/getAddressList', auth.isAuthenticated, function (req, res) {
     });
 });
 
+router.get('/getAddressTypeOptions', auth.isAuthenticated, function (req, res) {
+
+    var refCodes = new RefCodes();
+
+    refCodes.getValuesByDomain("TIPO_ENDERECO").then(function (domainValues) {
+        res.send(domainValues);
+        res.end();
+    }).catch(function (err) {
+        res.send({
+            message: 'Erro ao selecionar AddressTypeOptions ' + err.message,
+            type: 'danger'
+        });
+        res.end();
+        console.log(err);
+    });
+});
+
 router.post('/updateAddress', auth.isAuthenticated, function (req, res) {
 
     var addressClient = new AddressClient();
     addressClient.getByCode(req.body.address).then(function (clientAddress) {
         clientAddress.updateAttributes({
+            tip_endereco: req.body.address.addressType,
             nro_cep: req.body.address.cepNumber,
             sgl_estado: req.body.address.uf,
             nom_cidade: req.body.address.cityName,
@@ -63,7 +81,8 @@ router.post('/insertAddress', auth.isAuthenticated, function (req, res) {
     addressClient.getDefinition().then(function (clientAddress) {
         clientAddress.create({
             cdg_cliente: req.body.address.clientCode,
-            tip_endereco: req.body.address.adressType,
+            tip_endereco: req.body.address.addressType,
+            nro_cep: req.body.address.cepNumber,
             sgl_estado: req.body.address.uf,
             nom_cidade: req.body.address.cityName,
             nom_bairro: req.body.address.districtName,
@@ -94,8 +113,8 @@ router.post('/deleteAddress', auth.isAuthenticated, function (req, res) {
         client.destroy({
             returning: true,
             where: {
-                cdg_cliente: req.body.parans.clientCode,
-                tip_endereco: req.body.parans.adressType
+                cdg_cliente: req.body.clientCode,
+                cdg_endereco: req.body.addressCode
             }
         }).then(function (instance) {
             res.send(paransBuilder.deleteMessageToResponse(instance));

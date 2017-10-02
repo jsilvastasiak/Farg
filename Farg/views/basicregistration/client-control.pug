@@ -11,7 +11,7 @@
                 th.col-sm-3(header-grid, header-text="E-mail", field-order="email") 
                 th.col-sm-3(header-grid, header-text="Representante", field-order="agentName")                    
         tbody
-            tr(ng-repeat="client in dtClient.List", ng-click="tblClient_OnSelectedRow(client)")
+            tr(ng-repeat="client in dtClient.List", ng-click="tblClient_OnSelectedRow(client)", selectable-row)
                 td
                     button.btn-dele-min(type="button", ng-click="deleteClient(client)", title="Excluir Cliente") 
                 td

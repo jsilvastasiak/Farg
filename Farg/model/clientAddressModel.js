@@ -16,10 +16,14 @@ var clientAddressDefinition = Sequelize.define('Enderecos', {
             deferrable: DataTypes.Deferrable.INITIALLY_IMMEDIATE
         }        
     },
+    cdg_endereco: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     tip_endereco: {
-        type: DataTypes.STRING(1),
-        allowNull: false,
-        primaryKey: true
+        type: DataTypes.TEXT(1),
+        allowNull: false        
     },
     sgl_estado: {
         type: DataTypes.STRING(2),
@@ -54,7 +58,7 @@ ClientAddress.prototype = {
         return this.definition.findOne({
             where: {
                 cdg_cliente: parans.clientCode,
-                tip_endereco: parans.addressType
+                cdg_endereco: parans.addressCode
             }
         });
     },
@@ -67,6 +71,7 @@ ClientAddress.prototype = {
             //Verifica se existem filtros com valores
             if (Object.keys(filters).length > 0) {
                 queryBuilder.addFilter("adr", "cdg_cliente", filters.clientCode, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("adr", "cdg_endereco", filters.addressCode, queryBuilder.COLUMN_TYPE.NUMBER);
                 queryBuilder.addFilter("adr", "tip_endereco", filters.addressType);
                 queryBuilder.addFilter("adr", "nro_cep", filters.cepNumber);
                 queryBuilder.addFilter("adr", "sgl_estado", filters.uf);
@@ -93,6 +98,7 @@ module.exports = ClientAddress;
 
 var getSelectAddressClients = function () {
     return "select adr.cdg_cliente  \"clientCode\""
+                +  ", adr.cdg_endereco \"addressCode\""
                 +  ", adr.tip_endereco \"addressType\""
                 +  ", adr.nro_cep \"cepNumber\""
                 +  ", adr.sgl_estado \"uf\""

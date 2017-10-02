@@ -35,7 +35,31 @@ Category.prototype = {
         return this.definition.findOne({
             where: { cdg_categoria: parans.code }
         });
+    },
+
+    getCategorys: function (parans) {
+        var queryBuilder = new QueryBuilder(getSelectCategorys(), false, parans);
+
+        if (parans.filters) {
+            var filters = JSON.parse(parans.filters);
+            //Verifica se existem filtros com valores
+            if (Object.keys(filters).length > 0) {
+                queryBuilder.addFilter("cat", "cdg_categoria", filters.code, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("cat", "nom_categoria", filters.categoryName);
+                queryBuilder.addFilter("cat", "idc_ativo", filters.idcActive);
+            }
+        }
+
+        //Objeto de retorno
+        return queryBuilder.executeBuilder(Sequelize);
     }
 };
 
 module.exports = Category;
+
+var getSelectCategorys = function () {
+    return "select cat.cdg_categoria \"code\""
+        + "     , cat.nom_categoria \"categoryName\""
+        + "     , cat.idc_ativo \"idcActive\""        
+        + " from \"Categorias\" cat";
+}

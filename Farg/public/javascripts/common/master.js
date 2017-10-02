@@ -5,7 +5,6 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
     $scope._alerts = [];
     $scope._listsToPage = [];
     $scope._datasources = [];
-    $scope._tabmanagers = [];
     $scope.itemsPerPage = 30;
 
     $scope.dateOptions = {
@@ -31,6 +30,7 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
         this.orderByField = null;
         this.orderByDirection = null;
         this.onSelecting = null;
+        this.onDataBound = [];
     };
     $scope.ObjectDataSource.prototype = {
         dataBind: function () {
@@ -67,7 +67,15 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
         },
         cancelFilters: function () {
             this.filters = {};
-        }        
+        },
+        addOnDataBound: function (listener) {
+            this.onDataBound.push(listener);
+        },
+        _onDataBoundEvent: function () {
+            this.onDataBound.forEach(function (el) {
+                el();
+            });
+        }
     };
     //Função implementa lógica para receber o retorno das requisições no servidor
     $scope._posReqDataSource = function (res) {
@@ -81,64 +89,12 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
 
                 datasource.getScope().getPagerInfo(datasource.getPagerId()).bigTotalItems = res.data.totalItems;
                 datasource.setList(res.data.result);
+
+                datasource._onDataBoundEvent();
             }
         }
     };
-
-    //Implementa lógica para um TabManager
-    //$scope.TabManager = function (id) {
-    //    this.Keys = {};
-    //    this.Tabs = [];
-    //    $scope._tabmanagers.push({ id: id, object: this });
-    //};
-    //$scope.TabManager.prototype = {
-    //    setDataKey: function (keyName, value) {
-    //        this.Keys[keyName] = value;
-    //    },
-    //    getDataKey: function (keyName) {
-    //        return this.Keys[keyName];
-    //    },
-    //    addTab: function (options) {
-    //        this.Tabs.push({
-    //            name: options.name,
-    //            tabFather: options.tabFather ? options.tabFather : null,
-    //            //Se não passar o status, será verificado se a tab tem tab pai, senão é sempre habilitada
-    //            status: options.status ? options.status : options.tabFather ? false : true,
-    //            controller: options.controller
-    //        });
-    //    },
-    //    enableChildrenTabs: function (tabName) {
-    //        var childrens = this.Tabs.filter(function (el) {
-    //            return el["tabFather"] === tabName;
-    //        });
-
-    //        childrens.forEach(function (el) {
-    //            el["status"] = true;
-    //            if (el["controller"])
-    //                angular.module('currentApp').controller(el.controller).loadData();
-    //        })
-    //    }
-    //};
-    //Recupera instância TabManager do id passado
-    $scope.getTabManager = function (id) {
-        
-        var tabmanagers = $scope._tabmanagers.filter(function (el) {
-            return el["id"] === id;
-        });
-
-        if (tabmanagers.length > 0)
-            return tabmanagers[0].object;
-        else {
-            var message = 'TabManager ' + id + ' não está registrado no momento de sua chamada.';
-            $scope.showMessageUser({
-                message: message,
-                type: 'danger'
-            });
-            console.log(message);
-            return undefined;
-        }
-    };
-
+    
     $scope.showMessageUser = function (args) {
         $scope._alerts.push({
             typeMessageUser: args.type,
@@ -253,7 +209,7 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
 
     /**Formata string na máscar passada*/
     $scope.format = function format(mask, number) {
-        var s = '' + number, r = '';
+        var s = '' + (number ? number : ""), r = "";
         for (var im = 0, is = 0; im < mask.length && is < s.length; im++) {
             r += mask.charAt(im) == 'X' ? s.charAt(is++) : mask.charAt(im);
         }
@@ -312,8 +268,23 @@ angular.module("currentApp").directive('headerGrid', function () {
 
             tagA.append(mainSpan);
             element.append(tagA);
-            if(attrs.width)
+            if (attrs.width)
                 element.attr({ style: 'width: ' + attrs.width + "px" });
+            else
+                element.attr({ style: 'width: auto' });
+        }
+    }
+});
+
+angular.module("currentApp").directive('selectableRow', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            element.addClass("selectable-row");
+            element.click(function (el) {
+                element.closest('tbody').children('tr').removeClass("selected-row");
+                $(el.currentTarget).addClass("selected-row");
+            });
         }
     }
 });
@@ -329,6 +300,9 @@ angular.module("currentApp").factory("TabManager", function () {
         getDataKey: function (keyName) {
             return Keys[keyName];
         },
+        clearDataKeys: function () {
+            Keys = {};
+        },
         addTab: function (options) {
             Tabs.push({
                 name: options.name,
@@ -338,14 +312,21 @@ angular.module("currentApp").factory("TabManager", function () {
                 controller: options.controller
             });
         },
-        enableChildrenTabs: function (tabName) {
+        //Habilita ou desabilita tabs filhas da passada como parâmetro
+        _setRefChildrenTabs: function (tabName, status) {
             var childrens = Tabs.filter(function (el) {
                 return el["tabFather"] === tabName;
             });
 
             childrens.forEach(function (el) {
-                el["status"] = true;                
+                el["status"] = status;                
             })
+        },
+        enableChildrenTabs: function (tabName) {
+            this._setRefChildrenTabs(tabName, true);
+        },
+        clearTabRef: function (tabName) {
+            this._setRefChildrenTabs(tabName, false);
         },
         getTab: function (tabName) {
             var tab = Tabs.filter(function (el) {
