@@ -28,6 +28,7 @@
     "angular": "^1.6.6",
     "jquery": "^3.2.1",
     "ng-currency": "^1.2.3",
-    "ng-percent": "^0.1.0"
+    "ng-percent": "^0.1.0",
+    "angular-ui-uploader": "^1.4.1"
   }
 }

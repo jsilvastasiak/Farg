@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../model/userModel');
 var Client = require('../model/clientModel');
+var ProductImage = require('../model/productImageModel');
 var auth = require('../model/authenticate/authenticate');
 
 router.get('/', function (req, res) {
@@ -30,6 +31,23 @@ router.get('/', function (req, res) {
     //client.testeData().then(function (result) {
     //    res.send(result);
     //    res.end();
+    //});
+
+    //var productImage = new ProductImage();
+    //productImage.getDefinition().then(function (result) {
+    //    result.max('cdg_imagem', {
+    //        where: {
+    //            cdg_produto: 1
+    //        }
+    //    }).then(max => {
+    //        result.create({
+    //            cdg_produto: 1,
+    //            cdg_imagem: (max ? max : 0) + 1,
+    //            idc_ativo: 'A'
+    //        });
+
+    //        res.send((max ? max : 0) + 1);
+    //    });
     //});
 });
 

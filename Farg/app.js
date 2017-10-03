@@ -20,6 +20,7 @@ var request = require('./model/requestModel');
 var category = require('./model/categoryModel');
 var product = require('./model/productModel');
 var grade = require('./model/gradeModel');
+var productImage = require('./model/productImageModel');
 
 (new userModel()).getDefinition();
 (new clientModel()).getDefinition();
@@ -29,6 +30,7 @@ var grade = require('./model/gradeModel');
 (new category()).getDefinition();
 (new product()).getDefinition();
 (new grade()).getDefinition();
+(new productImage()).getDefinition();
 
 var app = express();
     
@@ -50,6 +52,7 @@ var clientAddress = require('./routes/basicregistration/client-address');
 var grades = require('./routes/basicregistration/grades');
 var formPayments = require('./routes/basicregistration/form-payments');
 var categorys = require('./routes/basicregistration/categorys');
+var products = require('./routes/basicregistration/products');
 var cadastro = require('./routes/cadastro');
 
 // view engine setup
@@ -73,6 +76,7 @@ app.use('/basicregistration/clients/address', clientAddress);
 app.use('/basicregistration/grades', grades);
 app.use('/basicregistration/form-payments', formPayments);
 app.use('/basicregistration/categorys', categorys);
+app.use('/basicregistration/products', products);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

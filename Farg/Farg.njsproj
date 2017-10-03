@@ -54,6 +54,9 @@
     <Compile Include="model\gradeModel.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="model\productImageModel.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="model\productModel.js">
       <SubType>Code</SubType>
     </Compile>
@@ -80,6 +83,16 @@
     </Compile>
     <Compile Include="public\javascripts\basicregistration\grades.js">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="public\javascripts\basicregistration\image-products.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="public\javascripts\basicregistration\products-control.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="public\javascripts\basicregistration\products.js">
+      <SubType>Code</SubType>
+      <TestFramework>ExportRunner</TestFramework>
     </Compile>
     <Compile Include="public\javascripts\basicregistration\users.js">
       <SubType>Code</SubType>
@@ -115,6 +128,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes\basicregistration\grades.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="routes\basicregistration\image-products.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="routes\basicregistration\products.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes\cadastro.js">
@@ -162,6 +181,15 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\basicregistration\grades.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\basicregistration\image-products.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\basicregistration\products-control.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\basicregistration\products.pug">
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\basicregistration\users.pug">

@@ -53,7 +53,7 @@ block content
                             div.col-sm-7
                                 select.form-control(id="dbStatus", name="dbStatus", ng-model="idcActive", ng-required="!isFind")
                                     option(ng-repeat="status in statusOptions", value="{{status.domainValue}}" ) {{status.domainMeaning}}
-                                span(ng-show="frmFormPayment.dbStatus.$touched && frmFormPayment.dbStatus.$invalid") 'Situação' é um campo de preenchimento obrigatório
+                                span(ng-show="frmCategory.dbStatus.$touched && frmCategory.dbStatus.$invalid") 'Situação' é um campo de preenchimento obrigatório
                             
                 div.modal-footer
                     button.btn.btn-primary(type="button", ng-click="save(frmCategory)", ng-disabled="frmCategory.$invalid", ng-show="!isFind") Salvar

@@ -1,4 +1,4 @@
-﻿angular.module("currentApp", ['ngAnimate', 'ngSanitize', 'ui.bootstrap','ngCpfCnpj', 'ui.mask', 'ui.date','ng-currency', 'percentage', 'ng-percent']);
+﻿angular.module("currentApp", ['ngAnimate', 'ngSanitize', 'ui.bootstrap','ngCpfCnpj', 'ui.mask', 'ui.date','ng-currency', 'percentage', 'ng-percent', 'ui.uploader']);
 
 angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
     $scope.messageUser = undefined;
@@ -353,6 +353,42 @@ angular.module("currentApp").factory("TabManager", function () {
         }
     }
 });
+
+angular.module("currentApp").factory("UploadCtrl", ['uiUploader', '$log', function (uiUploader, $log) {    
+    var files = [];
+    return {
+        set_inputFieldId: function (id) {
+            var element = document.getElementById(id);
+            if (element) {
+                element.addEventListener('change', function (e) {
+                    var files = e.target.files;
+                    uiUploader.addFiles(files);
+                    files = uiUploader.getFiles();
+                });
+            } else
+                $log.error.error('Elemento ' + id + ' não está presente na página.');
+        },
+        remove_file: function (file) {
+            uiUploader.removeFile(file);
+        },
+        clean_files: function () {
+            uiUploader.removeAll();
+        },
+        upload_file: function () {
+            uiUploader.startUpload({
+                url: '/temporary/files',
+                concurrency: 2,
+                onCompleted: function (file, response) {
+
+                }
+            });
+        },
+        get_files: function () {
+            return files;
+        }
+    };
+}]);
+
 /**
  * Funções de inicialização da página
  */
