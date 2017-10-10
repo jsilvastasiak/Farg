@@ -2,7 +2,7 @@
 angular.module("currentApp").controller("tblCategorys", function ($scope, $http, $uibModal) {
     const pagerCategoryId = 'pgCategory';
 
-    $scope.dtCategory = new $scope.ObjectDataSource('dtCategory', $scope, '/basicregistration/categorys/getCategorysList', pagerCategoryId);
+    $scope.dtCategorys = new $scope.ObjectDataSource('dtCategorys', $scope, '/basicregistration/categorys/getCategorysList', pagerCategoryId);
 
     /*Modo Edição*/
     $scope.editCategorys = function (category) {
@@ -40,7 +40,7 @@ angular.module("currentApp").controller("tblCategorys", function ($scope, $http,
                                 type: res.data.type
                             });
                             //$scope.dataBind();
-                            $scope.dtCategory.dataBind();
+                            $scope.dtCategorys.dataBind();
                         });
                 }
             });
@@ -80,10 +80,10 @@ angular.module("currentApp").controller("tblCategorys", function ($scope, $http,
                             type: response.data.type
                         });
                         //$scope.dataBind();
-                        $scope.dtCategory.dataBind();
+                        $scope.dtCategorys.dataBind();
                     });
 
-                $scope.dtCategory.cancelFilters();
+                $scope.dtCategorys.cancelFilters();
             }
         });
     };
@@ -110,8 +110,8 @@ angular.module("currentApp").controller("tblCategorys", function ($scope, $http,
                     idcActive: categoryToFind.dbStatus.$modelValue
                 };
 
-                $scope.dtCategory.setFilters(_filter);
-                $scope.dtCategory.dataBind();
+                $scope.dtCategorys.setFilters(_filter);
+                $scope.dtCategorys.dataBind();
             }
         });
     };
@@ -126,15 +126,15 @@ angular.module("currentApp").controller("tblCategorys", function ($scope, $http,
                     type: response.data.type
                 });
 
-                $scope.dtCategory.dataBind();
+                $scope.dtCategorys.dataBind();
             });
     };
 
     $scope.addPager(pagerCategoryId, {
-        changedCallback: $scope.dtCategory.dataBind
+        changedCallback: $scope.dtCategorys.dataBind
     });
 
-    $scope.dtCategory.dataBind();
+    $scope.dtCategorys.dataBind();
 });
 
 angular.module("currentApp").controller('CategoryModalCtrl', function ($scope, $http, $uibModalInstance, parans) {

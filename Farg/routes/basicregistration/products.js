@@ -12,11 +12,11 @@ router.get('/', auth.isAuthenticated, function (req, res) {
     res.render('basicregistration/products', { title: 'Produtos' });
 });
 
-router.get('/image-products', auth.isAuthenticated, function (req, res) {
-    res.render('basicregistration/image-products');
+router.get('/product-images', auth.isAuthenticated, function (req, res) {
+    res.render('basicregistration/product-images');
 });
 
-router.get('/image-control', auth.isAuthenticated, function (req, res) {
+router.get('/products-control', auth.isAuthenticated, function (req, res) {
     res.render('basicregistration/products-control');
 });
 
@@ -45,6 +45,9 @@ router.post('/updateProduct', auth.isAuthenticated, function (req, res) {
         product.updateAttributes({
             cdg_categoria: req.body.product.categoryCode,
             nom_produto: req.body.product.productName,
+            vlr_icms_8: req.body.product.prodValIcm8,
+            vlr_icms_12: req.body.product.prodValIcm12,
+            vlr_icms_17: req.body.product.prodValIcm17,
             idc_ativo: req.body.product.idcActive
         }).then(function () {
             res.send(paransBuilder.updateMessageToResponse());
@@ -65,7 +68,10 @@ router.post('/insertProduct', auth.isAuthenticated, function (req, res) {
         product.create({
             cdg_categoria: req.body.product.categoryCode,
             nom_produto: req.body.product.productName,
-            idc_ativo: req.body.category.idcActive
+            vlr_icms_8: req.body.product.prodValIcm8,
+            vlr_icms_12: req.body.product.prodValIcm12,
+            vlr_icms_17: req.body.product.prodValIcm17,
+            idc_ativo: req.body.product.idcActive
         }).then(function () {
             res.send(paransBuilder.insertMessageToResponse());
             res.end();
@@ -113,9 +119,7 @@ router.get('/getCategorys', auth.isAuthenticated, function (req, res) {
     var category = new Category();
 
     category.getCategorys({
-        filters: {
-            idcActive: 'A'
-        }
+        idcActive: 'A'
     }).then(function (categorysList) {
         res.send(categorysList);
     }).catch(function (err) {

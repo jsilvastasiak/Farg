@@ -2,7 +2,7 @@
     const pagerProductsId = 'pgProducts';
     $scope.dtProducts = new $scope.ObjectDataSource('dtProducts', $scope, '/basicregistration/products/getProductsList', pagerProductsId);
 
-    $scope.dtClient.addOnDataBound(function () {
+    $scope.dtProducts.addOnDataBound(function () {
         TabManager.clearDataKeys();
         TabManager.clearTabRef('Produtos');
     });
@@ -32,6 +32,9 @@
                         code: productToUpdate.iptCode.$modelValue,
                         productName: productToUpdate.iptProductName.$modelValue,
                         categoryCode: productToUpdate.dbCategory.$modelValue,
+                        prodValIcm8: productToUpdate.iptProdValIcm8.$modelValue,
+                        prodValIcm12: productToUpdate.iptProdValIcm12.$modelValue,
+                        prodValIcm17: productToUpdate.iptProdValIcm17.$modelValue,
                         idcActive: productToUpdate.dbStatus.$modelValue
                     };
 
@@ -73,6 +76,9 @@
                     code: productToInsert.iptCode.$modelValue,
                     productName: productToInsert.iptProductName.$modelValue,
                     categoryCode: productToInsert.dbCategory.$modelValue,
+                    prodValIcm8: productToInsert.iptProdValIcm8.$modelValue,
+                    prodValIcm12: productToInsert.iptProdValIcm12.$modelValue,
+                    prodValIcm17: productToInsert.iptProdValIcm17.$modelValue,
                     idcActive: productToInsert.dbStatus.$modelValue
                 };
 
@@ -81,8 +87,8 @@
                         product: _product
                     }, function (response) {
                         $scope.showMessageUser({
-                            message: res.data.message,
-                            type: res.data.type
+                            message: response.data.message,
+                            type: response.data.type
                         });
                         //$scope.dataBind();
                         $scope.dtProducts.dataBind();
@@ -113,6 +119,9 @@
                     code: productToFind.iptCode.$modelValue,
                     productName: productToFind.iptProductName.$modelValue,
                     categoryCode: productToFind.dbCategory.$modelValue,
+                    prodValIcm8: productToUpdate.iptProdValIcm8.$modelValue,
+                    prodValIcm12: productToUpdate.iptProdValIcm12.$modelValue,
+                    prodValIcm17: productToUpdate.iptProdValIcm17.$modelValue,
                     idcActive: productToFind.dbStatus.$modelValue
                 };
 
@@ -139,7 +148,7 @@
     //ao clicar em qualquer linha da tabela, habilita aba de endereços
     $scope.tblProducts_OnSelectedRow = function (product) {
         TabManager.setDataKey('productCode', product.code);
-        TabManager.enableChildrenTabs('Produtos');
+        TabManager.enableChildrenTabs('Produto');
     }
     
     $scope.addPager(pagerProductsId, {
@@ -153,6 +162,23 @@
 angular.module("currentApp").controller('ProductModalCtrl', function ($scope, $http, $uibModalInstance, parans) {
 
     if (parans) {
+        
+        var getProductStatusOptions = function (http) {
+            return http.get('/basicregistration/products/getProductStatusOptions');
+        };
+
+        getProductStatusOptions($http).then(function (res) {
+            $scope.statusOptions = res.data;
+        });
+
+        var getCategorys = function (http) {
+            return http.get('/basicregistration/products/getCategorys');
+        };
+
+        getCategorys($http).then(function (res) {
+            $scope.categorysOptions = res.data;
+        });
+
         $scope.isFind = false;
         $scope.isEdit = false;
         $scope.titleModal = parans.title;
@@ -160,8 +186,11 @@ angular.module("currentApp").controller('ProductModalCtrl', function ($scope, $h
         if (parans.productEdit) {
             $scope.code = parans.productEdit.code;
             $scope.productName = parans.productEdit.productName;
-            $scope.categoryCode = parans.productEdit.categoryCode;
-            $scope.idcActive = parans.productEdit.idcActive            
+            $scope.categoryCode = parans.productEdit.categoryCode.toString();
+            $scope.prodValIcm8 = parseFloat(parans.productEdit.prodValIcm8);
+            $scope.prodValIcm12 = parseFloat(parans.productEdit.prodValIcm12);
+            $scope.prodValIcm17 = parseFloat(parans.productEdit.prodValIcm17);
+            $scope.idcActive = parans.productEdit.idcActive;
             $scope.isEdit = true;
         } else {
             $scope.isFind = parans.isFind;

@@ -22,8 +22,8 @@ angular.module("currentApp").directive('productControl', function () {
     }
 });
 
-angular.module("currentApp").directive('imageProduct', function () {
+angular.module("currentApp").directive('productImages', function () {
     return {
-        templateUrl: '/basicregistration/products/image-products'
+        templateUrl: '/basicregistration/products/product-images'
     }
 });

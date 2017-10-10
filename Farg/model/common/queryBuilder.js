@@ -49,8 +49,11 @@ QueryBuilder.prototype = {
         return queryBase;
     },
     
-    executeBuilder: function (sequelize) {
+    executeBuilder: function (sequelize, parameters) {
         replacements = {};
+
+        if (parameters)
+            replacements = parameters;
 
         if (this._filters.length > 0) {
 

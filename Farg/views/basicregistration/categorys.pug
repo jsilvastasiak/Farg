@@ -1,7 +1,7 @@
 ﻿extends ../master/master.pug
 
 append infoPage
-    title Formas de Pagamento
+    title Categorias
 
 append scripts
     script(src='/javascripts/basicregistration/categorys.js')    
@@ -17,7 +17,7 @@ block content
                         th.col-sm-3-grid 
                             button.btn-add-min(type="button", ng-click="newCategorys()", title="Nova Categoria")
                         th.col-sm-4-grid(header-grid, header-text="Código", field-order="code", width="50")
-                        th.col-sm-3(header-grid, header-text="Descrição", field-order="descForm") 
+                        th.col-sm-3(header-grid, header-text="Nome", field-order="categoryName") 
                         th.col-sm-4-grid(header-grid, header-text="Ativo", field-order="isActive", width="150") 
                 tbody
                     tr(ng-repeat="category in dtCategorys.List")
@@ -26,7 +26,7 @@ block content
                         td
                             button.btn-edit-min(type="button", ng-click="editCategorys(category)", title="Editar Categoria") 
                         td.align-rigth {{category.code}}
-                        td {{category.descForm}}
+                        td {{category.categoryName}}
                         td {{category.idcActive}}                        
 
         ul.pagination-sm.pager-style(uib-pagination, total-items="getPagerInfo('pgCategory').bigTotalItems", ng-model="getPagerInfo('pgCategory').bigCurrentPage"

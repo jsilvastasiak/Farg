@@ -1,0 +1,26 @@
+﻿extends ../master/master.pug
+
+append infoPage
+    title Produtos
+
+append scripts
+    script(src='/javascripts/client/client-products.js')
+
+append styles
+    link(rel='stylesheet', href='/stylesheets/client-products.css')
+
+block content
+    div.panel.panel-default(ng-controller="clientProducts")
+        div.product-container(ng-repeat="product in dtProducts.List")
+            div.product-image
+                img(ng-src="{{product.filename}}")
+            div.product-info
+                label(name="lblName") {{product.productName}}
+                br
+                label(name="lblValue") Preço: {{getProductValue(product)}}
+                br
+                label Grade:
+                select.form-control(id="dbGrade", name="dbGrade", ng-model="product.selectedGrade", ng-required="!isFind")
+                    option(ng-repeat="grade in dtGrades.List", value="{{grade.gradeCode}}" ) {{grade.descGrade}}
+            div.buttons
+                button.btn.btn-primary(type="button", ng-click="addProduct(product)") Adicionar

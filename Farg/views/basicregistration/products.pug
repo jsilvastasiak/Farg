@@ -6,12 +6,12 @@ append infoPage
 append scripts
     script(src='/javascripts/basicregistration/products.js')
     script(src='/javascripts/basicregistration/products-control.js')
-    script(src='/javascripts/basicregistration/image-products.js') 
+    script(src='/javascripts/basicregistration/product-images.js') 
 
 block content
     div.panel.panel-default(ng-controller="tabManager")
         uib-tabset.tab-control(active="activeForm")
             uib-tab(index="0", heading="Produto", disable="!TabManager.getTab('Produto').status")
-                products-control
+                product-control
             uib-tab(index="1", heading="Imagens", disable="!TabManager.getTab('Imagens').status", select="onSelect()")        
-                image-product
+                product-images

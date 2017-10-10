@@ -84,7 +84,7 @@
     <Compile Include="public\javascripts\basicregistration\grades.js">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="public\javascripts\basicregistration\image-products.js">
+    <Compile Include="public\javascripts\basicregistration\product-images.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="public\javascripts\basicregistration\products-control.js">
@@ -95,6 +95,9 @@
       <TestFramework>ExportRunner</TestFramework>
     </Compile>
     <Compile Include="public\javascripts\basicregistration\users.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="public\javascripts\client\client-products.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="public\javascripts\common\master.js">
@@ -130,7 +133,7 @@
     <Compile Include="routes\basicregistration\grades.js">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="routes\basicregistration\image-products.js">
+    <Compile Include="routes\basicregistration\product-images.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes\basicregistration\products.js">
@@ -139,7 +142,13 @@
     <Compile Include="routes\cadastro.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="routes\client\client-product.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="routes\common\paransBuilder.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="routes\common\temporary-files.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes\index.js" />
@@ -162,6 +171,9 @@
     <Content Include="public\lib\bootstrap\css\bootstrap.css.map" />
     <Content Include="public\lib\bootstrap\css\bootstrap.min.css" />
     <Content Include="public\lib\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="public\stylesheets\client-products.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="public\stylesheets\login.css">
       <SubType>Code</SubType>
     </Content>
@@ -183,7 +195,7 @@
     <Content Include="views\basicregistration\grades.pug">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="views\basicregistration\image-products.pug">
+    <Content Include="views\basicregistration\product-images.pug">
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\basicregistration\products-control.pug">
@@ -193,6 +205,12 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\basicregistration\users.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\client\client-products.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\client\client-request.pug">
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\error.pug" />
@@ -214,6 +232,7 @@
     <Folder Include="model\common\" />
     <Folder Include="public\javascripts\basicregistration\" />
     <Folder Include="public\javascripts\common\" />
+    <Folder Include="public\javascripts\client\" />
     <Folder Include="public\lib\" />
     <Folder Include="public\lib\angular\" />
     <Folder Include="public\lib\bootstrap\" />
@@ -222,6 +241,7 @@
     <Folder Include="public\lib\jquery\" />
     <Folder Include="routes\common\" />
     <Folder Include="routes\basicregistration\" />
+    <Folder Include="routes\client\" />
     <Folder Include="typings\modules\angular-ui-bootstrap\" />
     <Folder Include="typings\modules\bluebird\" />
     <Folder Include="typings\modules\passport-local\" />
@@ -254,6 +274,7 @@
     <Folder Include="typings\modules\serve-favicon\" />
     <Folder Include="views\master\" />
     <Folder Include="views\basicregistration\" />
+    <Folder Include="views\client\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="typings\globals\body-parser\index.d.ts" />

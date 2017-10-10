@@ -46,6 +46,7 @@ app.use(expressionSession({
 //app.use(flash());
 
 var routes = require('./routes/index');
+var temporaryFiles = require('./routes/common/temporary-files');
 var users = require('./routes/basicregistration/users');
 var clients = require('./routes/basicregistration/clients');
 var clientAddress = require('./routes/basicregistration/client-address');
@@ -53,6 +54,8 @@ var grades = require('./routes/basicregistration/grades');
 var formPayments = require('./routes/basicregistration/form-payments');
 var categorys = require('./routes/basicregistration/categorys');
 var products = require('./routes/basicregistration/products');
+var productImages = require('./routes/basicregistration/product-images');
+var clientProducts = require('./routes/client/client-product');
 var cadastro = require('./routes/cadastro');
 
 // view engine setup
@@ -63,13 +66,14 @@ app.set('view engine', 'pug');
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true, uploadDir: './temporary/files' }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.set('uploadDir', './temporary/files');
 
 app.use('/', routes);
 app.use('/cadastro', cadastro);
+app.use('/temporary/files/', temporaryFiles);
 app.use('/basicregistration/users', users);
 app.use('/basicregistration/clients', clients);
 app.use('/basicregistration/clients/address', clientAddress);
@@ -77,6 +81,10 @@ app.use('/basicregistration/grades', grades);
 app.use('/basicregistration/form-payments', formPayments);
 app.use('/basicregistration/categorys', categorys);
 app.use('/basicregistration/products', products);
+
+app.use('/client/client-products', clientProducts);
+
+app.use('/basicregistration/products/images', productImages);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

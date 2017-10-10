@@ -87,7 +87,8 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
             if (filter.length > 0) {
                 var datasource = filter[0].object;
 
-                datasource.getScope().getPagerInfo(datasource.getPagerId()).bigTotalItems = res.data.totalItems;
+                if (datasource.getPagerId())
+                    datasource.getScope().getPagerInfo(datasource.getPagerId()).bigTotalItems = res.data.totalItems;
                 datasource.setList(res.data.result);
 
                 datasource._onDataBoundEvent();
@@ -180,7 +181,9 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
 
     /*Pega informações da instância paginador*/
     $scope.getPagerInfo = function (id) {
-        return $scope._getPager(id).info;
+        if(id)
+            return $scope._getPager(id).info;
+        return null;
     };
 
     /*Se um paginador for mudado a página, seleciona a instância do mesmo e chama processos
@@ -354,20 +357,9 @@ angular.module("currentApp").factory("TabManager", function () {
     }
 });
 
-angular.module("currentApp").factory("UploadCtrl", ['uiUploader', '$log', function (uiUploader, $log) {    
+angular.module("currentApp").factory("UploadCtrl", ['uiUploader', '$log', function (uiUploader, $log, $scope) {    
     var files = [];
     return {
-        set_inputFieldId: function (id) {
-            var element = document.getElementById(id);
-            if (element) {
-                element.addEventListener('change', function (e) {
-                    var files = e.target.files;
-                    uiUploader.addFiles(files);
-                    files = uiUploader.getFiles();
-                });
-            } else
-                $log.error.error('Elemento ' + id + ' não está presente na página.');
-        },
         remove_file: function (file) {
             uiUploader.removeFile(file);
         },
@@ -378,15 +370,94 @@ angular.module("currentApp").factory("UploadCtrl", ['uiUploader', '$log', functi
             uiUploader.startUpload({
                 url: '/temporary/files',
                 concurrency: 2,
-                onCompleted: function (file, response) {
-
+                onProgress: function (file) {
+                    $log.info(file.name + ' ' + file.humanSize);
                 }
             });
         },
         get_files: function () {
             return files;
+        },
+        set_inputField: function (element, options) {            
+            if (element) {
+                element.change(function (e) {
+                    var files = e.target.files;
+                    
+                    for (var i = 0; i < files.length; i++) {
+                        if (options.inputDescription) {
+                            options.inputDescription.text(options.inputDescription.text() || files[i].name);
+                        }
+                    }
+
+                    uiUploader.addFiles(files);
+                    files = uiUploader.getFiles();
+
+                    //Verifica se deve começar o upload imediatamente na atualização do campo
+                    if (options.startImmediately) {
+                        uiUploader.startUpload({
+                            url: '/temporary/files',
+                            concurrency: 2,
+                            onProgress: function (file) {
+                                $log.info(file.name + ' ' + file.humanSize);
+
+                                if (options.onProgress) {
+                                    options.onProgress(file);
+                                }
+                            },
+                            onCompleted: function (file, res) {
+                                if (options.onCompleted) {
+                                    if (res)
+                                        var response = JSON.parse(res);
+                                    options.onCompleted(file, response);
+                                }
+                            }
+                        });
+                    }
+                });
+            } else
+                $log.error.error('Elemento ' + id + ' não está presente na página.');
         }
     };
+}]);
+
+angular.module("currentApp").directive("uploaderInput", ['UploadCtrl', function (UploadCtrl) {
+    return {
+        restrict: 'EA',
+        link: function (scope, element, attrs) {
+            element.addClass("input-wrapper");
+
+            var labelDescription = $('<label>', { for: 'input-file' }).text('Selecionar');
+            var inputFile = $('<input>', { id: 'input-file', type: 'file', value: '' });
+            var span = $('<span>', { id: 'file-name' });
+
+            var divProgress = $('<div>', { style: 'display: none' }).addClass('ng-scope progress-div');
+            var progress = $('<progress>', { value: "0", max: "0" });
+            divProgress.append(progress);
+
+            element.append(labelDescription).append(inputFile).append(span).append(divProgress);
+
+            //Seta campo como receptor de arquivos
+            UploadCtrl.set_inputField(inputFile, {
+                inputDescription: span,
+                startImmediately: true,
+                onProgress: function (file) {
+                    divProgress.attr('style', 'display: block');
+                    //Seta o progresso do upload
+                    progress.attr('max', file.size);
+                    progress.attr('value', file.loaded);
+                    scope.$apply();
+                },
+                onCompleted: function (file, response) {
+                    divProgress.attr('style', 'display: none');
+
+                    if (attrs.fileName) {
+                        scope.fileName = scope.$eval(attrs.fileName);
+                        scope.fileName = response.filename;
+                    }
+                }
+            });
+        }
+    }
 }]);
 
 /**

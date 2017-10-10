@@ -49,6 +49,8 @@ router.get('/', function (req, res) {
     //        res.send((max ? max : 0) + 1);
     //    });
     //});
+
+    res.render('basicregistration/products-control');
 });
 
 module.exports = router;

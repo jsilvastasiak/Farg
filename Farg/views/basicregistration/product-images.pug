@@ -1,0 +1,66 @@
+﻿
+div.table-responsive.table-large
+    table.table.table-hover.table-striped.table-condensed(ng-controller="tblProductImages", ng-model="dtProductImages")
+        thead
+            tr
+                th.col-sm-3-grid
+                    button.btn-find-min(type="button", ng-click="findProductImage()", title="Encontrar")
+                th.col-sm-3-grid 
+                    button.btn-add-min(type="button", ng-click="newProductImage()", title="Nova Imagem")
+                th.col-sm-3-grid &nbsp
+                th.col-sm-4-grid(header-grid, header-text="Código", field-order="code", width="75")
+                th.col-sm-4-grid(header-grid, header-text="Ativo", field-order="imageDescription") 
+                th.col-sm-4-grid(header-grid, header-text="Ativo", field-order="isActive", width="150") 
+        tbody
+            tr(ng-repeat="ProductImage in dtProductImages.List")
+                td
+                    button.btn-dele-min(type="button", ng-click="deleteProductImage(ProductImage)", title="Excluir Imagem") 
+                td
+                    button.btn-edit-min(type="button", ng-click="editProductImage(ProductImage)", title="Editar Imagem")
+                th.col-sm-3-grid
+                    button.btn-find-min(type="button", ng-click="showImage(ProductImage)", title="Visualizar Imagem")
+                td.align-rigth {{ProductImage.imageCode}}
+                td {{ProductImage.imageDescription}}
+                td {{ProductImage.idcActive}}                    
+
+ul.pagination-sm.pager-style(uib-pagination, total-items="getPagerInfo('pgProductImage').bigTotalItems", ng-model="getPagerInfo('pgProductImage').bigCurrentPage"
+, max-size="5", boundary-links="true", force-ellipses="true", boundary-link-numbers="true", items-per-page="itemsPerPage", ng-change="pageChanged('pgProductImage')")
+
+div.modal-demo
+    script(type="text/ng-template", id="myProductImage.html")
+        div.modal-header
+            h3.modal-title {{titleModal}}
+        div.modal-body(id="modal-body")
+            form.form-horizontal(name="frmProductImage", enctype='multipart/form-data')
+                div.form-group
+                    label.control-label.col-sm-4 Código
+                    div.col-sm-7
+                        input.form-control(type="number", name="iptCode", ng-model="code", ng-disabled="!isFind")
+                
+                div.form-group
+                    label.control-label.col-sm-4 Descrição
+                    div.col-sm-7
+                        input.form-control(type="text", name="iptDescription", ng-model="imageDescription", ng-required="!isFind")
+                        span(ng-show="frmProductImage.iptDescription.$touched && frmProductImage.iptDescription.$invalid") 'Descrição' é um campo de preenchimento obrigatório
+
+                div.form-group
+                    label.control-label.col-sm-4 Imagem
+                    div.col-sm-7(uploader-input, file-name="fileName")
+
+                div.form-group
+                    label.control-label.col-sm-4(for="dbStatus") Situação
+                    div.col-sm-7
+                        select.form-control(id="dbStatus", name="dbStatus", ng-model="idcActive", ng-required="!isFind")
+                            option(ng-repeat="status in statusOptions", value="{{status.domainValue}}" ) {{status.domainMeaning}}
+                        span(ng-show="frmProductImage.dbStatus.$touched && frmProductImage.dbStatus.$invalid") 'Situação' é um campo de preenchimento obrigatório
+                            
+        div.modal-footer
+            button.btn.btn-primary(type="button", ng-click="save(frmProductImage)", ng-disabled="frmProductImage.$invalid", ng-show="!isFind") Salvar
+            button.btn.btn-primary(type="button", ng-click="save(frmProductImage)", ng-show="isFind") Buscar
+            button.btn.btn-warning(type="button", ng-click="cancel()") Cancelar
+
+div.modal-demo
+    script(type="text/ng-template", id="visualizationImage.html")
+        div.modal-body(id="modal-body")
+            form.form-horizontal(name="frmVisualizationImage")
+                img(name="imgVisualization", ng-src="{{filename}}")

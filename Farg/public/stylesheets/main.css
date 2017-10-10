@@ -159,3 +159,41 @@ input.ng-invalid {
 .selected-row {
     background-color: darkkhaki !important;
 }
+
+.input-wrapper > input[type='file']{
+    display: none;
+}
+.input-wrapper > label {
+    background-color: #3498db;
+    border-radius: 5px;
+    color: #fff;
+    margin: 0;
+    padding: 6px 3px;
+    width: 80px;
+    text-overflow: ellipsis
+}
+.input-wrapper > label:hover {
+    background-color: #2980b9;
+    cursor: pointer;
+}
+.input-wrapper > button {
+    border: none;
+    width: 25px;
+    height: 20px;
+    background-color: transparent;
+}
+.input-wrapper > button:hover {
+    cursor: pointer;
+}
+.input-wrapper > .btn-clean {
+    background: url("../images/btn-dele-min.png");
+}
+.input-wrapper > .progress-div{
+    width: 100%;
+    margin-top: 5px;
+}
+
+.image-modal > img{
+    max-width: 568px;
+    max-height: 600px;
+}

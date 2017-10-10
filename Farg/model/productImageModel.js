@@ -19,12 +19,17 @@ var productImage = Sequelize.define('Imagens_produto', {
         type: DataTypes.INTEGER,
         primaryKey: true
     },
-    dad_imagem: {
-        type: DataTypes.BLOB,
-        allowNull: true
+    dsc_imagem: {
+        type: DataTypes.TEXT(100),
+        allowNull: false
+    },    
+    dsc_caminho: {
+        type: DataTypes.TEXT(100),
+        allowNull: false
     },
     idc_ativo: {
-        type: DataTypes.TEXT(1), allowNull: true
+        type: DataTypes.TEXT(1),
+        allowNull: false
     }
 });
 
@@ -49,16 +54,16 @@ ProductImage.prototype = {
     },
 
     getImageProducts: function (parans) {
-        var queryBuilder = new QueryBuilder(getSelectProducts(), false, parans);
+        var queryBuilder = new QueryBuilder(getSelectImages(), false, parans);
 
         if (parans.filters) {
             var filters = JSON.parse(parans.filters);
             //Verifica se existem filtros com valores
             if (Object.keys(filters).length > 0) {
-                queryBuilder.addFilter("prod", "cdg_produto", filters.code, queryBuilder.COLUMN_TYPE.NUMBER);
-                queryBuilder.addFilter("prod", "cdg_categoria", filters.categoryCode);
-                queryBuilder.addFilter("prod", "nom_produto", filters.productName);
-                queryBuilder.addFilter("prod", "idc_ativo", filters.idcActive);
+                queryBuilder.addFilter("ima", "cdg_produto", filters.productCode, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("ima", "cdg_imagem", filters.imageCode, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("ima", "dsc_imagem", filters.imageDescription);
+                queryBuilder.addFilter("ima", "idc_ativo", filters.idcActive);
             }
         }
 
@@ -68,3 +73,11 @@ ProductImage.prototype = {
 };
 
 module.exports = ProductImage;
+
+var getSelectImages = function () {
+    return "select ima.cdg_produto \"productCode\""
+        + ", ima.cdg_imagem \"imageCode\""
+        + ", ima.dsc_imagem \"imageDescription\""
+        +  ", ima.idc_ativo \"idcActive\""
+        + " from \"Imagens_produtos\" ima";
+};

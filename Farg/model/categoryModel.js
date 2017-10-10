@@ -48,6 +48,9 @@ Category.prototype = {
                 queryBuilder.addFilter("cat", "nom_categoria", filters.categoryName);
                 queryBuilder.addFilter("cat", "idc_ativo", filters.idcActive);
             }
+        } else {
+            if (parans.idcActive)
+                queryBuilder.addFilter("cat", "idc_ativo", parans.idcActive);
         }
 
         //Objeto de retorno
