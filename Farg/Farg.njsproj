@@ -97,6 +97,9 @@
     <Compile Include="public\javascripts\basicregistration\users.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="public\javascripts\client\client-product-info.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="public\javascripts\client\client-products.js">
       <SubType>Code</SubType>
     </Compile>
@@ -145,6 +148,9 @@
     <Compile Include="routes\client\client-product.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="routes\common\client-session.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="routes\common\paransBuilder.js">
       <SubType>Code</SubType>
     </Compile>
@@ -171,10 +177,16 @@
     <Content Include="public\lib\bootstrap\css\bootstrap.css.map" />
     <Content Include="public\lib\bootstrap\css\bootstrap.min.css" />
     <Content Include="public\lib\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="public\stylesheets\client-product-info.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="public\stylesheets\client-products.css">
       <SubType>Code</SubType>
     </Content>
     <Content Include="public\stylesheets\login.css">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\client\client-product-info.pug">
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\basicregistration\categorys.pug">

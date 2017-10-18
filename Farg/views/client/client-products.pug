@@ -11,16 +11,38 @@ append styles
 
 block content
     div.panel.panel-default(ng-controller="clientProducts")
-        div.product-container(ng-repeat="product in dtProducts.List")
-            div.product-image
-                img(ng-src="{{product.filename}}")
-            div.product-info
-                label(name="lblName") {{product.productName}}
-                br
-                label(name="lblValue") Preço: {{getProductValue(product)}}
-                br
-                label Grade:
-                select.form-control(id="dbGrade", name="dbGrade", ng-model="product.selectedGrade", ng-required="!isFind")
-                    option(ng-repeat="grade in dtGrades.List", value="{{grade.gradeCode}}" ) {{grade.descGrade}}
-            div.buttons
-                button.btn.btn-primary(type="button", ng-click="addProduct(product)") Adicionar
+        div.row
+            div.col-xs-6.col-sm-4.col-lg-2.categorys-container
+            div.col-xs-6.col-sm-11.col-lg-10
+                div.payment-form-container
+                    form.form-horizontal(name="frmPaymentForm")
+                        div.form-group
+                            div.col-sm-10
+                                label.control-label.col-sm-3 Formas de Pagamento
+                            div.col-sm-10                
+                                label.radio-inline(ng-repeat="paymentForm in dtPaymentForm.List")
+                                    input(type="radio", name="iptPaymentForm", ng-click="paymentFormSelected(paymentForm)", ng-checked="$index === 0") 
+                                    | {{paymentForm.descForm}}
+
+                div.col-lg-6.product-container(ng-repeat="product in dtProducts.List")
+                    div.item-checked-container(ng-show="product.inSession", ng-click="removeProduct(product)")              
+                    div.product-image
+                        img(ng-src="{{product.filename}}", ng-click="showInfo(product)")
+                    div.col-sm-3.col-md-6.product-info
+                        label(name="lblName") {{product.productName}}
+                        br
+                        label(name="lblValue") Preço: {{ "R$ " + getProductValue(product).toString() }}
+                        br
+                        label Grade:
+                        select.form-control(id="dbGrade", name="dbGrade", ng-model="product.selectedGrade", ng-change="alteredGrade(product)")
+                            option(ng-repeat="grade in dtGrades.List", value="{{grade.gradeCode}}") {{grade.descGrade}}
+                        label(name="lblMin", ng-show="hasSelectedGrade(product)") Pedido Mínimo {{ getQuantity(product) }}
+                        br
+                        label Qtd. Pedido:
+                        input.form-control(type="number", name="iptQuantity", ng-model="product.quantity", min="{{ getQuantity(product) }}", ng-required)
+                        br
+                        label(name="lblTotal") Preço Total: {{ "R$ " + getTotal(product)}}
+
+                    div.col-sm-3.col-md-6.buttons
+                        button.btn.btn-primary(type="button", ng-click="addProduct(product)", ng-show="!product.inSession", ng-disabled="!isValidItem(product)", title="Adicionar item ao carrinho") Adicionar
+                        button.btn.btn-success(type="button", ng-click="editProduct(product)", ng-show="product.inSession", ng-disabled="!isValidItem(product)", title="Salvar alterações no item") Salvar

@@ -78,6 +78,7 @@ var getSelectUserByLogin = function () {
         + ", c.idc_administrador \"isAdmin\""
         + ", c.idc_representante \"isAgente\""
         + ", c.idc_cliente \"isClient\""
+        + ", (select cli.cdg_cliente from \"Clientes\" cli where cli.cdg_usuario = c.cdg_usuario) \"clientCode\""
         + " from \"Usuarios\" c"
         + " where upper(c.nom_login) like upper(:login)";
 };

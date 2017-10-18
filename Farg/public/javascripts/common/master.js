@@ -1,4 +1,4 @@
-﻿angular.module("currentApp", ['ngAnimate', 'ngSanitize', 'ui.bootstrap','ngCpfCnpj', 'ui.mask', 'ui.date','ng-currency', 'percentage', 'ng-percent', 'ui.uploader']);
+﻿angular.module("currentApp", ['ngAnimate', 'ngTouch', 'ngRoute', 'ngSanitize', 'ui.bootstrap','ngCpfCnpj', 'ui.mask', 'ui.date','ng-currency', 'percentage', 'ng-percent', 'ui.uploader']);
 
 angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
     $scope.messageUser = undefined;
@@ -420,6 +420,15 @@ angular.module("currentApp").factory("UploadCtrl", ['uiUploader', '$log', functi
     };
 }]);
 
+angular.module("currentApp").factory("Utils", function ($window) {
+    return {
+        getUrlParameter: function (paramName) {
+            var url = new URL($window.location.href);
+            return url.searchParams.get(paramName);
+        }
+    }
+});
+
 angular.module("currentApp").directive("uploaderInput", ['UploadCtrl', function (UploadCtrl) {
     return {
         restrict: 'EA',
@@ -487,7 +496,7 @@ Page.prototype = {
     },
 
     start: function () {
-        this.setHeightPanel();
+        this.setHeightPanel();       
     }
 }
 

@@ -90,8 +90,28 @@ Product.prototype = {
             }
         }
 
+        if (parans.code) {
+            queryBuilder.addFilter("prod", "cdg_produto", parans.code, queryBuilder.COLUMN_TYPE.NUMBER);
+        }
+
         //Objeto de retorno
-        return queryBuilder.executeBuilder(Sequelize, { "tip_icms": parans.client.icmsCode });
+        return queryBuilder.executeBuilder(Sequelize, {
+            "tip_icms": parans.client.icmsCode,
+            "cdg_cliente": parans.client.code
+        });
+    },
+
+    getParansProduct: function (parans) {
+        var queryBuilder = new QueryBuilder(getSelectParansToProduct(), false, parans);
+        
+        //Objeto de retorno
+        return queryBuilder.executeBuilder(Sequelize, {
+            "tip_icms": parans.icmsCode,
+            "cdg_cliente": parans.clientCode ? parans.clientCode : 0,
+            "cdg_produto": parans.code,
+            "cdg_grade": parans.gradeCode,
+            "cdg_forma": parans.paymentFormCode
+        });
     }
 };
 
@@ -112,13 +132,17 @@ var getSelectProducts = function () {
 }
 
 var getSelectClientProducts = function () {
-    return "select prod.nom_produto \"productName\""
+    return "select prod.cdg_produto \"productCode\""
+        +  ", prod.nom_produto \"productName\""
         +  ", case"
         + " when :tip_icms = 8 then prod.vlr_icms_8"
         + " when :tip_icms = 12 then prod.vlr_icms_12"
         + " when :tip_icms = 17 then prod.vlr_icms_17"
         + " else prod.vlr_icms_17"
         + " end \"productValue\""
+        + ", (select cli.per_desconto "
+        + " from \"Clientes\" cli"            
+        + " where cli.cdg_usuario = 25) \"discountValueCli\""
         + ", ima.dsc_caminho \"filename\""
         + " from \"Produtos\" prod"
         + " left outer join \"Imagens_produtos\" ima"
@@ -126,3 +150,16 @@ var getSelectClientProducts = function () {
         + " and ima.cdg_imagem = 1"
         + " where prod.idc_ativo = 'A'";
 }
+
+var getSelectParansToProduct = function () {
+    return "select (select case"
+        + " when :tip_icms = 8 then prod.vlr_icms_8"
+        + " when :tip_icms = 12 then prod.vlr_icms_12"
+        + " when :tip_icms = 17 then prod.vlr_icms_17"
+        + " else prod.vlr_icms_17"
+        + " end  from \"Produtos\" prod where cdg_produto = :cdg_produto) \"productValue\""
+        + ", (select gra.per_desconto from \"Grades\" gra where gra.cdg_grade = :cdg_grade) \"discountGrade\""
+        + ", (select frm.per_desconto from \"Formas_pagamentos\" frm where frm.cdg_forma = :cdg_forma) \"discountPaymentForm\""
+        + ", (select cli.per_desconto from \"Clientes\" cli where cli.cdg_cliente = :cdg_cliente) \"discountClient\"";
+
+};

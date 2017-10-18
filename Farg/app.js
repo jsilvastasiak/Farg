@@ -82,7 +82,7 @@ app.use('/basicregistration/form-payments', formPayments);
 app.use('/basicregistration/categorys', categorys);
 app.use('/basicregistration/products', products);
 
-app.use('/client/client-products', clientProducts);
+app.use('/client/products', clientProducts);
 
 app.use('/basicregistration/products/images', productImages);
 

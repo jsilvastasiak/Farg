@@ -67,6 +67,9 @@ ProductImage.prototype = {
             }
         }
 
+        if (parans.code)
+            queryBuilder.addFilter("ima", "cdg_produto", parans.code, queryBuilder.COLUMN_TYPE.NUMBER);
+
         //Objeto de retorno
         return queryBuilder.executeBuilder(Sequelize);
     }
@@ -78,6 +81,7 @@ var getSelectImages = function () {
     return "select ima.cdg_produto \"productCode\""
         + ", ima.cdg_imagem \"imageCode\""
         + ", ima.dsc_imagem \"imageDescription\""
-        +  ", ima.idc_ativo \"idcActive\""
+        + ", ima.idc_ativo \"idcActive\""
+        + ", ima.dsc_caminho \"filename\""
         + " from \"Imagens_produtos\" ima";
 };

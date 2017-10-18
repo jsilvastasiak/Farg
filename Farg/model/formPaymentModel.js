@@ -55,6 +55,9 @@ FormPayment.prototype = {
             }
         }
 
+        if (parans.idcActive)
+            queryBuilder.addFilter("pag", "idc_ativo", parans.idcActive);
+
         //Objeto de retorno
         return queryBuilder.executeBuilder(Sequelize);
     }

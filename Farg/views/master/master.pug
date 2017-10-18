@@ -8,6 +8,7 @@ html
     block styles
         link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.min.css')
         link(rel="stylesheet", href="/bower_components/jquery-ui/themes/smoothness/jquery-ui.css")
+        link(rel="stylesheet", href="/bower_components/Magnifier/magnifier.css")
         link(rel='stylesheet', href='/stylesheets/main.css')
     
     //JQuery    
@@ -21,6 +22,9 @@ html
     script(src="/bower_components/angular-animate/angular-animate.js")
     script(src="/bower_components/angular-sanitize/angular-sanitize.js")
     script(src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js")
+    script(src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js")
+    script(src="/bower_components/angular-touch/angular-touch.js")
+    script(src="/bower_components/angular-route/angular-route.js")
         
     //Boostrap
     script(src='/bower_components/bootstrap/dist/js/bootstrap.js')
@@ -35,6 +39,10 @@ html
     script(type="text/javascript", src='/bower_components/angular-percentage-filter/percentage.js')
     script(type="text/javascript", src='/bower_components/ng-percent/dist/ng-percent.min.js')
     script(type="text/javascript", src='/bower_components/angular-ui-uploader/dist/uploader.js')
+    script(type="text/javascript", src='/bower_components/Magnifier/Event.js')
+    script(type="text/javascript", src='/bower_components/Magnifier/Magnifier.js')
+
+    script(type="text/javascript") var evt = new Event(), m = new Magnifier(evt);
 
     block scripts
         script(src='/javascripts/common/master.js')
@@ -78,7 +86,7 @@ body(ng-app="currentApp", ng-controller="masterCtrl", onload="page.start()")
                                 li
                                     a(href="/basicregistration/products") Produtos
                         li
-                            a(href="/client/client-products") Catálogo
+                            a(href="/client/products") Catálogo
                         li
                             a(href="#") Stores
                         li
