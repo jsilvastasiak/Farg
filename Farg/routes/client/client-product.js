@@ -5,6 +5,7 @@ var Product = require('../../model/productModel');
 var ProductImage = require('../../model/productImageModel');
 var Grade = require('../../model/gradeModel');
 var PaymentForm = require('../../model/formPaymentModel');
+var Category = require('../../model/categoryModel');
 var paransBuilder = require('../common/paransBuilder');
 var ClientSession = require('../common/client-session');
 var RefCodes = require('../../model/refcodesModel');
@@ -83,6 +84,31 @@ router.get('/getGradesOptions', auth.isAuthenticated, function (req, res) {
     });    
 });
 
+/* GET users listing. */
+router.get('/getCategorys', auth.isAuthenticated, function (req, res) {
+
+    var category = new Category();
+
+    category.getCategorys({
+        idcActive: 'A'
+    }).then(function (categorysList) {
+        var result = {};
+        if (categorysList) {
+            result = paransBuilder.createParansResponse(categorysList, req);
+        }
+
+        res.send(result);
+        res.end();
+    }).catch(function (err) {
+        console.log(err);
+        res.send({
+            message: err.message,
+            type: 'danger'
+        });
+        res.end();
+    });
+});
+
 /* GET formas de pagamento cadastradas. */
 router.get('/getPaymentFormOptions', auth.isAuthenticated, function (req, res) {
 
@@ -150,15 +176,28 @@ router.get('/info/getInfo', auth.isAuthenticated, function (req, res) {
 
     if (req.query.id) {
         paransQuery.code = req.query.id;
-        paransQuery.client = { icmsCode: 8 };
+        paransQuery.client = {
+            code: req.session.loggeduser.isClient ? req.session.loggeduser.userCode : null,
+            icmsCode: 8
+        };
 
         product.getClientProducts(paransQuery).then(function (productList) {
-            var result = {};
+            var info = {};
             if (productList) {
-                result = paransBuilder.createParansResponse(productList, req);
+                info = paransBuilder.createParansResponse(productList, req);
             }
 
-            res.send(result);
+            var clientSession = new ClientSession(req);
+            for (var i = 0; i < info.result.length; i++) {
+                var carItem = clientSession.getCarItem(info.result[i].productCode);
+                if (carItem) {
+                    info.result[i].quantity = carItem.quantity;
+                    info.result[i].selectedGrade = carItem.gradeCode.toString();
+                    info.result[i].inSession = true;
+                }
+            }
+
+            res.send(info);
             res.end();
         }).catch(function (err) {
             console.log(err);
@@ -177,6 +216,12 @@ router.get('/info/getInfo', auth.isAuthenticated, function (req, res) {
     }
 });
 
+/* GET informações da forma de pagamento selecionada. */
+router.get('/getPaymentForm', auth.isAuthenticated, function (req, res) {
+    res.send(req.session.loggeduser.car.paymentForm);
+    res.end();
+});
+
 /* POST adiciona item selecionado na tela para carrinho usuário*/
 router.post('/addItem', auth.isAuthenticated, function (req, res) {
 
@@ -188,18 +233,27 @@ router.post('/addItem', auth.isAuthenticated, function (req, res) {
         Porém as opções selecionadas na tela valerão para que o cálculo sejam efetuados.
     */
     if (req.body.product) {
-        
-        //Grava item para sessão
-        calculateItemToCar(req, function (item, err) {
-            if (err)
-                res.send(err);
-            else {
-                var clientSession = new ClientSession(req);
-                clientSession.addCarItem(item);
-            }
-
+        if (!req.session.loggeduser.car.paymentForm) {
+            res.send({
+                message: 'Forma de pagamento não selecionada',
+                type: 'danger'
+            });
             res.end();
-        });        
+        }
+        else {
+            //Grava item para sessão
+            calculateItemToCar(req, function (item, err) {
+                if (err)
+                    res.send(err);
+                else {
+                    var clientSession = new ClientSession(req);
+                    clientSession.addCarItem(item);
+                }
+
+                res.end();
+            });
+        }
+
     }
 });
 
@@ -247,6 +301,14 @@ router.post('/removeItem', auth.isAuthenticated, function (req, res) {
         });
     }
 
+    res.end();
+});
+
+/* POST salva forma de pagamento selecionada na seção*/
+router.post('/setPaymentForm', auth.isAuthenticated, function (req, res) {
+    if (req.body.paymentForm) {
+        req.session.loggeduser.car.paymentForm = req.body.paymentForm;
+    }
     res.end();
 });
 

@@ -8,9 +8,6 @@ function ClientSession(req) {
 ClientSession.prototype = {
         
     addCarItem: function (item) {
-        if (!this.Req.session.loggeduser.car.paymentForm)
-            this.Req.session.loggeduser.car.paymentForm = item.paymentForm;
-
         this.Req.session.loggeduser.car.items.push(item);
     },
 

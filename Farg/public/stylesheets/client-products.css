@@ -77,3 +77,14 @@
 .categorys-container{
     min-width: 230px;
 }
+.categorys-container > label {
+    font-size: 12px;
+    color: #8e8e8e;
+}
+.categorys-container > .list-group {
+    width: 100%
+}
+.categorys-container > .list-group > li:hover {
+    cursor: pointer;
+    color: darkgray;
+}

@@ -3,7 +3,7 @@
 }
 /*Slider de imagens*/
 .slider-container {
-    width: 50%;
+    /*width: 50%;*/
     border: none;
     height: 100%;
     float: left;
@@ -11,7 +11,8 @@
 
 .slider-container > a, .slider-container > a > img {
     width: 100%;
-    height: 85%
+    height: 85%;
+    max-height: 500px;
 }
 
 .slider-container > .arrow {
@@ -49,21 +50,27 @@
     opacity: 1;
 }
 
-.slider-container > .nav {
-    bottom: 10%;
+.slider-container > .container-nav {
+    width: 100%;
+    height: 100px;
+    overflow-y: auto;
+    position: relative;
+    bottom: 15%;
+}
+
+.slider-container > .container-nav > .nav {    
     display: block;
     height: 48px;
     left: 0;
     margin: 0 auto;
-    padding: 1em 0 0.8em;
-    position: relative;
+    padding: 1em 0 0.8em;    
     right: 0;
     text-align: center;
-    width: 100%;
+    width: max-content;
     z-index: 5;
 }
 
-.slider-container > .nav li {
+.slider-container > .container-nav > .nav li {
     border: 5px solid #AAAAAA;
     border-radius: 5px;
     cursor: pointer;
@@ -74,11 +81,11 @@
     width: 50px;
 }
 
-.slider-container > .nav li.active {
+.slider-container > .container-nav > .nav li.active {
     border: 5px solid #FFFFFF;
 }
 
-.slider-container > .nav li img {
+.slider-container > .container-nav > .nav li img {
     width: 100%;
 }
 
@@ -144,21 +151,75 @@
 .slider-container > .slide, .slide.ng-hide-remove.ng-hide-remove-active {
     opacity: 1;
 }*/
-    .product-container > .product-info {
-        width: 48%;
-        float: right;
-        height: 250px;
-        border: 1px solid black;
-    }
+.product-container > div {
+    margin-top: 15px;    
+    border: 1px solid #ccc;    
+    border-radius: 4px
+}
+.product-container > .product-info {
+    height: 250px;
+}
+.product-container > .product-info > form > .form-group > label[name="lblName"]{
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.product-container > .product-info, .product-container > .product-categorys {
+    float: right;    
+    padding: 5px;
+    padding-left: 10px
+}
+
 .product-container > .buttons {
     float: right;
     height: 50px;
     border: 1px solid black;
-    width: 48%;
+    /*width: 48%;*/
 }
 .product-container > .product-categorys {
     float: right;
-    height: 50px;
-    border: 1px solid black;
-    width: 48%;
+    height: 50px;    
+    /*width: 48%;*/
+}
+
+.product-container > .product-categorys > .title {
+    font-size: 12px;
+    color: #8e8e8e;
+    /*width: 48%;*/
+}
+
+.product-container > .product-info > .buttons {
+    position: absolute;
+    bottom: 5px;
+    right: 15px;
+    text-align: right;
+    padding-left: 0px;
+}
+.product-container > .product-info > .buttons > button {
+    margin-left: 5px;
+}
+.span-content{
+    font-weight: normal;
+}
+.control-label {
+    text-align: left;
+}
+
+.magnifier-preview-reset {
+    padding: 0;
+    height: 150px;
+    position: relative;
+    overflow: hidden
+}
+
+@media (min-width: 450px){
+    .col-xs-6 {
+        height: 125px;
+    }
+}
+
+@media (min-width: 992px){
+    .col-md-4 {
+        height: 250px;
+    }
 }

@@ -1,6 +1,6 @@
 ﻿
 
-angular.module("currentApp").controller("clientProductInfo", function ($scope, Utils) {
+angular.module("currentApp").controller("clientProductInfo", function ($scope, Utils, ClientCar) {
 
     $scope.productId = Utils.getUrlParameter("id");
 
@@ -22,14 +22,51 @@ angular.module("currentApp").controller("clientProductInfo", function ($scope, U
     $scope.dtInfo = new $scope.ObjectDataSource('dtInfo', $scope, '/client/products/info/getInfo/?id=' + $scope.productId);
     $scope.dtImages = new $scope.ObjectDataSource('dtImages', $scope, '/client/products/info/getImages/?id=' + $scope.productId);
 
+    $scope.product = {};
+
     $scope.dtInfo.addOnDataBound(function () {
         if ($scope.dtInfo.List.length > 0)
             $scope.product = $scope.dtInfo.List[0];
     });
-    
+        
+    $scope.getProductValue = function (product) {
+        if(product)
+            return ClientCar.getProductValue(product);
+        else {
+            return undefined;
+        }
+    };
+
+    $scope.alteredGrade = function (product) {
+        product.quantity = ClientCar._getMinQuantity(product);
+    };
+
+    $scope.addProduct = function (product) {
+        ClientCar.addProduct(product);
+    };
+
+    $scope.editProduct = function (product) {
+        ClientCar.editProduct(product);
+    };
+
+    $scope.removeProduct = function (product) {
+        ClientCar.removeProduct(product);
+    };
+
+    $scope.getTotal = function (product) {
+        var total = product.quantity * $scope.getProductValue(product);
+        return total ? total.toFixed(2) : "";
+    };
+
+    $scope.isValidItem = function (product) {
+        return ClientCar.isValidProduct(product);
+    };
+
     $scope.dtGrades.dataBind();
     $scope.dtImages.dataBind();
     $scope.dtInfo.dataBind();
+
+    ClientCar.setGrades($scope.dtGrades);
 });
 
 angular.module("currentApp").directive("sliderImage", function () {

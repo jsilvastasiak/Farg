@@ -11,29 +11,46 @@ append styles
 
 block content
     div.panel.panel-default(ng-controller="clientProductInfo")
-        div.magnifier-preview(id="preview", style="width: 250px; height: 250px; position: absolute;")
+        div.magnifier-preview-reset.col-sm-4.col-lg-4.col-xs-6(id="preview", style="max-width: 250px; position: absolute;")
         div.product-container
-            div.slider-container.product-image.slider
+            div.col-xs-12.col-sm-5.col-lg-5.slider-container.product-image.slider
                 a.magnifier-thumb-wrapper
                     img.slide.magnifier-zoom(ng-repeat="image in dtImages.List", slider-image, wrapper-control-id="preview"
                         , file-name="image.filename", ng-swipe-right="showPrev()", ng-swipe-left="showNext()", ng-show="isActive($index)")
                 a.arrow.next(href="#", ng-click="showNext()")
                 a.arrow.prev(href="#", ng-click="showPrev()")
-                ul.nav
-                    li(ng-class="{'active': isActive($index)}", ng-repeat="image in dtImages.List")
-                        img(ng-src="{{image.filename}}", alt="{{image.imageDescription}}", title="{{image.imageDescription}}", ng-click="showPhoto($index)")
+                div.container-nav
+                    ul.nav
+                        li(ng-class="{'active': isActive($index)}", ng-repeat="image in dtImages.List")
+                            img(ng-src="{{image.filename}}", alt="{{image.imageDescription}}", title="{{image.imageDescription}}", ng-click="showPhoto($index)")
                 
 
-            div.product-info
-                label(name="lblName") {{product.productName}}
-                br
-                label(name="lblValue") Preço: {{getProductValue(product)}}
-                br
-                label Grade:
-                select.form-control(id="dbGrade", name="dbGrade", ng-model="product.selectedGrade", ng-required="!isFind")
-                    option(ng-repeat="grade in dtGrades.List", value="{{grade.gradeCode}}" ) {{grade.descGrade}}
-            div.buttons
-                button.btn.btn-primary(type="button", ng-click="addProduct(product)") Adicionar
+            div.col-xs-12.col-sm-6.col-lg-6.product-info
+                form.form-horizontal
+                    div.form-group
+                        label.col-sm-5(name="lblName") {{product.productName}}
+                    div.form-group  
+                        label.col-sm-5(name="lblValue") Preço: 
+                            span.span-content {{ "R$ " + getProductValue(product).toString() }}
+                    div.form-group
+                        label.control-label.col-sm-1 Grade:
+                        div.col-sm-3
+                            select.form-control(id="dbGrade", name="dbGrade", ng-model="product.selectedGrade", ng-change="alteredGrade(product)")
+                                option(ng-repeat="grade in dtGrades.List", value="{{grade.gradeCode}}") {{grade.descGrade}}
+                            span(name="lblMin", ng-show="hasSelectedGrade(product)") Pedido Mínimo {{ getQuantity(product) }}
+                    div.form-group
+                        label.control-label.col-sm-2 Quantidade:
+                        div.col-sm-3
+                            input.form-control(type="number", name="iptQuantity", ng-model="product.quantity", min="{{ getQuantity(product) }}", ng-required)
+                    div.form-group
+                        label.col-sm-5(name="lblTotal") Preço Total: 
+                            span.span-content {{ "R$ " + getTotal(product)}}
+                div.buttons
+                    button.btn.btn-primary(type="button", ng-click="addProduct(product)", ng-show="!product.inSession", ng-disabled="!isValidItem(product)", title="Adicionar item ao carrinho") Adicionar
+                    button.btn.btn-success(type="button", ng-click="editProduct(product)", ng-show="product.inSession", ng-disabled="!isValidItem(product)", title="Salvar alterações no item") Salvar
+                    button.btn.btn-danger(type="button", ng-click="removeProduct(product)", ng-show="product.inSession", title="Remover item do carrinho") Remover
 
-            div.product-categorys
-                
+            div.col-xs-12.col-md-6.col-lg-6.product-categorys
+                label.title Categoria:
+                br
+                label {{product.categoryName}}

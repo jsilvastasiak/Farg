@@ -1,14 +1,17 @@
-﻿angular.module("currentApp").controller("clientProducts", function ($scope, $http, $uibModal, $location) {
+﻿angular.module("currentApp").controller("clientProducts", function ($scope, $http, $uibModal, $location, ClientCar) {
     const pagerProductsId = 'pgProducts';
 
     $scope.dtProducts = new $scope.ObjectDataSource('dtProducts', $scope, '/client/products/getProductsList', pagerProductsId);
     $scope.dtGrades = new $scope.ObjectDataSource('dtGrades', $scope, '/client/products/getGradesOptions');
+    $scope.dtCategorys = new $scope.ObjectDataSource('dtCategorys', $scope, '/client/products/getCategorys');
     $scope.dtPaymentForm = new $scope.ObjectDataSource('dtPaymentForm', $scope, '/client/products/getPaymentFormOptions');
     $scope.dtPaymentForm.addOnDataBound(function () {
-        if ($scope.dtPaymentForm.List.length > 0)
+        if ($scope.dtPaymentForm.List.length > 0) {
             $scope._selectedPaymentForm = $scope.dtPaymentForm.List[0];
+            ClientCar.setPaymentForm($scope.dtPaymentForm.List[0]);
+        }
     });
-
+    
     $scope.addPager(pagerProductsId, {
         changedCallback: $scope.dtProducts.dataBind
     });
@@ -26,22 +29,15 @@
 
     /*Cálculo de descontos no produto*/
     $scope.getProductValue = function (product) {
-        var discountValueCli = ($scope.getValueOrDefault(product.discountValueCli) * product.productValue);
-        var discountGrade = 0;
-        var discountPaymentForm = 0;
-
-        if (product.selectedGrade)
-            discountGrade = $scope.getValueOrDefault($scope._getGradeItem(product.selectedGrade).discountValue) * product.productValue;
-
-
-        if ($scope._selectedPaymentForm)
-            discountPaymentForm = $scope.getValueOrDefault($scope._selectedPaymentForm.discountValue) * product.productValue;
-
-        return (parseFloat(product.productValue) - discountValueCli - discountGrade - discountPaymentForm).toFixed(2);
+        if (product) {
+            return ClientCar.getProductValue(product);
+        } else {
+            return undefined;
+        }
     };
 
     $scope.alteredGrade = function (product) {        
-        product.quantity = $scope._getGradeItem(product.selectedGrade).minQuantity;        
+        product.quantity = ClientCar._getMinQuantity(product);        
     };
 
     $scope.showInfo = function (product) {
@@ -55,7 +51,7 @@
 
     $scope.getQuantity = function (product) {
         if (product.selectedGrade)
-            return $scope._getGradeItem(product.selectedGrade).minQuantity;
+            return ClientCar._getMinQuantity(product);
         else
             return 0;
     };
@@ -65,20 +61,11 @@
     };
 
     $scope.isValidItem = function (product) {
-        if (!product.selectedGrade)
-            return false;
-
-        if (!product.quantity)
-            return false;
-
-        if (product.quantity < $scope.getQuantity(product))
-            return false;
-
-        return true;
-    };
+        return ClientCar.isValidProduct(product);
+    }
 
     $scope.paymentFormSelected = function (paymentForm) {
-        $scope._selectedPaymentForm = paymentForm;
+        ClientCar.setPaymentForm(paymentForm);
     };
 
     $scope._alterItem = function (product, path, next) {
@@ -101,37 +88,29 @@
         });
     };
 
-    $scope.addProduct = function (product) {
-        $scope._alterItem(product, '/client/products/addItem', function () {
-            $scope.showMessageUser({
-                message: 'Item adicionado ao carrinho com sucesso',
-                type: 'success'
-            });
-            product.inSession = true;
-        });
+    $scope.addProduct = function (product) {        
+        ClientCar.addProduct(product);
     };
 
-    $scope.editProduct = function (product) {
-        $scope._alterItem(product, '/client/products/editItem', function () {
-            $scope.showMessageUser({
-                message: 'Item atualizado com sucesso',
-                type: 'success'
-            });
-            product.inSession = true;
-        });
+    $scope.editProduct = function (product) {        
+        ClientCar.editProduct(product);
     };
 
-    $scope.removeProduct = function (product) {
-        $scope._alterItem(product, '/client/products/removeItem', function () {
-            $scope.showMessageUser({
-                message: 'Item removido do carrinho com sucesso',
-                type: 'success'
-            });
-            product.inSession = false;
-        });
+    $scope.removeProduct = function (product) {        
+        ClientCar.removeProduct(product);
+    };
+
+    $scope.filterCategory = function (category) {
+        $scope.dtCategorys.List.forEach(function (el) { el.isSelected = false; });
+        category.isSelected = true;
+
+        $scope.dtProducts.setFilters({ categoryCode: category.code });
+        $scope.dtProducts.dataBind();
     };
 
     $scope.dtProducts.dataBind();
     $scope.dtGrades.dataBind();
+    $scope.dtCategorys.dataBind();
+    ClientCar.setGrades($scope.dtGrades);
     $scope.dtPaymentForm.dataBind();
 });

@@ -1,6 +1,6 @@
 ﻿angular.module("currentApp", ['ngAnimate', 'ngTouch', 'ngRoute', 'ngSanitize', 'ui.bootstrap','ngCpfCnpj', 'ui.mask', 'ui.date','ng-currency', 'percentage', 'ng-percent', 'ui.uploader']);
 
-angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
+angular.module("currentApp").controller("masterCtrl", function ($scope, $http, Utils) {
     $scope.messageUser = undefined;
     $scope._alerts = [];
     $scope._listsToPage = [];
@@ -217,7 +217,12 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http) {
             r += mask.charAt(im) == 'X' ? s.charAt(is++) : mask.charAt(im);
         }
         return r;
-    } 
+    },
+
+    //Listeners de factorings
+    Utils.addMessageListener(function (message, type) {
+        $scope.showMessageUser({ message: message, type: type });
+    });
 });
 
 angular.module("currentApp").directive('headerGrid', function () {
@@ -420,14 +425,184 @@ angular.module("currentApp").factory("UploadCtrl", ['uiUploader', '$log', functi
     };
 }]);
 
-angular.module("currentApp").factory("Utils", function ($window) {
+angular.module("currentApp").factory("Utils", function ($window, $http) {
+    var messageListener = [];
+
     return {
         getUrlParameter: function (paramName) {
             var url = new URL($window.location.href);
             return url.searchParams.get(paramName);
+        },
+
+        //Retira problema de undefined das variáveis
+        getValueOrDefault: function (property) {
+            if (property) {
+                if (typeof property === "object")
+                    if (property.toLocaleDateString)
+                        return property.toLocaleDateString();
+                    else
+                        return property;
+                else
+                    return property;
+            }
+
+            return null;
+        },
+
+        get: function (path, data, next, nextErr) {
+            var parameters = data;
+            var config = { params: parameters };
+
+            $http.get(path, config).then(function (res) {
+                next(res);
+            }).catch(function (res) {
+                //$scope.showMessageUser({
+                //    message: res.data,
+                //    type: 'danger'
+                //});
+                nextErr(res.data);
+            });
+        },
+
+        post: function (path, data, next, nextErr) {
+            $http.post(path, data).then(function (res) {
+                if (next)
+                    next(res);
+            }).catch(function (res) {
+                //$scope.showMessageUser({
+                //    message: res.data,
+                //    type: 'danger'
+                //});
+                if (nextErr)
+                    nextErr(res.data);
+            });
+        },
+
+        addMessageListener: function (listener) {
+            messageListener.push(listener);
+        },
+
+        toMessage: function (message, type) {
+            messageListener.forEach(function (el) {
+                el(message, type);
+            });
         }
     }
 });
+
+angular.module("currentApp").factory("ClientCar", ['Utils', function (Utils) {
+    var _selectedPaymentForm = null;
+    var dtGrades = null;
+    
+    //Força pegar a forma de pagamento no servidor
+    Utils.get('/client/products/getPaymentForm', null, function (res) {
+        if (res.data) {
+            _selectedPaymentForm = res.data;
+        }
+    });
+
+    return {
+        _getGradeItem: function (selectedGrade) {
+            if (dtGrades.List && dtGrades.List.filter) {
+                var filter = dtGrades.List.filter(function (el) {
+                    return el.gradeCode.toString() === selectedGrade;
+                });
+
+                return filter.length > 0 ? filter[0] : {};
+            } else
+                return {};
+        },       
+        
+        //Pega valor produto assincrono
+        getProductValue: function (product) {            
+            
+            var discountValueCli = (Utils.getValueOrDefault(product.discountValueCli) * product.productValue);
+            var discountGrade = 0;
+            var discountPaymentForm = 0;
+
+            if (product.selectedGrade)
+                discountGrade = Utils.getValueOrDefault(this._getGradeItem(product.selectedGrade).discountValue) * product.productValue;
+
+            if (_selectedPaymentForm)
+                discountPaymentForm = Utils.getValueOrDefault(_selectedPaymentForm.discountValue) * product.productValue;
+
+            return (parseFloat(product.productValue) - discountValueCli - discountGrade - discountPaymentForm).toFixed(2);
+                      
+        },
+        setGrades: function (_dtGrades) {
+            dtGrades = _dtGrades;            
+        },
+        getGrades: function () {
+            return dtGrades.List;
+        },
+        setPaymentForm: function (paymentForm) {
+            Utils.post('/client/products/setPaymentForm', {
+                paymentForm: paymentForm
+            }, function (res) {
+                if (!res.data)
+                    _selectedPaymentForm = paymentForm;
+            });
+        },
+        getPaymentForm: function (next) {
+            return _selectedPaymentForm;
+        },
+
+        _getMinQuantity: function (product) {
+            return this._getGradeItem(product.selectedGrade).minQuantity;
+        },
+
+        isValidProduct: function (product) {
+            if (!product.selectedGrade)
+                return false;
+
+            if (!product.quantity)
+                return false;
+
+            if (product.quantity < this._getMinQuantity(product))
+                return false;
+
+            return true;
+        },
+
+        _alterItem: function (product, path, next) {
+            Utils.post(path, {
+                product: {
+                    code: product.productCode,
+                    gradeCode: this._getGradeItem(product.selectedGrade).gradeCode,
+                    paymentFormCode: _selectedPaymentForm.code,
+                    quantity: product.quantity
+                }
+            }, function (res) {
+                if (res.data.message) {
+                    Utils.toMessage(res.data.message, res.data.type);                    
+                } else {
+                    next();
+                }
+            });
+        },
+
+        addProduct: function (product) {
+            this._alterItem(product, '/client/products/addItem', function () {
+                Utils.toMessage('Item adicionado ao carrinho com sucesso', 'success');
+                product.inSession = true;
+            });
+        },
+
+        editProduct: function (product) {
+            this._alterItem(product, '/client/products/editItem', function () {
+                Utils.toMessage('Item atualizado com sucesso', 'success');                
+                product.inSession = true;
+            });
+        },
+
+        removeProduct: function (product) {
+            this._alterItem(product, '/client/products/removeItem', function () {
+                Utils.toMessage('Item removido do carrinho com sucesso', 'success');                
+                product.inSession = false;
+            });
+        }
+    };
+}]);
 
 angular.module("currentApp").directive("uploaderInput", ['UploadCtrl', function (UploadCtrl) {
     return {

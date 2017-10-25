@@ -97,7 +97,7 @@ Product.prototype = {
         //Objeto de retorno
         return queryBuilder.executeBuilder(Sequelize, {
             "tip_icms": parans.client.icmsCode,
-            "cdg_cliente": parans.client.code
+            "cdg_usuario": parans.client.code
         });
     },
 
@@ -142,8 +142,11 @@ var getSelectClientProducts = function () {
         + " end \"productValue\""
         + ", (select cli.per_desconto "
         + " from \"Clientes\" cli"            
-        + " where cli.cdg_usuario = 25) \"discountValueCli\""
+        + " where cli.cdg_usuario = :cdg_usuario) \"discountValueCli\""
         + ", ima.dsc_caminho \"filename\""
+        + ", (select cat.nom_categoria"
+        + " from \"Categorias\" cat"
+        + " where cat.cdg_categoria = prod.cdg_categoria) \"categoryName\""
         + " from \"Produtos\" prod"
         + " left outer join \"Imagens_produtos\" ima"
         + " on ima.cdg_produto = prod.cdg_produto"
