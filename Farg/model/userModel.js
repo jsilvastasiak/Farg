@@ -78,8 +78,19 @@ var getSelectUserByLogin = function () {
         + ", c.idc_administrador \"isAdmin\""
         + ", c.idc_representante \"isAgente\""
         + ", c.idc_cliente \"isClient\""
-        + ", (select cli.cdg_cliente from \"Clientes\" cli where cli.cdg_usuario = c.cdg_usuario) \"clientCode\""
+        + ", cli.cdg_cliente \"clientCode\""        
+        + ", coalesce((select(select icms.cdg_icms"
+        + "              from \"Codigo_icms\" icms"
+        + "             where icms.uf_destino = ende.sgl_estado)"
+        + "     from \"Enderecos\" ende"
+        + "    where ende.cdg_cliente = cli.cdg_cliente"
+        + "      and ende.tip_endereco = 'E')"
+        + ", (select icms.cdg_icms"
+        + " from \"Codigo_icms\" icms"
+        + " where icms.uf_destino = (select constante(1)))) \"icmsCode\""
         + " from \"Usuarios\" c"
+        + " left outer join \"Clientes\" cli"
+        + " on cli.cdg_usuario = c.cdg_usuario"
         + " where upper(c.nom_login) like upper(:login)";
 };
 

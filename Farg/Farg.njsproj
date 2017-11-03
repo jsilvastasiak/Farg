@@ -63,6 +63,9 @@
     <Compile Include="model\refcodesModel.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="model\requestItemsModel.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="model\requestModel.js">
       <SubType>Code</SubType>
     </Compile>
@@ -95,6 +98,9 @@
       <TestFramework>ExportRunner</TestFramework>
     </Compile>
     <Compile Include="public\javascripts\basicregistration\users.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="public\javascripts\client\client-car.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="public\javascripts\client\client-product-info.js">
@@ -145,6 +151,9 @@
     <Compile Include="routes\cadastro.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="routes\client\client-car.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="routes\client\client-product.js">
       <SubType>Code</SubType>
     </Compile>
@@ -177,6 +186,9 @@
     <Content Include="public\lib\bootstrap\css\bootstrap.css.map" />
     <Content Include="public\lib\bootstrap\css\bootstrap.min.css" />
     <Content Include="public\lib\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="public\stylesheets\client-car.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="public\stylesheets\client-product-info.css">
       <SubType>Code</SubType>
     </Content>
@@ -184,6 +196,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="public\stylesheets\login.css">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\client\client-car.pug">
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\client\client-product-info.pug">
@@ -223,6 +238,12 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\client\client-request.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\client\request-effetive.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\client\request-fail.pug">
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\error.pug" />

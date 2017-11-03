@@ -1,0 +1,36 @@
+﻿.product-container > img{
+    width: 100px;
+    height: 100px;
+}
+.product-container > span[name="info"]{
+    position: relative;
+    display: inline-block;
+    font-size: 18px;
+    top: -15px;
+}
+
+.car-item > td {
+    vertical-align: middle !important;
+}
+
+.car-items-table {
+    width: 95%;
+}
+
+.total-info-container > table {
+    min-width: 300px;
+    height: 100px;
+    padding: 0px;
+    background-color: #f8f9df;
+    margin-right: 15px;
+}
+.total-info-container > table > tbody > tr > td { padding: 15px; }
+.buttons-container {
+    margin-top: 5px;
+}
+
+.message-icon{
+    width: 25%;
+    display: block;
+}
+.message-success{ font-size: 20px; }

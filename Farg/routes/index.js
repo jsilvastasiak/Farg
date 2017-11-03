@@ -44,6 +44,12 @@ router.post('/login', function (req, res) {
 
 });
 
+router.get('/logout', function (req, res) {
+    auth.logout(req, function () {
+        res.render('login', { title: 'Login' });
+    });
+});
+
 module.exports = router;
     
 

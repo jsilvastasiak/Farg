@@ -428,11 +428,20 @@ angular.module("currentApp").factory("UploadCtrl", ['uiUploader', '$log', functi
 angular.module("currentApp").factory("Utils", function ($window, $http) {
     var messageListener = [];
 
-    return {
-        getUrlParameter: function (paramName) {
-            var url = new URL($window.location.href);
-            return url.searchParams.get(paramName);
-        },
+    return {        
+
+        URL: function (a) {
+            if (a == "") return {};
+            var b = {};
+            for (var i = 0; i < a.length; i++) {
+                var p = a[i].split('=', 2);
+                if (p.length == 1)
+                    b[p[0]] = "";
+                else
+                    b[p[0]] = decodeURIComponent(p[1].replace('/\+/g', " "));
+                return b;
+            }
+        }($window.location.search.substr(1).split('&')),
 
         //Retira problema de undefined das variáveis
         getValueOrDefault: function (property) {
@@ -486,6 +495,13 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
             messageListener.forEach(function (el) {
                 el(message, type);
             });
+        },
+
+        toMoney: function (value, symbol) {
+            var newValue = value.toFixed(2);
+            newValue = newValue.replace('.', ',');
+
+            return (symbol ? symbol + " " : "") + newValue;
         }
     }
 });
@@ -493,7 +509,19 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
 angular.module("currentApp").factory("ClientCar", ['Utils', function (Utils) {
     var _selectedPaymentForm = null;
     var dtGrades = null;
-    
+    var carProductsInfoList = null;
+    var product = function () {
+        this.selectedGrade = null;
+        this.unitValue = null;
+        this.code = null;
+        this.quantity = null;
+        this.inSession = false;
+    };
+    product.prototype = {
+
+    };
+
+
     //Força pegar a forma de pagamento no servidor
     Utils.get('/client/products/getPaymentForm', null, function (res) {
         if (res.data) {
@@ -501,7 +529,15 @@ angular.module("currentApp").factory("ClientCar", ['Utils', function (Utils) {
         }
     });
 
+    Utils.get('/client/car/getCarItemInfo', null, function (res) {
+        if (res.data) {
+            carProductsInfoList = res.data;
+        }
+    });
+
     return {
+        Product: product,
+
         _getGradeItem: function (selectedGrade) {
             if (dtGrades.List && dtGrades.List.filter) {
                 var filter = dtGrades.List.filter(function (el) {
@@ -558,10 +594,22 @@ angular.module("currentApp").factory("ClientCar", ['Utils', function (Utils) {
             if (!product.quantity)
                 return false;
 
-            if (product.quantity < this._getMinQuantity(product))
+            if (product.quantity < 1)
                 return false;
 
             return true;
+        },
+
+        getProductInfo: function (product) {
+            if (carProductsInfoList) {
+                var filter = carProductsInfoList.filter(function (el) {
+                    return el.code === product.code;
+                });
+                
+                return filter.length > 0 ? filter[0] : {};
+            }
+
+            return {};
         },
 
         _alterItem: function (product, path, next) {
@@ -664,7 +712,7 @@ Page.prototype = {
             //var bodyPadding = parseInt(jq.find('body')[0].style.padding.replace('px',''));
             var containerEl = jq.find('div.panel.panel-default')[0];
 
-            var heightToContainer = windowHeight - menuHeight - 60;
+            var heightToContainer = windowHeight - menuHeight - 30;
 
             containerEl.style.height = heightToContainer + "px";
         }

@@ -1,9 +1,9 @@
 ﻿.product-container {
-    max-width: 350px;
+    max-width: 320px;
     height: 340px;
     float: left;
     margin: 0;
-    margin-left: 5px;
+    margin-left: 10px;
     border: none;
     margin-top: 20px;
     padding: 5px;
@@ -41,6 +41,7 @@
 }
 .product-info > label[name="lblMin"] {
     display: inline;
+    position: absolute;
 }
 .product-info > label[name="lblValue"], .product-info > label[name="lblTotal"], .product-info > label[name="lblMin"] {
     font-weight: normal;
@@ -87,4 +88,10 @@
 .categorys-container > .list-group > li:hover {
     cursor: pointer;
     color: darkgray;
+}
+
+@media all and (min-width:1200px){
+    .col-lg-9{
+        width: 82%;
+    }
 }

@@ -1,0 +1,18 @@
+﻿extends ../master/master.pug
+
+append infoPage
+    title Ocorreu um problema
+
+append styles
+    link(rel='stylesheet', href='/stylesheets/client-car.css')
+
+block content
+    div.panel.panel-default
+        div.row
+            div.col-xs-12.col-sm-12.col-lg-12(align="center")
+                img.message-icon(ng-src="/images/fail-request.png", alt="Falha")
+                br
+                span.message-success Ocorreu um problema ao efetivar o pedido!
+                br
+                br
+                span se o problema persistir, por favor entre em contato.

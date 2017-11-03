@@ -36,8 +36,8 @@
         }
     };
 
-    $scope.alteredGrade = function (product) {        
-        product.quantity = ClientCar._getMinQuantity(product);        
+    $scope.alteredGrade = function (product) {
+        product.quantity = 1;
     };
 
     $scope.showInfo = function (product) {
@@ -45,7 +45,8 @@
     };
 
     $scope.getTotal = function (product) {
-        var total = product.quantity * $scope.getProductValue(product);
+        //Total é quantidade de grades vezes, quantidade de produtos por grade * valor do produto com descontos
+        var total = product.quantity * ClientCar._getMinQuantity(product) * $scope.getProductValue(product);
         return total ? total.toFixed(2) : "";
     };
 
@@ -66,27 +67,7 @@
 
     $scope.paymentFormSelected = function (paymentForm) {
         ClientCar.setPaymentForm(paymentForm);
-    };
-
-    $scope._alterItem = function (product, path, next) {
-        $scope.post(path, {
-            product: {
-                code: product.productCode,
-                gradeCode: $scope._getGradeItem(product.selectedGrade).gradeCode,
-                paymentFormCode: $scope._selectedPaymentForm.code,
-                quantity: product.quantity
-            }
-        }, function (res) {
-            if (res.data.message) {
-                $scope.showMessageUser({
-                    message: res.data.message,
-                    type: res.data.type
-                });
-            } else {
-                next();
-            }
-        });
-    };
+    };    
 
     $scope.addProduct = function (product) {        
         ClientCar.addProduct(product);

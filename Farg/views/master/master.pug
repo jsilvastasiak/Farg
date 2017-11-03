@@ -87,17 +87,19 @@ body(ng-app="currentApp", ng-controller="masterCtrl", onload="page.start()")
                                     a(href="/basicregistration/products") Produtos
                         li
                             a(href="/client/products") Catálogo
-                        li
-                            a(href="#") Stores
-                        li
-                            a(href="#") Contact            
-                    ul.nav.navbar-nav.navbar-right
-                        li
-                            a(href="#")
-                                span.glyphicon.glyphicon-user Your Account
-                        li
-                            a(href="#")
-                                span.glyphicon.glyphicon-shopping-cart Cart
+                    ul.nav.navbar-nav.navbar-right                        
+                        li.dropdown
+                            a.dropdown-toggle(data-toggle="dropdown", href="#")
+                                span.glyphicon.glyphicon-user
+                            ul.dropdown-menu
+                                li
+                                    a(href="/logout") Sair                                
+                        li.dropdown
+                            a.dropdown-toggle(data-toggle="dropdown", href="#")
+                                span.glyphicon.glyphicon-shopping-cart
+                            ul.dropdown-menu
+                                li
+                                    a(href="/client/car") Meu carrinho
     
         div.container
             

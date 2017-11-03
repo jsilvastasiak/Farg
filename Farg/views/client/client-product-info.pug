@@ -37,11 +37,11 @@ block content
                         div.col-sm-3
                             select.form-control(id="dbGrade", name="dbGrade", ng-model="product.selectedGrade", ng-change="alteredGrade(product)")
                                 option(ng-repeat="grade in dtGrades.List", value="{{grade.gradeCode}}") {{grade.descGrade}}
-                            span(name="lblMin", ng-show="hasSelectedGrade(product)") Pedido Mínimo {{ getQuantity(product) }}
+                            span(name="lblMin", ng-show="hasSelectedGrade(product)", style="display: inline") Items por grade {{ getQuantity(product) }}
                     div.form-group
                         label.control-label.col-sm-2 Quantidade:
                         div.col-sm-3
-                            input.form-control(type="number", name="iptQuantity", ng-model="product.quantity", min="{{ getQuantity(product) }}", ng-required)
+                            input.form-control(type="number", name="iptQuantity", ng-model="product.quantity", min="1", ng-required)
                     div.form-group
                         label.col-sm-5(name="lblTotal") Preço Total: 
                             span.span-content {{ "R$ " + getTotal(product)}}

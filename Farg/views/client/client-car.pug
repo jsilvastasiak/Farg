@@ -1,0 +1,61 @@
+﻿extends ../master/master.pug
+
+append infoPage
+    title Carrinho
+
+append scripts
+    script(src='/javascripts/client/client-car.js')
+
+append styles
+    link(rel='stylesheet', href='/stylesheets/client-car.css')
+
+block content
+    div.panel.panel-default(ng-controller="clientCar")
+        div.row
+            div.col-xs-12.col-sm-12.col-lg-12
+                
+            div.col-xs-12.col-sm-12.col-lg-12
+                div.table-responsive.table-large(align="center")
+                    table.table.table-hover.table-striped.table-condensed.car-items-table(ng-model="dtCarItems")
+                        thead
+                            tr                                
+                                th.col-sm-4-grid(header-grid, header-text="Produto(s)")
+                                th.col-sm-3.align-center(header-grid, header-text="Grade", width="200") 
+                                th.col-sm-3.align-center(header-grid, header-text="Peças por Grade", width="200") 
+                                th.col-sm-3.align-center(header-grid, header-text="Qtd. Grades", field-order="quantity", width="200") 
+                                th.col-sm-3.align-right(header-grid, header-text="Valor Unitário", field-order="productValue", width="100") 
+                                th.col-sm-3.align-right(header-grid, header-text="Valor Total", field-order="totalValue", width="100")
+                                th.col-sm-3-grid &nbsp
+                        tbody
+                            tr.car-item(ng-repeat="item in dtCarItems.List")                                 
+                                td
+                                    div.product-container
+                                        img(ng-src="{{getProductInfo(item).filename}}")
+                                        span(name="info") {{getProductInfo(item).productName}}
+                                td.align-center
+                                    select.form-control(id="dbGrades", name="dbGrades", ng-model="item.gradeCode", ng-required="!isFind")
+                                        option(ng-repeat="grade in dtGrades.List", value="{{grade.gradeCode}}") {{grade.descGrade}}
+                                td.align-center {{getMinQuantity(item)}}
+                                td.align-center {{item.quantity}}
+                                td.align-right {{toMoney(item.unitValue)}}
+                                td.align-right {{ toMoney(getTotalValue(item)) }}
+                                td
+                                    button.btn-dele-min(type="button", ng-click="deleteGrade(grade)", title="Remover este item do Carrinho")
+
+            div.col-xs-12.col-sm-12.col-lg-12.total-info-container(align="right")
+                table
+                    tbody
+                        tr
+                            td Forma Pagamento:
+                            td 
+                                select.form-control(id="dbPaymentForm", name="dbPaymentForm", ng-model="paymentFormCode", ng-required="!isFind")
+                                    option(ng-repeat="paymentForm in dtPaymentForm.List", value="{{paymentForm.code}}" ) {{paymentForm.descForm}}
+                        tr
+                            td {{totalItems}} Produto(s)
+                            td Total: {{toMoney(getTotalGeneral())}}
+
+            div.col-xs-12.col-sm-12.col-lg-12.buttons-container(align="center")
+                div.col-xs-6.col-sm-6.col-lg-6(align="left")
+                    button.btn.btn-primary(type="button", ng-click="redirect()", title="Voltar para catálogo") Escolher + produtos
+                div.col-xs-6.col-sm-6.col-lg-6(align="right")
+                    button.btn.btn-success(type="button", ng-click="effetiveRequest()", title="Efetuar pedido para fábrica") Efetuar Pedido

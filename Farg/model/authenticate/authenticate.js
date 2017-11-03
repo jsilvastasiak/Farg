@@ -16,7 +16,7 @@ var setUserSession = function (req, user) {
         isAgent: user.isAgente === 'S',
         isClient: user.isClient === 'S',
         clientCode: user.clientCode,
-        icmsCode: 8,
+        icmsCode: user.icmsCode,
         car: {
             paymentForm: null,
             items: []
@@ -51,5 +51,11 @@ module.exports = {
         if (req.session.loggeduser)
             return next();
         res.redirect('/login');
+    },
+
+    logout: function (req, done) {
+        req.session.loggeduser = null;
+
+        done();
     }
 }

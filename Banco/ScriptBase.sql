@@ -286,7 +286,7 @@ ALTER TABLE public."Produtos"
 
 CREATE TABLE public."Pedidos"
 (
-    cdg_pedido integer NOT NULL DEFAULT nextval('"Pedidos_cdg_pedido_seq"'::regclass),
+    cdg_pedido integer NOT NULL,
     cdg_cliente integer NOT NULL,
     cdg_forma integer NOT NULL,
     dta_pedido timestamp with time zone,
@@ -314,16 +314,44 @@ ALTER TABLE public."Pedidos"
     OWNER to postgres;
 
 
-CREATE TABLE Items_pedido (
-cdg_item Number(5),
-cdg_pedido Number(5),
-cdg_produto Number(5),
-vlr_atribuido Number(10,2),
-qtd_produto Number(5),
-cdg_grade Número(2),
-PRIMARY KEY(cdg_item,cdg_pedido),
-FOREIGN KEY(/*erro: ??*/) REFERENCES Pedidos (cdg_pedido,cdg_cliente)
+-- Table: public."Items_pedidos"
+
+-- DROP TABLE public."Items_pedidos";
+
+CREATE TABLE public."Items_pedidos"
+(
+    cdg_item integer NOT NULL,
+    cdg_pedido integer NOT NULL,
+    cdg_cliente integer NOT NULL,
+    cdg_produto integer NOT NULL,
+    vlr_atribuido numeric(10, 2) NOT NULL,
+    qtd_grade integer NOT NULL,
+    cdg_grade integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    CONSTRAINT "Items_pedidos_pkey" PRIMARY KEY (cdg_item, cdg_pedido, cdg_cliente),
+    CONSTRAINT "Items_pedidos_cdg_grade_fkey" FOREIGN KEY (cdg_grade)
+        REFERENCES public."Grades" (cdg_grade) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT "Items_pedidos_cdg_produto_fkey" FOREIGN KEY (cdg_produto)
+        REFERENCES public."Produtos" (cdg_produto) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT cdg_pedido_cdg_cliente_fk FOREIGN KEY (cdg_pedido, cdg_cliente)
+        REFERENCES public."Pedidos" (cdg_pedido, cdg_cliente) MATCH FULL
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
 )
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public."Items_pedidos"
+    OWNER to postgres;
 
 
 -- Table: public.cg_ref_codes
@@ -361,10 +389,34 @@ WITH (
 )
 TABLESPACE pg_default;
 
+-- Table: public."Constantes"
+
+-- DROP TABLE public."Constantes";
+
+CREATE TABLE public."Constantes"
+(
+    codigo integer NOT NULL,
+    descricao character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    valor character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT "Constantes_pkey" PRIMARY KEY (codigo)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public."Constantes"
+    OWNER to postgres;
+COMMENT ON TABLE public."Constantes"
+    IS 'Valores padrão do sistema.';
+
 ALTER TABLE public."Codigo_icms"
     OWNER to postgres;
 COMMENT ON TABLE public."Codigo_icms"
     IS 'Tabela de códigos icms para clientes';
+
+-- Regra de chave estrangeira não colocada pelo sequelize	
+alter table "Items_pedidos" add constraint cdg_pedido_cdg_cliente_fk foreign key (cdg_pedido, cdg_cliente) references "Pedidos" (cdg_pedido, cdg_cliente) match full;	
 
 INSERT INTO public."Usuarios"(
 	cdg_usuario, nom_login, snh_usuario, idc_administrador, idc_representante, idc_cliente, idc_ativo, "createdAt", "updatedAt")
@@ -389,3 +441,12 @@ INSERT INTO public.cg_ref_codes(
 INSERT INTO public.cg_ref_codes(
 	dsc_dominio, sgl_dominio, dsc_significado)
 	VALUES ('TIPO_ENDERECO', 'O', 'Outros');
+	
+INSERT INTO public.cg_ref_codes(
+	dsc_dominio, sgl_dominio, dsc_significado)
+	VALUES ('TIPO_ENDERECO', 'E', 'Entrega');
+
+-- Inclusão de constantes
+INSERT INTO public."Constantes"(
+	codigo, descricao, valor)
+	VALUES (1, 'Estado da empresa', 'SC');

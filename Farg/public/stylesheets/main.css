@@ -7,7 +7,7 @@
 .container{
     padding: 0;
     margin: 0;
-    width: 100%;
+    width: 100%;    
 }
 .table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>td, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>thead>tr>th{
     padding: 0px !important;
@@ -26,6 +26,8 @@ a {
 }
 .panel{
     margin: 0px !important;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .panel, .panel-default{
     padding: 5px;
@@ -117,7 +119,11 @@ input.ng-invalid {
     width: 96%;
     z-index: 1000;
 }
-.align-rigth{
+.alert-alert {
+    background-color: #fbffc0;
+}
+
+.align-right{
     text-align: right;
 }
 .align-center{

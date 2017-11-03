@@ -112,6 +112,13 @@ Product.prototype = {
             "cdg_grade": parans.gradeCode,
             "cdg_forma": parans.paymentFormCode
         });
+    },
+
+    getCarProducts: function (parans) {
+        var queryBuilder = new QueryBuilder(getSelectCarProducts(parans.codesList), false, parans);
+
+        //Objeto de retorno
+        return queryBuilder.executeBuilder(Sequelize);
     }
 };
 
@@ -135,9 +142,9 @@ var getSelectClientProducts = function () {
     return "select prod.cdg_produto \"productCode\""
         +  ", prod.nom_produto \"productName\""
         +  ", case"
-        + " when :tip_icms = 8 then prod.vlr_icms_8"
+        + " when :tip_icms IN (7,8) then prod.vlr_icms_8"
         + " when :tip_icms = 12 then prod.vlr_icms_12"
-        + " when :tip_icms = 17 then prod.vlr_icms_17"
+        + " when :tip_icms IN (17,18) then prod.vlr_icms_17"
         + " else prod.vlr_icms_17"
         + " end \"productValue\""
         + ", (select cli.per_desconto "
@@ -156,13 +163,24 @@ var getSelectClientProducts = function () {
 
 var getSelectParansToProduct = function () {
     return "select (select case"
-        + " when :tip_icms = 8 then prod.vlr_icms_8"
+        + " when :tip_icms IN (7,8) then prod.vlr_icms_8"
         + " when :tip_icms = 12 then prod.vlr_icms_12"
-        + " when :tip_icms = 17 then prod.vlr_icms_17"
+        + " when :tip_icms IN (17,18) then prod.vlr_icms_17"
         + " else prod.vlr_icms_17"
         + " end  from \"Produtos\" prod where cdg_produto = :cdg_produto) \"productValue\""
         + ", (select gra.per_desconto from \"Grades\" gra where gra.cdg_grade = :cdg_grade) \"discountGrade\""
         + ", (select frm.per_desconto from \"Formas_pagamentos\" frm where frm.cdg_forma = :cdg_forma) \"discountPaymentForm\""
         + ", (select cli.per_desconto from \"Clientes\" cli where cli.cdg_cliente = :cdg_cliente) \"discountClient\"";
 
+};
+
+var getSelectCarProducts = function (codesList) {
+    return "select prod.cdg_produto \"code\""
+        + ", prod.nom_produto \"productName\""
+        + ", (select ima.dsc_caminho"
+        + " from \"Imagens_produtos\" ima"
+        + " where ima.cdg_produto = prod.cdg_produto"
+        + " and ima.cdg_imagem = 1) \"filename\""
+        + " from \"Produtos\" prod"
+        + " where prod.cdg_produto in (" + codesList + ")";
 };

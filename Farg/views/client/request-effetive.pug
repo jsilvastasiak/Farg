@@ -1,0 +1,14 @@
+﻿extends ../master/master.pug
+
+append infoPage
+    title Pedido Efetivado
+
+append styles
+    link(rel='stylesheet', href='/stylesheets/client-car.css')
+
+block content
+    div.panel.panel-default
+        div.row
+            div.col-xs-12.col-sm-12.col-lg-12(align="center")
+                img.message-icon(src="/images/request-success.png", alt="Sucesso")
+                span.message-success Pedido efetivado com sucesso!

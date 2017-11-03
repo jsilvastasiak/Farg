@@ -16,7 +16,7 @@ block content
                 label Categorias:
                 ul.list-group
                     li.list-group-item(ng-repeat="category in dtCategorys.List", ng-click="filterCategory(category)", ng-class="{ 'active' : category.isSelected }") {{category.categoryName}}
-            div.col-xs-6.col-sm-9.col-lg-10
+            div.col-xs-6.col-sm-10.col-lg-9
                 div.payment-form-container
                     form.form-horizontal(name="frmPaymentForm")
                         div.form-group
@@ -39,10 +39,10 @@ block content
                         label Grade:
                         select.form-control(id="dbGrade", name="dbGrade", ng-model="product.selectedGrade", ng-change="alteredGrade(product)")
                             option(ng-repeat="grade in dtGrades.List", value="{{grade.gradeCode}}") {{grade.descGrade}}
-                        label(name="lblMin", ng-show="hasSelectedGrade(product)") Pedido Mínimo {{ getQuantity(product) }}
+                        label(name="lblMin", ng-show="hasSelectedGrade(product)")  Items por grade {{ getQuantity(product) }}
                         br
-                        label Qtd. Pedido:
-                        input.form-control(type="number", name="iptQuantity", ng-model="product.quantity", min="{{ getQuantity(product) }}", ng-required)
+                        label Qtd. Grade:
+                        input.form-control(type="number", name="iptQuantity", ng-model="product.quantity", min="1", ng-required)
                         br
                         label(name="lblTotal") Preço Total: {{ "R$ " + getTotal(product)}}
 

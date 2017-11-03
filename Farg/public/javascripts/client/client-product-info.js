@@ -2,7 +2,8 @@
 
 angular.module("currentApp").controller("clientProductInfo", function ($scope, Utils, ClientCar) {
 
-    $scope.productId = Utils.getUrlParameter("id");
+    //$scope.productId = Utils.getUrlParameter("id");
+    $scope.productId = Utils.URL["id"];
 
     $scope._Index = 0;
     $scope.isActive = function (index) {
@@ -38,7 +39,7 @@ angular.module("currentApp").controller("clientProductInfo", function ($scope, U
     };
 
     $scope.alteredGrade = function (product) {
-        product.quantity = ClientCar._getMinQuantity(product);
+        product.quantity = 1;
     };
 
     $scope.addProduct = function (product) {
@@ -54,12 +55,23 @@ angular.module("currentApp").controller("clientProductInfo", function ($scope, U
     };
 
     $scope.getTotal = function (product) {
-        var total = product.quantity * $scope.getProductValue(product);
+        var total = product.quantity * ClientCar._getMinQuantity(product) * $scope.getProductValue(product);
         return total ? total.toFixed(2) : "";
     };
 
     $scope.isValidItem = function (product) {
         return ClientCar.isValidProduct(product);
+    };
+
+    $scope.hasSelectedGrade = function (product) {
+        return product.selectedGrade ? true : false;
+    };
+
+    $scope.getQuantity = function (product) {
+        if (product.selectedGrade)
+            return ClientCar._getMinQuantity(product);
+        else
+            return 0;
     };
 
     $scope.dtGrades.dataBind();

@@ -27,7 +27,7 @@ router.get('/getProductsList', auth.isAuthenticated, function (req, res) {
     var paransQuery = paransBuilder.createParansModel(req.query);
 
     paransQuery.client = {
-        icmsCode: 8,
+        icmsCode: req.session.loggeduser.icmsCode,
         code: req.session.loggeduser.isClient ? req.session.loggeduser.userCode : null
     };
 
@@ -178,7 +178,7 @@ router.get('/info/getInfo', auth.isAuthenticated, function (req, res) {
         paransQuery.code = req.query.id;
         paransQuery.client = {
             code: req.session.loggeduser.isClient ? req.session.loggeduser.userCode : null,
-            icmsCode: 8
+            icmsCode: req.session.loggeduser.icmsCode
         };
 
         product.getClientProducts(paransQuery).then(function (productList) {

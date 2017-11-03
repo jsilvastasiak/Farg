@@ -1,0 +1,12 @@
+create or replace function constante(codigo "Constantes".codigo%TYPE)
+returns table (valor "Constantes".valor%TYPE) as $$
+declare
+
+	ww_cdg_usuario integer;
+
+begin
+    
+  return QUERY execute('SELECT valor FROM "Constantes" WHERE codigo = ' || codigo);
+  
+end;
+$$ language plpgsql;

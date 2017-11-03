@@ -10,7 +10,7 @@ var requestDefinition = Sequelize.define('Pedidos', {
     cdg_pedido: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: false
     },
     cdg_cliente: {
         type: DataTypes.INTEGER,
