@@ -39,6 +39,9 @@
     <Compile Include="model\clientModel.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="model\common\mail.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="model\common\queryBuilder.js">
       <SubType>Code</SubType>
     </Compile>
@@ -52,6 +55,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="model\gradeModel.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="model\parametersModel.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="model\productImageModel.js">
@@ -112,6 +118,15 @@
     <Compile Include="public\javascripts\common\master.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="public\javascripts\consult\request-control.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="public\javascripts\consult\request-items.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="public\javascripts\consult\request.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="public\javascripts\index.js">
       <SubType>Code</SubType>
     </Compile>
@@ -164,6 +179,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes\common\temporary-files.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="routes\consult\request.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes\index.js" />
@@ -246,6 +264,15 @@
     <Content Include="views\client\request-fail.pug">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="views\consult\request-control.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\consult\request-items.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\consult\request.pug">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="views\error.pug" />
     <Content Include="views\index.pug" />
     <Content Include="package.json" />
@@ -266,6 +293,7 @@
     <Folder Include="public\javascripts\basicregistration\" />
     <Folder Include="public\javascripts\common\" />
     <Folder Include="public\javascripts\client\" />
+    <Folder Include="public\javascripts\consult\" />
     <Folder Include="public\lib\" />
     <Folder Include="public\lib\angular\" />
     <Folder Include="public\lib\bootstrap\" />
@@ -275,6 +303,7 @@
     <Folder Include="routes\common\" />
     <Folder Include="routes\basicregistration\" />
     <Folder Include="routes\client\" />
+    <Folder Include="routes\consult\" />
     <Folder Include="typings\modules\angular-ui-bootstrap\" />
     <Folder Include="typings\modules\bluebird\" />
     <Folder Include="typings\modules\passport-local\" />
@@ -308,6 +337,7 @@
     <Folder Include="views\master\" />
     <Folder Include="views\basicregistration\" />
     <Folder Include="views\client\" />
+    <Folder Include="views\consult\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="typings\globals\body-parser\index.d.ts" />

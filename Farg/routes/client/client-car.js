@@ -8,6 +8,8 @@ var ProductImage = require('../../model/productImageModel');
 var Grade = require('../../model/gradeModel');
 var PaymentForm = require('../../model/formPaymentModel');
 var Category = require('../../model/categoryModel');
+var Mail = require('../../model/common/mail');
+var Parameters = require('../../model/parametersModel');
 var paransBuilder = require('../common/paransBuilder');
 var ClientSession = require('../common/client-session');
 var Sequelize = require('../../model/connectionFactory');
@@ -165,6 +167,26 @@ router.post('/effetiveRequest', auth.isAuthenticated, function (req, res) {
         res.end();
     };
 
+    //Função de manipulação caso sucesso da efetivação
+    var successHandler = function (mailErr) {
+        if (mailErr) {
+            res.send({
+                message: mailErr.message,
+                type: 'danger'
+            });
+        }
+
+        var clientSession = new ClientSession(req);
+        clientSession.clearCarItems();
+
+        res.send({
+            status: 0,
+            message: 'Pedido efetivado com sucesso',
+            type: 'success'
+        });
+        res.end();
+    }
+
     if (new ClientSession(req).getCarItemList().length > 0) {
         Sequelize.transaction().then(function (t) {
 
@@ -210,15 +232,8 @@ router.post('/effetiveRequest', auth.isAuthenticated, function (req, res) {
                                         //item
                                         if (req.body.itemsCar == 0) {
                                             t.commit().then(function (result) {
-                                                var clientSession = new ClientSession(req);
-                                                clientSession.clearCarItems();
-
-                                                res.send({
-                                                    status: 0,
-                                                    message: 'Pedido efetivado com sucesso',
-                                                    type: 'success'
-                                                });
-                                                res.end();
+                                                //Manda email após efetivação do pedido e chama função para terminar requisição
+                                                sendEmailRequestEffectived(req, successHandler);
                                             });
                                         }
                                     })
@@ -256,3 +271,35 @@ router.post('/setPaymentForm', auth.isAuthenticated, function (req, res) {
 });
 
 module.exports = router;
+
+/**
+ * Rotina manda emails após a efetivação do pedido
+ * @param {Objeto da requisição} req
+ */
+
+var sendEmailRequestEffectived = function (req, next) {
+    var parameter = new Parameters();
+    parameter.getByCode(req.session.loggeduser).then(function (parameter) {
+        if (parameter && parameter.dataValues) {
+            //Nome da empresa(Fábrica)
+            var companyName = parameter.dataValues.nom_fantasia;
+
+            var mail = new Mail(req);
+            mail.options.to = req.session.loggeduser.clientMail;
+            mail.options.from = parameter.dataValues.email_remetente;
+            mail.options.subject = companyName + " Suporte";
+            mail.options.html = "<h1>Prezado " + req.session.loggeduser.clientName + "</h1>";
+            mail.options.html += "<p>Seu pedido foi efetivado e enviado para fábrica.</p>";
+            mail.options.html += "<p>Obrigado pela preferência.</p>";
+
+            mail.sendMail(mail.options, function (info, err) {
+                if (err) {
+                    return next(err);
+                }
+
+                return next(null);
+            });
+        }
+    });
+
+}

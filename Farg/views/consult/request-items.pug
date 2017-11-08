@@ -1,0 +1,55 @@
+﻿div.table-responsive.table-large
+    table.table.table-hover.table-striped.table-condensed(ng-controller="tblRequestItems", ng-model="dtRequestItems")
+        thead
+            tr
+                th.col-sm-3-grid
+                    button.btn-find-min(type="button", ng-click="findItem()", title="Encontrar")                
+                th.col-sm-4-grid(header-grid, header-text="Código", field-order="code", width="75")
+                th.col-sm-3(header-grid, header-text="Produto", field-order="productName") 
+                th.col-sm-4-grid(header-grid, header-text="Valor", field-order="productValue", width="100") 
+                th.col-sm-4-grid(header-grid, header-text="Grade", field-order="gradeDesc", width="200")
+                th.col-sm-4-grid(header-grid, header-text="Qtd. Grade", field-order="quantity", width="150")
+                th.col-sm-4-grid(header-grid, header-text="Valor Total", field-order="totalValue", width="100")
+        tbody
+            tr(ng-repeat="item in dtRequestItems.List", ng-click="tblRequest_OnSelectedRow(request)", selectable-row)
+                td &nbsp
+                td.align-rigth {{item.itemCode}}
+                td {{item.productName}}    
+                td {{toMoney(item.productValue)}}
+                td {{item.gradeDesc}} 
+                td {{item.quantity}} 
+                td {{toMoney(item.totalValue)}}                
+
+ul.pagination-sm.pager-style(uib-pagination, total-items="getPagerInfo('pgRequestItems').bigTotalItems", ng-model="getPagerInfo('pgRequestItems').bigCurrentPage"
+, max-size="5", boundary-links="true", force-ellipses="true", boundary-link-numbers="true", items-per-page="itemsPerPage", ng-change="pageChanged('pgRequestItems')")
+
+div.modal-demo
+    script(type="text/ng-template", id="myItemRequest.html")
+        div.modal-header
+            h3.modal-title {{titleModal}}
+        div.modal-body(id="modal-body")
+            form.form-horizontal(name="frmItemRequest")
+                div.form-group
+                    label.control-label.col-sm-4 Item
+                    div.col-sm-7
+                        input.form-control(type="number", name="iptCode", ng-model="code")
+                        
+                div.form-group
+                    label.control-label.col-sm-4 Produto
+                    div.col-sm-7
+                        input.form-control(type="number", name="iptClientCode", ng-model="clientCode")
+
+                div.form-group
+                    label.control-label.col-sm-4 Nome
+                    div.col-sm-7
+                        input.form-control(type="text", name="iptClientName", ng-model="clientName")
+                
+                div.form-group
+                    label.control-label.col-sm-4(for="dbStatus") Grade
+                    div.col-sm-7
+                        select.form-control(id="dbGrade", name="dbGrade", ng-model="gradeCode")
+                            option(ng-repeat="grade in gradeOptions", value="{{grade.gradeCode}}" ) {{grade.descGrade}}                                
+                                            
+        div.modal-footer
+            button.btn.btn-primary(type="button", ng-click="save(frmItemRequest)") Buscar
+            button.btn.btn-warning(type="button", ng-click="cancel()") Cancelar

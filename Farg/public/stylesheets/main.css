@@ -203,3 +203,7 @@ input.ng-invalid {
     max-width: 568px;
     max-height: 600px;
 }
+
+.tr-vertical-align-middle > td{
+    vertical-align: middle !important;
+}

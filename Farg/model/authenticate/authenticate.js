@@ -16,7 +16,11 @@ var setUserSession = function (req, user) {
         isAgent: user.isAgente === 'S',
         isClient: user.isClient === 'S',
         clientCode: user.clientCode,
+        clientName: user.clientName,
+        clientMail: user.clientEmail,
         icmsCode: user.icmsCode,
+        companyCode: 1, // Código da empresa e filial, ainda não implementado
+        subsidiaryCode: 1,
         car: {
             paymentForm: null,
             items: []

@@ -49,10 +49,58 @@ RequestDefinition.prototype = {
         return this.definition.findOne({
             where: {
                 cdg_cliente: parans.clientCode,
-                cdg_pedido: parans.reqCode
+                cdg_pedido: parans.code
             }
         });
+    },
+
+    getRequest: function (parans) {
+        var queryBuilder = new QueryBuilder(getSelectRequest(), false, parans);
+
+        if (parans.filters) {
+            var filters = JSON.parse(parans.filters);
+            //Verifica se existem filtros com valores
+            if (Object.keys(filters).length > 0) {
+                queryBuilder.addFilter("ped", "cdg_pedido", filters.code, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("ped", "cdg_cliente", filters.clientCode, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("cli", "nom_cliente", filters.clientName);
+                queryBuilder.addFilter("pag", "cdg_forma", filters.paymentFormCode, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("ped", "dta_pedido", filters.requestDate, queryBuilder.COLUMN_TYPE.DATE);
+                queryBuilder.addFilter("ped", "sts_pedido", filters.status);
+            }
+        }
+
+        if (parans.agentCode)
+            queryBuilder.addFilter("cli", "cdg_representante", parans.agentCode);
+
+        if (parans.clientCode)
+            queryBuilder.addFilter("cli", "cdg_cliente", parans.clientCode);
+
+        //Objeto de retorno
+        return queryBuilder.executeBuilder(Sequelize);
     }
 };
 
 module.exports = RequestDefinition;
+
+var getSelectRequest = function () {
+    return "select ped.cdg_pedido \"code\""
+        +   ", ped.cdg_cliente \"clientCode\""
+        +   ", cli.nom_cliente \"clientName\""
+        +   ", (select usu.nom_login"
+        +   " from \"Usuarios\" usu"
+        +   " where usu.cdg_usuario = cli.cdg_representante) \"agentName\""
+        +   ", ped.cdg_forma \"paymentFormCode\""
+        +   ", pag.dsc_forma \"paymentFormDesc\""
+        +   ", to_char(ped.dta_pedido, 'DD/MM/YYYY') \"requestDate\""
+        +   ", ped.sts_pedido \"status\""
+        +   ", (select cg.dsc_significado"
+        +   " from cg_ref_codes cg"
+        +   " where cg.dsc_dominio = 'STATUS_PEDIDO'"
+        +   " and cg.sgl_dominio = ped.sts_pedido) \"statusDesc\""
+        +   " from \"Pedidos\" ped"
+        +   " inner join \"Clientes\" cli"
+        +   " on cli.cdg_cliente = ped.cdg_cliente"
+        +   " inner join \"Formas_pagamentos\" pag"
+        +   " on pag.cdg_forma = ped.cdg_forma";
+};

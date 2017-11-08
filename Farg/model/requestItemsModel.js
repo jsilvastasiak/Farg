@@ -65,7 +65,43 @@ ItemRequestDefinition.prototype = {
                 cdg_pedido: parans.requestCode
             }
         });
+    },
+
+    getRequestItems: function (parans) {
+        var queryBuilder = new QueryBuilder(getSelecetRequestItem(), false, parans);
+
+        if (parans.filters) {
+            var filters = JSON.parse(parans.filters);
+            //Verifica se existem filtros com valores
+            if (Object.keys(filters).length > 0) {
+                queryBuilder.addFilter("ite", "cdg_pedido", filters.requestCode, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("ite", "cdg_cliente", filters.clientCode, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("ite", "cdg_item", filters.code, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("ite", "cdg_produto", filters.productCode, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("pro", "nom_produto", filters.productName);
+                queryBuilder.addFilter("ite", "cdg_grade", filters.gradeCode, queryBuilder.COLUMN_TYPE.NUMBER);
+            }
+        }
+
+        //Objeto de retorno
+        return queryBuilder.executeBuilder(Sequelize);
     }
 };
 
 module.exports = ItemRequestDefinition;
+
+var getSelecetRequestItem = function () {
+    return "select ite.cdg_item \"itemCode\""
+       +   ", ite.cdg_produto \"productCode\""
+       +   ", pro.nom_produto \"productName\""
+       +   ", ite.vlr_atribuido \"productValue\""
+       +   ", ite.qtd_grade   \"quantity\""
+       +   ", ite.cdg_grade	 \"gradeCode\""
+       +   ", gra.dsc_grade	\"gradeDesc\""
+       +   ", gra.qtd_minima * ite.qtd_grade * ite.vlr_atribuido \"totalValue\""
+       +   " from \"Items_pedidos\" ite"
+       +   " inner join \"Produtos\" pro"
+       +   " on pro.cdg_produto = ite.cdg_produto"
+       +   " inner join \"Grades\" gra"
+       +   " on gra.cdg_grade = ite.cdg_grade";
+}

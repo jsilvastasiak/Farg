@@ -64,6 +64,13 @@ Client.prototype = {
         });
     },
 
+    getMail: function (code) {
+        return this.definition.findOne({
+            attributes: [['nom_cliente', 'clientName'], ['end_email', 'clientMail']],
+            where: { cdg_cliente: code }
+        });
+    },
+
     getClientList: function (parans) {
         var queryBuilder = new QueryBuilder(getSelectClients(), false, parans);
 

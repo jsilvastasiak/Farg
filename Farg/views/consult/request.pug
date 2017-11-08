@@ -1,0 +1,17 @@
+﻿extends ../master/master.pug
+
+append infoPage
+    title Pedidos
+
+append scripts
+    script(src='/javascripts/consult/request.js')       
+    script(src='/javascripts/consult/request-control.js')
+    script(src='/javascripts/consult/request-items.js')
+
+block content
+    div.panel.panel-default(ng-controller="tabManager")
+        uib-tabset.tab-control(active="activeForm")
+            uib-tab(index="0", heading="Pedidos", disable="!TabManager.getTab('Request').status")
+                request-control
+            uib-tab(index="1", heading="Items", disable="!TabManager.getTab('Items').status", select="onSelect()")        
+                request-items

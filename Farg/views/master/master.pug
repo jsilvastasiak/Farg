@@ -85,6 +85,12 @@ body(ng-app="currentApp", ng-controller="masterCtrl", onload="page.start()")
                                     a(href="/basicregistration/categorys") Categorias
                                 li
                                     a(href="/basicregistration/products") Produtos
+                        li.dropdown
+                            a.dropdown-toggle(data-toggle="dropdown", href="#") Consultas
+                                span.caret
+                            ul.dropdown-menu
+                                li
+                                    a(href="/consult/request") Pedidos
                         li
                             a(href="/client/products") Catálogo
                     ul.nav.navbar-nav.navbar-right                        

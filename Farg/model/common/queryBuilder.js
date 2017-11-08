@@ -86,7 +86,8 @@ QueryBuilder.prototype = {
 
             //Tratamento para data
             if (colType === this.COLUMN_TYPE.DATE) {
-                clause = "DATE_TRUNC('day', " + alias + "." + colName + ") = TO_DATE(:" + alias + colName + ", 'DD/MM/yyyy')";
+                clause = "DATE_TRUNC('day', " + alias + "." + colName + ") = TO_DATE(:" + alias + colName + ", 'YYYY-MM-DD')";
+                objectFilter.value = new Date(value).toLocaleDateString();
             }
             else if (colType === this.COLUMN_TYPE.TEXT) {
                 clause = "UPPER(" + alias + "." + colName + ") like (UPPER(:" + alias + colName + "))";            

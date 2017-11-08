@@ -22,6 +22,7 @@ var product = require('./model/productModel');
 var grade = require('./model/gradeModel');
 var productImage = require('./model/productImageModel');
 var requestItems = require('./model/requestItemsModel');
+var parameters = require('./model/parametersModel');
 
 (new userModel()).getDefinition();
 (new clientModel()).getDefinition();
@@ -33,6 +34,7 @@ var requestItems = require('./model/requestItemsModel');
 (new grade()).getDefinition();
 (new productImage()).getDefinition();
 (new requestItems()).getDefinition();
+(new parameters()).getDefinition();
 
 var app = express();
     
@@ -59,6 +61,9 @@ var products = require('./routes/basicregistration/products');
 var productImages = require('./routes/basicregistration/product-images');
 var clientProducts = require('./routes/client/client-product');
 var clientCar = require('./routes/client/client-car');
+
+var request = require('./routes/consult/request');
+
 var cadastro = require('./routes/cadastro');
 
 // view engine setup
@@ -87,6 +92,8 @@ app.use('/basicregistration/products', products);
 
 app.use('/client/products', clientProducts);
 app.use('/client/car', clientCar);
+
+app.use('/consult/request', request);
 
 app.use('/basicregistration/products/images', productImages);
 

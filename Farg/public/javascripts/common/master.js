@@ -198,12 +198,12 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
     //Retira problema de undefined das variáveis
     $scope.getValueOrDefault = function (property) {
         if (property) {
-            if (typeof property === "object")
-                if (property.toLocaleDateString)
-                    return property.toLocaleDateString();
-                else
-                    return property;
-            else
+            //if (typeof property === "object")
+            //    if (property.toLocaleDateString)
+            //        return property.toLocaleDateString();
+            //    else
+            //        return property;
+            //else
                 return property;
         }
 
@@ -428,6 +428,12 @@ angular.module("currentApp").factory("UploadCtrl", ['uiUploader', '$log', functi
 angular.module("currentApp").factory("Utils", function ($window, $http) {
     var messageListener = [];
 
+    var callMessagesListeners = function (message, type) {
+        messageListener.forEach(function (el) {
+            el(message, type);
+        });
+    }
+
     return {        
 
         URL: function (a) {
@@ -458,18 +464,23 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
             return null;
         },
 
+        toMessage: function (message, type) {            
+            callMessagesListeners(message, type);
+        },
+
         get: function (path, data, next, nextErr) {
             var parameters = data;
             var config = { params: parameters };
 
             $http.get(path, config).then(function (res) {
-                next(res);
-            }).catch(function (res) {
-                //$scope.showMessageUser({
-                //    message: res.data,
-                //    type: 'danger'
-                //});
-                nextErr(res.data);
+                if(next)
+                    next(res);
+            }).catch(function (res) {                
+                if (nextErr)
+                    nextErr(res.data);
+                else {
+                    callMessagesListeners(res.data, 'danger');
+                }
             });
         },
 
@@ -484,6 +495,9 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
                 //});
                 if (nextErr)
                     nextErr(res.data);
+                else {
+                    callMessagesListeners(res.data, 'danger');
+                }
             });
         },
 
@@ -491,14 +505,9 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
             messageListener.push(listener);
         },
 
-        toMessage: function (message, type) {
-            messageListener.forEach(function (el) {
-                el(message, type);
-            });
-        },
 
         toMoney: function (value, symbol) {
-            var newValue = value.toFixed(2);
+            var newValue = typeof(value) !== "string" ? value.toFixed(2) : value;
             newValue = newValue.replace('.', ',');
 
             return (symbol ? symbol + " " : "") + newValue;

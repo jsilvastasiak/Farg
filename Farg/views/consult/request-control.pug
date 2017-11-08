@@ -1,0 +1,68 @@
+﻿div.table-responsive.table-large
+    table.table.table-hover.table-striped.table-condensed(ng-controller="tblRequest", ng-model="dtRequest")
+        thead
+            tr
+                th.col-sm-3-grid
+                    button.btn-find-min(type="button", ng-click="findProduct()", title="Encontrar")                
+                th.col-sm-4-grid(header-grid, header-text="Código", field-order="code", width="75")
+                th.col-sm-3(header-grid, header-text="Cliente", field-order="clientName") 
+                th.col-sm-4-grid.align-center(header-grid, header-text="Status", field-order="statusDesc", width="200") 
+                th.col-sm-4-grid(header-grid, header-text="Representante", field-order="agentName", width="200")
+                th.col-sm-4-grid(header-grid, header-text="Forma Pagamento", field-order="paymentFormDesc", width="150")
+                th.col-sm-4-grid(header-grid, header-text="Data Pedido", field-order="requestDate", width="100")
+        tbody
+            tr.tr-vertical-align-middle(ng-repeat="request in dtRequest.List", ng-click="tblRequest_OnSelectedRow(request)", selectable-row)
+                td &nbsp
+                td.align-rigth {{request.code}}
+                td {{request.clientName}}    
+                td.align-center
+                    select.form-control(id="dbStatus", name="dbStatus", ng-model="request.status", ng-change="statusChanged(request)", ng-disabled="!canEdit")
+                        option(ng-repeat="status in statusOptions", value="{{status.domainValue}}" ) {{status.domainMeaning}}
+                td {{request.agentName}} 
+                td {{request.paymentFormDesc}} 
+                td {{request.requestDate}}                
+
+ul.pagination-sm.pager-style(uib-pagination, total-items="getPagerInfo('pgRequest').bigTotalItems", ng-model="getPagerInfo('pgRequest').bigCurrentPage"
+, max-size="5", boundary-links="true", force-ellipses="true", boundary-link-numbers="true", items-per-page="itemsPerPage", ng-change="pageChanged('pgRequest')")
+
+div.modal-demo
+    script(type="text/ng-template", id="myRequest.html")
+        div.modal-header
+            h3.modal-title {{titleModal}}
+        div.modal-body(id="modal-body")
+            form.form-horizontal(name="frmRequest")
+                div.form-group
+                    label.control-label.col-sm-4 Pedido
+                    div.col-sm-7
+                        input.form-control(type="number", name="iptCode", ng-model="code")
+                        
+                div.form-group
+                    label.control-label.col-sm-4 Cód. Cliente
+                    div.col-sm-7
+                        input.form-control(type="number", name="iptClientCode", ng-model="clientCode")
+
+                div.form-group
+                    label.control-label.col-sm-4 Cliente
+                    div.col-sm-7
+                        input.form-control(type="text", name="iptClientName", ng-model="clientName")
+                
+                div.form-group
+                    label.control-label.col-sm-4(for="dbStatus") Status
+                    div.col-sm-7
+                        select.form-control(id="dbStatus", name="dbStatus", ng-model="status")
+                            option(ng-repeat="status in statusOptions", value="{{status.domainValue}}" ) {{status.domainMeaning}}
+                
+                div.form-group
+                    label.control-label.col-sm-4(for="dbPaymentForm") Forma Pagamento
+                    div.col-sm-7
+                        select.form-control(id="dbPaymentForm", name="dbPaymentForm", ng-model="paymentFormCode")
+                            option(ng-repeat="paymentForm in paymentFormOptions", value="{{paymentForm.code}}" ) {{paymentForm.descForm}}
+                
+                div.form-group
+                    label.control-label.col-sm-4 Data Cadastro
+                    div.col-sm-7
+                        input.form-control(ui-date="dateOptions", name="iptRequestDate", ng-model="requestDate")
+                                            
+        div.modal-footer
+            button.btn.btn-primary(type="button", ng-click="save(frmRequest)") Buscar
+            button.btn.btn-warning(type="button", ng-click="cancel()") Cancelar
