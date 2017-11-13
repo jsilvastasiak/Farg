@@ -74,6 +74,20 @@ angular.module("currentApp").controller("clientProductInfo", function ($scope, U
             return 0;
     };
 
+    $scope.gradeOptionLoad = function (product) {
+        if (!product.gradesOptions) {
+            Utils.get('/client/products/getProductGradeOptions', {
+                product: {
+                    code: product.productCode
+                }
+            }, function (res) {
+                if (res.data) {
+                    product.gradesOptions = res.data.result;                   
+                }
+            });
+        }
+    };
+
     $scope.dtGrades.dataBind();
     $scope.dtImages.dataBind();
     $scope.dtInfo.dataBind();

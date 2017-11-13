@@ -37,8 +37,9 @@ block content
                         label(name="lblValue") Preço: {{ "R$ " + getProductValue(product).toString() }}
                         br
                         label Grade:
-                        select.form-control(id="dbGrade", name="dbGrade", ng-model="product.selectedGrade", ng-change="alteredGrade(product)")
-                            option(ng-repeat="grade in dtGrades.List", value="{{grade.gradeCode}}") {{grade.descGrade}}
+                        select.form-control(id="dbGrade", name="dbGrade", ng-model="product.selectedGrade", ng-change="alteredGrade(product)"
+                            , ng-focus="gradeOptionLoad(product)")
+                            option(ng-repeat="grade in product.gradesOptions", value="{{grade.gradeCode}}") {{grade.descGrade}}
                         label(name="lblMin", ng-show="hasSelectedGrade(product)")  Items por grade {{ getQuantity(product) }}
                         br
                         label Qtd. Grade:

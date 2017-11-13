@@ -11,6 +11,14 @@ router.get('/', auth.isAuthenticated, function (req, res) {
     res.render('basicregistration/grades', { title: 'Grades' });
 });
 
+router.get('/grades-control', auth.isAuthenticated, function (req, res) {
+    res.render('basicregistration/grades-control');
+});
+
+router.get('/product-grade', auth.isAuthenticated, function (req, res) {
+    res.render('basicregistration/product-grade');
+});
+
 /* GET users listing. */
 router.get('/getGradesList', auth.isAuthenticated, function (req, res) {
 

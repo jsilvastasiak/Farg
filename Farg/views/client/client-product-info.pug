@@ -35,8 +35,9 @@ block content
                     div.form-group
                         label.control-label.col-sm-1 Grade:
                         div.col-sm-3
-                            select.form-control(id="dbGrade", name="dbGrade", ng-model="product.selectedGrade", ng-change="alteredGrade(product)")
-                                option(ng-repeat="grade in dtGrades.List", value="{{grade.gradeCode}}") {{grade.descGrade}}
+                            select.form-control(id="dbGrade", name="dbGrade", ng-model="product.selectedGrade", ng-change="alteredGrade(product)"
+                                , ng-focus="gradeOptionLoad(product)")
+                                option(ng-repeat="grade in gradesOptions", value="{{grade.gradeCode}}") {{grade.descGrade}}
                             span(name="lblMin", ng-show="hasSelectedGrade(product)", style="display: inline") Items por grade {{ getQuantity(product) }}
                     div.form-group
                         label.control-label.col-sm-2 Quantidade:

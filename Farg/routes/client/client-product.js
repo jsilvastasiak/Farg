@@ -84,6 +84,34 @@ router.get('/getGradesOptions', auth.isAuthenticated, function (req, res) {
     });    
 });
 
+router.get('/getProductGradeOptions', auth.isAuthenticated, function (req, res) {
+
+    if (req.query.product) {
+        var grade = new Grade();
+        var paransQuery = JSON.parse(req.query.product);
+        paransQuery.idcActive = 'A';
+    
+        grade.getProductGrades(paransQuery).then(function (gradesList) {
+            var result = {};
+            if (gradesList) {
+                result = paransBuilder.createParansResponse(gradesList, req);
+            }
+
+            res.send(result);
+            res.end();
+        }).catch(function (err) {
+            console.log(err);
+            res.send({
+                message: err.message,
+                type: 'danger'
+            });
+            res.end();
+        });
+    } else {
+        res.end();
+    }
+});
+
 /* GET users listing. */
 router.get('/getCategorys', auth.isAuthenticated, function (req, res) {
 

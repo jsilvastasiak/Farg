@@ -1,4 +1,4 @@
-﻿angular.module("currentApp").controller("clientProducts", function ($scope, $http, $uibModal, $location, ClientCar) {
+﻿angular.module("currentApp").controller("clientProducts", function ($scope, Utils, $uibModal, $location, ClientCar) {
     const pagerProductsId = 'pgProducts';
 
     $scope.dtProducts = new $scope.ObjectDataSource('dtProducts', $scope, '/client/products/getProductsList', pagerProductsId);
@@ -87,6 +87,21 @@
 
         $scope.dtProducts.setFilters({ categoryCode: category.code });
         $scope.dtProducts.dataBind();
+    };
+
+    $scope.gradeOptionLoad = function (product) {
+        if (!product.gradesOptions) {
+            Utils.get('/client/products/getProductGradeOptions', {
+                product: {
+                    code: product.productCode
+                }
+            }, function (res) {
+                if (res.data) {
+                    product.gradesOptions = res.data.result;
+                    product.showGradeOption = true;
+                }
+            });
+        }
     };
 
     $scope.dtProducts.dataBind();

@@ -1,0 +1,35 @@
+﻿div.table-responsive.table-large
+    table.table.table-hover.table-striped.table-condensed(ng-controller="tblProductGrade", ng-model="dtProductGrade")
+        thead
+            tr
+                th.col-sm-3-grid
+                    button.btn-find-min(type="button", ng-click="findStatus()", title="Encontrar")                
+                th.col-sm-4-grid(header-grid, header-text="Produto", field-order="productCode", width="50")
+                th.col-sm-3(header-grid, header-text="Nome", field-order="productName") 
+                th.col-sm-3.align-center(header-grid, header-text="Habilitado", width="100")                
+        tbody
+            tr(ng-repeat="grade in dtProductGrade.List")
+                td &nbsp
+                td.align-rigth {{grade.productCode}}
+                td {{grade.productName}}
+                td.align-center
+                    input(type="checkbox", name="chIdcEnable", ng-checked="getValue(grade.idcEnable)", ng-click="updateStatus(grade)")
+
+ul.pagination-sm.pager-style(uib-pagination, total-items="getPagerInfo('pgProductGrade').bigTotalItems", ng-model="getPagerInfo('pgProductGrade').bigCurrentPage"
+, max-size="5", boundary-links="true", force-ellipses="true", boundary-link-numbers="true", items-per-page="itemsPerPage", ng-change="pageChanged('pgProductGrade')")
+
+div.modal-demo
+    script(type="text/ng-template", id="myProductGrade.html")
+        div.modal-header
+            h3.modal-title {{titleModal}}
+        div.modal-body(id="modal-body")
+            form.form-horizontal(name="frmProductGrade")
+                div.form-group
+                    label.control-label.col-sm-4 Habilitado
+                    div.checkbox
+                        label
+                            input(type="checkbox", name="chIdcEnable", ng-model="idcEnable")
+                            
+        div.modal-footer
+            button.btn.btn-primary(type="button", ng-click="save(frmProductGrade)") Buscar
+            button.btn.btn-warning(type="button", ng-click="cancel()") Cancelar

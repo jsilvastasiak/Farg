@@ -11,7 +11,7 @@ declare
 	ww_cdg_usuario integer;
 
 begin
-  INSERT INTO public."Usuarios"(cdg_usuario
+  INSERT INTO "Usuarios"(cdg_usuario
                                 , nom_login
                                 , snh_usuario
                                 , idc_administrador
@@ -31,7 +31,7 @@ begin
             , Current_date) returning cdg_usuario into ww_cdg_usuario;
   
   if ww_cdg_usuario is not null then
-      INSERT INTO public."Clientes"(cdg_cliente
+      INSERT INTO "Clientes"(cdg_cliente
                                     , nom_cliente
                                     , tip_pessoa
                                     , per_desconto

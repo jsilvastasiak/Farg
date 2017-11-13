@@ -63,6 +63,30 @@ Grade.prototype = {
 
         //Objeto de retorno
         return queryBuilder.executeBuilder(Sequelize);
+    },
+
+    getProductGrades: function (parans) {
+        var queryBuilder = new QueryBuilder(getSelectProductGrades(), false, parans);
+
+        if (parans.filters) {
+            var filters = JSON.parse(parans.filters);
+            //Verifica se existem filtros com valores
+            if (Object.keys(filters).length > 0) {
+                queryBuilder.addFilter("gra", "cdg_grade", filters.gradeCode, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("gra", "dsc_grade", filters.descGrade);
+                queryBuilder.addFilter("gra", "per_desconto", filters.discountValue, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("gra", "qtd_minima", filters.minQuantity, queryBuilder.COLUMN_TYPE.NUMBER);
+                queryBuilder.addFilter("gra", "idc_ativo", filters.idcActive);
+            }
+        }
+
+        if (parans.idcActive)
+            queryBuilder.addFilter("gra", "idc_ativo", parans.idcActive);
+
+        //Objeto de retorno
+        return queryBuilder.executeBuilder(Sequelize, {
+            "cdg_produto": parans.code
+        });
     }
 };
 
@@ -70,9 +94,22 @@ module.exports = Grade;
 
 var getSelectGrades = function () {
     return "select gra.cdg_grade \"gradeCode\""
-         + "     , gra.dsc_grade \"descGrade\""
-         + "     , gra.per_desconto \"discountValue\""
-         + "     , gra.qtd_minima \"minQuantity\""
-         + "     , gra.idc_ativo \"idcActive\""
-         + " from \"Grades\" gra";
-}
+        + "     , gra.dsc_grade \"descGrade\""
+        + "     , gra.per_desconto \"discountValue\""
+        + "     , gra.qtd_minima \"minQuantity\""
+        + "     , gra.idc_ativo \"idcActive\""
+        + " from \"Grades\" gra";
+};
+
+var getSelectProductGrades = function () {
+    return "select gra.cdg_grade \"gradeCode\""
+        + ", gra.dsc_grade \"descGrade\""
+        + ", gra.per_desconto \"discountValue\""
+        + ", gra.qtd_minima \"minQuantity\""
+        + ", gra.idc_ativo \"idcActive\""
+        + " from \"Grades\" gra"
+        + " inner join \"Grade_produtos\" pro"
+        + " on pro.cdg_grade = gra.cdg_grade"
+        + " and pro.cdg_produto = :cdg_produto"
+        + " and pro.idc_habilitado = 'S'";
+};

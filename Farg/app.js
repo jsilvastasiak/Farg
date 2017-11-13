@@ -23,6 +23,7 @@ var grade = require('./model/gradeModel');
 var productImage = require('./model/productImageModel');
 var requestItems = require('./model/requestItemsModel');
 var parameters = require('./model/parametersModel');
+var productGrade = require('./model/productGradeModel');
 
 (new userModel()).getDefinition();
 (new clientModel()).getDefinition();
@@ -35,6 +36,7 @@ var parameters = require('./model/parametersModel');
 (new productImage()).getDefinition();
 (new requestItems()).getDefinition();
 (new parameters()).getDefinition();
+(new productGrade()).getDefinition();
 
 var app = express();
     
@@ -59,6 +61,7 @@ var formPayments = require('./routes/basicregistration/form-payments');
 var categorys = require('./routes/basicregistration/categorys');
 var products = require('./routes/basicregistration/products');
 var productImages = require('./routes/basicregistration/product-images');
+var productGrade = require('./routes/basicregistration/product-grade');
 var clientProducts = require('./routes/client/client-product');
 var clientCar = require('./routes/client/client-car');
 
@@ -89,13 +92,14 @@ app.use('/basicregistration/grades', grades);
 app.use('/basicregistration/form-payments', formPayments);
 app.use('/basicregistration/categorys', categorys);
 app.use('/basicregistration/products', products);
+app.use('/basicregistration/products/images', productImages);
+app.use('/basicregistration/grades/products', productGrade);
 
 app.use('/client/products', clientProducts);
 app.use('/client/car', clientCar);
 
 app.use('/consult/request', request);
 
-app.use('/basicregistration/products/images', productImages);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
