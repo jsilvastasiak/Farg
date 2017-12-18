@@ -1,5 +1,6 @@
 ﻿angular.module("currentApp").controller("clientProducts", function ($scope, Utils, $uibModal, $location, ClientCar) {
     const pagerProductsId = 'pgProducts';
+    $scope.dbGradeId = 'dbGrade';
 
     $scope.dtProducts = new $scope.ObjectDataSource('dtProducts', $scope, '/client/products/getProductsList', pagerProductsId);
     $scope.dtGrades = new $scope.ObjectDataSource('dtGrades', $scope, '/client/products/getGradesOptions');
@@ -97,8 +98,7 @@
                 }
             }, function (res) {
                 if (res.data) {
-                    product.gradesOptions = res.data.result;
-                    product.showGradeOption = true;
+                    product.gradesOptions = res.data.result;                                        
                 }
             });
         }

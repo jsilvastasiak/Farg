@@ -69,21 +69,21 @@ body(ng-app="currentApp", ng-controller="masterCtrl", onload="page.start()")
                     ul.nav.navbar-nav
                         li.active
                             a(href="/") Home
-                        li.dropdown
+                        li.dropdown(ng-show="user.isAdmin || user.isAgent")
                             a.dropdown-toggle(data-toggle="dropdown", href="#") Cadastros
                                 span.caret
                             ul.dropdown-menu
-                                li
+                                li(ng-show="user.isAdmin")
                                     a(href="/basicregistration/users") Usuários
                                 li
                                     a(href="/basicregistration/clients") Clientes
-                                li
+                                li(ng-show="user.isAdmin")
                                     a(href="/basicregistration/grades") Grades
-                                li
+                                li(ng-show="user.isAdmin")
                                     a(href="/basicregistration/form-payments") Formas Pagamento
-                                li
+                                li(ng-show="user.isAdmin")
                                     a(href="/basicregistration/categorys") Categorias
-                                li
+                                li(ng-show="user.isAdmin")
                                     a(href="/basicregistration/products") Produtos
                         li.dropdown
                             a.dropdown-toggle(data-toggle="dropdown", href="#") Consultas
@@ -91,7 +91,7 @@ body(ng-app="currentApp", ng-controller="masterCtrl", onload="page.start()")
                             ul.dropdown-menu
                                 li
                                     a(href="/consult/request") Pedidos
-                        li
+                        li(ng-show="user.isClient")
                             a(href="/client/products") Catálogo
                     ul.nav.navbar-nav.navbar-right                        
                         li.dropdown
@@ -100,7 +100,7 @@ body(ng-app="currentApp", ng-controller="masterCtrl", onload="page.start()")
                             ul.dropdown-menu
                                 li
                                     a(href="/logout") Sair                                
-                        li.dropdown
+                        li.dropdown(ng-show="user.isClient")
                             a.dropdown-toggle(data-toggle="dropdown", href="#")
                                 span.glyphicon.glyphicon-shopping-cart
                             ul.dropdown-menu

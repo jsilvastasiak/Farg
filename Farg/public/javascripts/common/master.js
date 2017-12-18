@@ -6,6 +6,12 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
     $scope._listsToPage = [];
     $scope._datasources = [];
     $scope.itemsPerPage = 30;
+    /**Informações do usuário logado*/
+    $scope.user = {
+        isAdmin: false,
+        isAgent: false,
+        isClient: false
+    };
 
     $scope.dateOptions = {
         dateFormat: "dd/mm/yyyy",
@@ -204,7 +210,7 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
             //    else
             //        return property;
             //else
-                return property;
+            return property;
         }
 
         return null;
@@ -218,10 +224,16 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
         }
         return r;
     },
-
+        
     //Listeners de factorings
     Utils.addMessageListener(function (message, type) {
         $scope.showMessageUser({ message: message, type: type });
+    });
+    //Busca informações do usuário logado
+    Utils.get('/getProfile', null, function (res) {
+        if (res.data) {
+            $scope.user = res.data;
+        }
     });
 });
 
@@ -505,12 +517,20 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
             messageListener.push(listener);
         },
 
-
         toMoney: function (value, symbol) {
             var newValue = typeof(value) !== "string" ? value.toFixed(2) : value;
             newValue = newValue.replace('.', ',');
 
             return (symbol ? symbol + " " : "") + newValue;
+        },
+
+        /**Formata string na máscar passada*/
+        format: function format(mask, number) {
+            var s = '' + (number ? number : ""), r = "";
+            for (var im = 0, is = 0; im < mask.length && is < s.length; im++) {
+                r += mask.charAt(im) == 'X' ? s.charAt(is++) : mask.charAt(im);
+            }
+            return r;
         }
     }
 });

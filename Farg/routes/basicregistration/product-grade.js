@@ -37,7 +37,7 @@ router.post('/updateStatus', auth.isAuthenticated, function (req, res) {
             defaults: { idc_habilitado: req.body.productGrade.idcEnable }
         }).spread(function (grade, created) {
             if (!created) {
-                user.updateAttributes({
+                grade.updateAttributes({
                     idc_habilitado: req.body.productGrade.idcEnable
                 }).then(function () {
                     res.send(paransBuilder.updateMessageToResponse());
@@ -47,7 +47,17 @@ router.post('/updateStatus', auth.isAuthenticated, function (req, res) {
                 res.send(paransBuilder.updateMessageToResponse());
                 res.end();
             }
-        })
+        }).catch(function (err) {
+            //Este erro que esta acontencendo, segundo pesquisas na internet é um bug do sequelize
+            //Este método tenta acessar a primeira linha da query que ele faz para ver se o registro ja existe
+            //E acaba dando esse erro.
+            //Mas o trabalho necessário já foi feito, provavelmente...
+            if (err.message === "Cannot read property '0' of undefined")
+                res.send(paransBuilder.updateMessageToResponse());
+            else
+                res.send(paransBuilder.updateMessageToResponse(err))
+            res.end();
+        });
     });    
 });
 

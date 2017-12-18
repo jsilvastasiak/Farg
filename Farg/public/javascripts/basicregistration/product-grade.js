@@ -45,7 +45,7 @@ angular.module("currentApp").controller("tblProductGrade", function ($scope, Uti
             productGrade: {
                 productCode: grade.productCode,
                 gradeCode: grade.gradeCode,
-                idcEnable: grade.idcEnable
+                idcEnable: $scope.getValue(grade.idcEnable) ? false : true
             }
         }, function (res) {
             if(res.data)

@@ -90,10 +90,12 @@ var getSelectGrades = function () {
         +  " (select gra.idc_habilitado"
         +  " from \"Grade_produtos\" gra"
         +  " where gra.cdg_produto = pro.cdg_produto"
-        +  " and gra.cdg_grade = :gradeCode), 'N') \"idcEnable\""
+        + " and gra.cdg_grade = :gradeCode), 'N') \"idcEnable\""
+        + ", :gradeCode \"gradeCode\""
         + ", pro.cdg_produto \"productCode\""
-        + ", pro.nom_produto \"productName\""        
+        + ", pro.nom_produto \"productName\""
         + " from \"Produtos\" pro"
         + " left outer join \"Grade_produtos\" gra"
-        + " on gra.cdg_produto = pro.cdg_produto";
+        + " on gra.cdg_produto = pro.cdg_produto"
+        + " and gra.cdg_grade = :gradeCode";
 }

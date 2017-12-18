@@ -18,14 +18,11 @@ router.get('/login', function (req, res) {
 
 router.get('/getProfile', auth.isAuthenticated, function (req, res) {
 
-    if (req.session.loggeduser.isAdmin)
-        res.send({ profile: 'Administrador' });
-
-    if (req.session.loggeduser.isAgent)
-        res.send({ profile: 'Representante' });
-
-    if (req.session.loggeduser.isClient)
-        res.send({ profile: 'Cliente' });
+    res.send({
+        isAdmin: req.session.loggeduser.isAdmin,
+        isAgent: req.session.loggeduser.isAgent,
+        isClient: req.session.loggeduser.isClient
+    });
 
     res.end();
 });
