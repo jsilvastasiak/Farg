@@ -113,3 +113,17 @@ body {
 .input-login{
     text-transform: uppercase;
 }
+input.ng-invalid {
+    border-color: red;
+    border-width: 2px;
+}
+.iptLogin {
+    text-transform: uppercase;
+}
+form > .messageForm, form > .form-group > .messageForm {
+    font-size: 10.5px;
+    color: red;
+    display: block;
+    position: relative;
+    margin-top: -15px;
+}

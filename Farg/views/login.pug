@@ -1,17 +1,10 @@
-﻿extends master/master.pug
+﻿title Login
 
-append infoPage
-    title Login
+link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.min.css')
 
-append styles
-    link(rel='stylesheet', href='/stylesheets/login.css')
+link(rel='stylesheet', href='/stylesheets/login.css')
 
-append scripts
-    script(src='/javascripts/login.js')
-
-block nav
-
-block content
+body
     div(ng-app="loginFormApp")
         div.login-page
             div.form       
@@ -25,3 +18,10 @@ block content
                     span.messageForm(ng-show="frmLogin.password.$touched && frmLogin.password.$invalid") "Senha" é um campo de preenchimento obrigatório
 
                     button.btn.btn-primary(ng-click="doLogin(frmLogin)", ng-disabled="frmLogin.$invalid") login
+
+    //AngularJS
+    script(src="/bower_components/angular/angular.js")  
+    script(src='/javascripts/login.js')
+
+    //Boostrap
+    script(src='/bower_components/bootstrap/dist/js/bootstrap.min.js')

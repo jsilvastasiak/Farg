@@ -1,5 +1,5 @@
 ﻿body {
-    padding: 10px;
+    padding: 0px;
     height: 100%;
     font: 14px Open Sans, HelveticaNeue, "Lucida Grande", Helvetica, Arial, sans-serif;
 }
@@ -94,10 +94,6 @@ footer {
 .pager-style{
     clear: both;
     float: right;
-}
-
-.iptLogin {
-    text-transform: uppercase;
 }
 
 form > .messageForm, form > .form-group > .messageForm{

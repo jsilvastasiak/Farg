@@ -21,7 +21,9 @@ router.get('/getProfile', auth.isAuthenticated, function (req, res) {
     res.send({
         isAdmin: req.session.loggeduser.isAdmin,
         isAgent: req.session.loggeduser.isAgent,
-        isClient: req.session.loggeduser.isClient
+        isClient: req.session.loggeduser.isClient,
+        clientName: req.session.loggeduser.clientName,
+        clientMail: req.session.loggeduser.clientMail
     });
 
     res.end();
