@@ -88,9 +88,11 @@ router.get('/getPaymentFormList', auth.isAuthenticated, function (req, res) {
         }
 
         var clientSession = new ClientSession(req);
+        var selectedPaymentForm = clientSession.getPaymentFormSelected();
+        var selectedPaymentCode = selectedPaymentForm ? selectedPaymentForm.code : null;
 
         for (var i = 0; i < result.result.length; i++) {
-            result.result[i].isSelected = result.result[i].code === clientSession.getPaymentFormSelected().code;
+            result.result[i].isSelected = result.result[i].code === selectedPaymentCode;
         }
 
         res.send(result);

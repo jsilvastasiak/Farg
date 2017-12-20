@@ -4,21 +4,40 @@ append infoPage
     title Produtos
 
 append scripts
+    script(src='/javascripts/common/paymentFormCtrl.js')
     script(src='/javascripts/client/client-products.js')
 
 append styles
     link(rel='stylesheet', href='/stylesheets/client-products.css')
 
+block custom-sidebar
+    ul.sidebar-menu(ng-controller="productCategorysCtrl", data-widget="tree")
+        li.header CATEGORIAS
+        li(ng-repeat="category in dtCategorys.List", ng-click="filterCategory(category)", ng-class="{ 'active': category.isSelected }")
+            a(href="#")
+                i.fa.fa-filter
+                span {{category.categoryName}}
+
 block content
     div.panel.panel-default(ng-controller="clientProducts")
-        div.row
-            div.col-xs-12.col-sm-3.col-lg-2.categorys-container
-                label Categorias:
-                ul.list-group
-                    li.list-group-item(ng-repeat="category in dtCategorys.List", ng-click="filterCategory(category)", ng-class="{ 'active' : category.isSelected }") {{category.categoryName}}
-            div.col-xs-6.col-sm-10.col-lg-9
-                div.payment-form-container
-                    form.form-horizontal(name="frmPaymentForm")
+        div.row         
+            div.col-xs-6.col-lg-4.total-info-container(ng-controller="PaymentFormCtrl")
+                div.small-box.bg-aqua
+                    div.inner
+                        table.total-info-table
+                            tbody
+                                tr
+                                    td Forma Pagamento:
+                                    td 
+                                        select.form-control(id="dbPaymentForm", name="dbPaymentForm", ng-model="paymentFormCode", ng-required="!isFind", ng-change="paymentFormSelected()")
+                                            option(ng-repeat="paymentForm in dtPaymentForm.List", value="{{paymentForm.code}}" ) {{paymentForm.descForm}}
+                                tr
+                                    td {{totalItems}} Produto(s)
+                                    td Total: {{toMoney(getTotalGeneral())}}
+                    div.icon
+                        i.fa.fa-shopping-cart
+
+                    //form.form-horizontal(name="frmPaymentForm")
                         div.form-group
                             div.col-sm-10
                                 label.control-label.col-sm-3 Formas de Pagamento
@@ -26,8 +45,8 @@ block content
                                 label.radio-inline(ng-repeat="paymentForm in dtPaymentForm.List")
                                     input(type="radio", name="iptPaymentForm", ng-click="paymentFormSelected(paymentForm)", ng-checked="$index === 0") 
                                     | {{paymentForm.descForm}}
-
-                div.col-lg-6.product-container(ng-repeat="product in dtProducts.List")
+            div.div-content
+                div.col-lg-3.product-container(ng-repeat="product in dtProducts.List")
                     div.item-checked-container(ng-show="product.inSession", ng-click="removeProduct(product)")              
                     div.product-image
                         img(ng-src="{{product.filename}}", ng-click="showInfo(product)")

@@ -6,7 +6,7 @@
 
     $scope.dtCarItems.addOnDataBound(function () {
         if ($scope.dtCarItems.List.length > 0) {
-            $scope.totalItems = $scope.dtCarItems.List.length;
+            //$scope.totalItems = $scope.dtCarItems.List.length;
             $scope.dtCarItems.List.forEach(function (el) {
                 el.gradeCode = el.gradeCode.toString();
             });
@@ -37,20 +37,7 @@
         var totalValue = item.quantity * ClientCar._getMinQuantity(product) * item.unitValue;
 
         return totalValue ? totalValue : null;
-    };
-
-    //Total geral do pedido
-    $scope.getTotalGeneral = function () {
-        var total = null;
-
-        if ($scope.dtCarItems.List.forEach) {
-            $scope.dtCarItems.List.forEach(function (el) {
-                total += $scope.getTotalValue(el);
-            });
-        }
-
-        return total;
-    };
+    };       
 
     $scope.getMinQuantity = function (item) {
         var product = new ClientCar.Product();

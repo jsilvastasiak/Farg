@@ -85,7 +85,7 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
     };
     //Função implementa lógica para receber o retorno das requisições no servidor
     $scope._posReqDataSource = function (res) {
-        if (res) {
+        if (res.data && !res.data.message) {
             var filter = $scope._datasources.filter(function (el) {
                 return el["id"] === res.data.datasourceId;
             });
@@ -99,6 +99,8 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
 
                 datasource._onDataBoundEvent();
             }
+        } else {
+            Utils.toMessage(res.data.message, res.data.type);
         }
     };
     
@@ -538,7 +540,7 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
 angular.module("currentApp").factory("ClientCar", ['Utils', function (Utils) {
     var _selectedPaymentForm = null;
     var dtGrades = null;
-    var carProductsInfoList = null;
+    var carProductsInfoList = null;    
     var product = function () {
         this.selectedGrade = null;
         this.unitValue = null;
@@ -549,8 +551,7 @@ angular.module("currentApp").factory("ClientCar", ['Utils', function (Utils) {
     product.prototype = {
 
     };
-
-
+    
     //Força pegar a forma de pagamento no servidor
     Utils.get('/client/products/getPaymentForm', null, function (res) {
         if (res.data) {
@@ -613,7 +614,10 @@ angular.module("currentApp").factory("ClientCar", ['Utils', function (Utils) {
         },
 
         _getMinQuantity: function (product) {
-            return this._getGradeItem(product.selectedGrade).minQuantity;
+            if (product.selectedGrade)
+                return this._getGradeItem(product.selectedGrade.toString()).minQuantity;
+            else
+                return null;
         },
 
         isValidProduct: function (product) {

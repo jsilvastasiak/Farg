@@ -1,32 +1,56 @@
-﻿angular.module("currentApp").controller("clientProducts", function ($scope, Utils, $uibModal, $location, ClientCar) {
+﻿//**Controle para chamar dataBind de outros objetos presentes em outro ng-controller
+angular.module("currentApp").factory("Bridge", function ($window, $http) {
+    var dataBindsControl = [];
+
+    return {
+        addDataBindControl: function (control) {
+            dataBindsControl.push(control);
+        },
+        dataBind: function (filters) {
+            for (var i = 0; i < dataBindsControl.length; i++) {
+                if (dataBindsControl[i].setFilters)
+                    dataBindsControl[i].setFilters(filters);
+                if (dataBindsControl[i].dataBind)
+                    dataBindsControl[i].dataBind();
+            }
+        }
+    };
+});
+
+angular.module("currentApp").controller("productCategorysCtrl", function ($scope, Bridge) {
+    $scope.dtCategorys = new $scope.ObjectDataSource('dtCategorys', $scope, '/client/products/getCategorys');
+
+    $scope.filterCategory = function (category) {
+        $scope.dtCategorys.List.forEach(function (el) { el.isSelected = false; });
+        category.isSelected = true;
+        
+        Bridge.dataBind({ categoryCode: category.code });
+    };
+
+    $scope.dtCategorys.dataBind();
+});
+
+angular.module("currentApp").controller("clientProducts", function ($scope, Utils, $uibModal, $location, ClientCar, Bridge) {
     const pagerProductsId = 'pgProducts';
     $scope.dbGradeId = 'dbGrade';
 
     $scope.dtProducts = new $scope.ObjectDataSource('dtProducts', $scope, '/client/products/getProductsList', pagerProductsId);
-    $scope.dtGrades = new $scope.ObjectDataSource('dtGrades', $scope, '/client/products/getGradesOptions');
-    $scope.dtCategorys = new $scope.ObjectDataSource('dtCategorys', $scope, '/client/products/getCategorys');
-    $scope.dtPaymentForm = new $scope.ObjectDataSource('dtPaymentForm', $scope, '/client/products/getPaymentFormOptions');
-    $scope.dtPaymentForm.addOnDataBound(function () {
-        if ($scope.dtPaymentForm.List.length > 0) {
-            $scope._selectedPaymentForm = $scope.dtPaymentForm.List[0];
-            ClientCar.setPaymentForm($scope.dtPaymentForm.List[0]);
-        }
-    });
+    //$scope.dtGrades = new $scope.ObjectDataSource('dtGradesProduct', $scope, '/client/products/getGradesOptions');    
+
+    //$scope.dtPaymentForm.addOnDataBound(function () {
+    //    if (!PaymentFormCtrl.getPaymentForm() && $scope.dtPaymentForm.List.length > 0) {
+    //        $scope.paymentFormCode = $scope.dtPaymentForm.List[0].code.toString();
+    //        //ClientCar.setPaymentForm($scope.dtPaymentForm.List[0]);
+    //        PaymentFormCtrl.setPaymentForm(selected[0]);
+    //    } else {
+    //        //$scope.paymentFormCode = ClientCar.getPaymentForm().code.toString();
+    //        $scope.paymentFormCode = PaymentFormCtrl.getPaymentForm().code.toString();
+    //    }
+    //});
     
     $scope.addPager(pagerProductsId, {
         changedCallback: $scope.dtProducts.dataBind
     });
-
-    $scope._getGradeItem = function (selectedCode) {
-        if ($scope.dtGrades.List && $scope.dtGrades.List.filter) {
-            var filter = $scope.dtGrades.List.filter(function (el) {
-                return el.gradeCode.toString() === selectedCode;
-            });
-
-            return filter.length > 0 ? filter[0] : {};
-        } else
-            return {};
-    }
 
     /*Cálculo de descontos no produto*/
     $scope.getProductValue = function (product) {
@@ -65,11 +89,7 @@
     $scope.isValidItem = function (product) {
         return ClientCar.isValidProduct(product);
     }
-
-    $scope.paymentFormSelected = function (paymentForm) {
-        ClientCar.setPaymentForm(paymentForm);
-    };    
-
+    
     $scope.addProduct = function (product) {        
         ClientCar.addProduct(product);
     };
@@ -81,15 +101,7 @@
     $scope.removeProduct = function (product) {        
         ClientCar.removeProduct(product);
     };
-
-    $scope.filterCategory = function (category) {
-        $scope.dtCategorys.List.forEach(function (el) { el.isSelected = false; });
-        category.isSelected = true;
-
-        $scope.dtProducts.setFilters({ categoryCode: category.code });
-        $scope.dtProducts.dataBind();
-    };
-
+    
     $scope.gradeOptionLoad = function (product) {
         if (!product.gradesOptions) {
             Utils.get('/client/products/getProductGradeOptions', {
@@ -103,10 +115,12 @@
             });
         }
     };
-
-    $scope.dtProducts.dataBind();
-    $scope.dtGrades.dataBind();
-    $scope.dtCategorys.dataBind();
-    ClientCar.setGrades($scope.dtGrades);
-    $scope.dtPaymentForm.dataBind();
+        
+    $scope.dtProducts.dataBind();    
+    //$scope.dtGrades.dataBind();
+    //Adiciona dataSource para ser chamado no Evento da Bridge
+    Bridge.addDataBindControl($scope.dtProducts);
+    
+    //ClientCar.setGrades($scope.dtGrades);
+    //$scope.dtPaymentForm.dataBind();
 });

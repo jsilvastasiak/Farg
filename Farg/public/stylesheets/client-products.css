@@ -1,6 +1,9 @@
-﻿.product-container {
-    max-width: 320px;
-    height: 340px;
+﻿.div-content{
+    clear: both;
+}
+.product-container {
+    max-width: 280px;
+    height: 275px;
     float: left;
     margin: 0;
     margin-left: 10px;
@@ -28,8 +31,8 @@
         text-align: center;
     }
 .product-image > img {
-    width: 280px;
-    height: 240px;
+    width: 200px;
+    height: 150px;
 }
 
 .product-info {
@@ -90,8 +93,6 @@
     color: darkgray;
 }
 
-@media all and (min-width:1200px){
-    .col-lg-9{
-        width: 82%;
-    }
+.total-info-table > tbody > tr > td {
+    padding: 3px;
 }

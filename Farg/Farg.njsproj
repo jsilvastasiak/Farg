@@ -127,6 +127,9 @@
     <Compile Include="public\javascripts\common\master.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="public\javascripts\common\paymentFormCtrl.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="public\javascripts\consult\request-control.js">
       <SubType>Code</SubType>
     </Compile>

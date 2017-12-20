@@ -4,6 +4,7 @@ append infoPage
     title Carrinho
 
 append scripts
+    script(src='/javascripts/common/paymentFormCtrl.js')
     script(src='/javascripts/client/client-car.js')
 
 append styles
@@ -42,13 +43,13 @@ block content
                                 td
                                     button.btn-dele-min(type="button", ng-click="deleteGrade(grade)", title="Remover este item do Carrinho")
 
-            div.col-xs-12.col-sm-12.col-lg-12.total-info-container(align="right")
+            div.col-xs-12.col-sm-12.col-lg-12.total-info-container(align="right", ng-controller="PaymentFormCtrl")
                 table
                     tbody
                         tr
                             td Forma Pagamento:
                             td 
-                                select.form-control(id="dbPaymentForm", name="dbPaymentForm", ng-model="paymentFormCode", ng-required="!isFind")
+                                select.form-control(id="dbPaymentForm", name="dbPaymentForm", ng-model="paymentFormCode", ng-required="!isFind", ng-change="paymentFormSelected()")
                                     option(ng-repeat="paymentForm in dtPaymentForm.List", value="{{paymentForm.code}}" ) {{paymentForm.descForm}}
                         tr
                             td {{totalItems}} Produto(s)
