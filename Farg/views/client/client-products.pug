@@ -57,8 +57,10 @@ block content
                         br
                         label Grade:
                         select.form-control(id="{{ dbGradeId }}", name="dbGrade", ng-model="product.selectedGrade", ng-change="alteredGrade(product)"
-                            , ng-focus="gradeOptionLoad(product)")
+                            , ng-focus="gradeOptionLoad(product, dbGradeId, $index)")
+                            option(value='0') Carregando
                             option(ng-repeat="grade in product.gradesOptions", value="{{grade.gradeCode}}") {{grade.descGrade}}
+                        span(load-icon)
                         label(name="lblMin", ng-show="hasSelectedGrade(product)")  Items por grade {{ getQuantity(product) }}
                         br
                         label Qtd. Grade:

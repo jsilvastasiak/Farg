@@ -100,10 +100,39 @@ function insertMessageToResponse(err) {
     return responseMessage;
 }
 
+/**
+ * Método executa método que implementam uma Promise e fazem seu tratamento de erros
+ * @param {object} req Objeto da request
+ * @param {object} res Objeto da response
+ * @param {function} promise Método que é uma Promise
+ * @param {object} parans Parâmetros que que serão passados para o método promise
+ * @param {function} success Função anonima para ser executada no caso de sucesso da Promise
+ * @param {boolean} closeResponse Flag indicando se em caso de erro fechar response para cliente
+ * @param {function} fail Função anonima para ser invocada caso a Promise der erro
+ */
+function executePromise(req, res, promise, parans, success, closeResponse, fail) {
+    promise(parans).then(function (result) {
+        success(result);
+    }).catch(function (err) {
+        if (err) {
+            res.status(500);
+            res.send({
+                message: err.message,
+                type: 'danger'
+            });
+            if (closeResponse)
+                res.end();
+        }
+        if (fail)
+            fail(err);
+    });
+}
+
 module.exports = {
     createParansModel: CreateParansModel,
     createParansResponse: createParansResponse,
     deleteMessageToResponse: deleteMessageToResponse,
     updateMessageToResponse: updateMessageToResponse,
-    insertMessageToResponse: insertMessageToResponse
+    insertMessageToResponse: insertMessageToResponse,
+    executePromise: executePromise    
 };

@@ -270,7 +270,7 @@ router.post('/addItem', auth.isAuthenticated, function (req, res) {
         }
         else {
             //Grava item para sessão
-            calculateItemToCar(req, function (item, err) {
+            calculateItemToCar(req, req.body.product, function (item, err) {
                 if (err)
                     res.send(err);
                 else {
@@ -296,7 +296,7 @@ router.post('/editItem', auth.isAuthenticated, function (req, res) {
     */
     if (req.body.product) {
         //Grava item para sessão
-        calculateItemToCar(req, function (item, err) {
+        calculateItemToCar(req, req.body.product, function (item, err) {
             if (err)
                 res.send(err);
             else {
@@ -333,25 +333,81 @@ router.post('/removeItem', auth.isAuthenticated, function (req, res) {
 });
 
 /* POST salva forma de pagamento selecionada na seção*/
-router.post('/setPaymentForm', auth.isAuthenticated, function (req, res) {
+router.post('/setPaymentForm', auth.isAuthenticated, function (req, res) {    
     if (req.body.paymentForm) {
         req.session.loggeduser.car.paymentForm = req.body.paymentForm;
+
+        var clientSession = new ClientSession(req);
+        var itemList = clientSession.getCarItemList();
+
+        if (itemList.length > 0) {
+            req.body.itensCarCount = itemList.length;
+            req.body.errors = [];
+            //Remove todos items do carrinho até o momento
+            clientSession.clearCarItems();
+
+            for (var i = 0; i < itemList.length; i++) {
+                var product = {
+                    code: itemList[i].productCode,
+                    quantity: itemList[i].quantity,
+                    paymentFormCode: req.body.paymentForm.code,
+                    gradeCode: itemList[i].gradeCode
+                };
+                calculateItemToCar(req, product, function (item, err) {
+                    if (err) {
+                        req.body.errors.push(err);
+                    }
+                    else {
+                        var clientSession = new ClientSession(req);
+                        clientSession.addCarItem(item);
+                    }
+
+                    req.body.itensCarCount--;
+                    if (req.body.itensCarCount === 0) {
+                        if (req.body.errors.length > 0) {
+                            res.status(500);
+                            res.send(req.body.errors[0]);
+                        }
+
+                        res.end();
+                    }
+                });
+            }
+        } else {
+            res.end();
+        }
+
+    } else {
+        res.end();
+    } 
+});
+//Capturar erros de código
+router.use(function (err, req, res, next) {
+    if (err) {
+        res.status(500);
+        res.send({
+            message: err.message,
+            type: 'danger'
+        });
+        res.end();
+    } else {
+        next();
     }
-    res.end();
 });
 
 module.exports = router;
 
-var calculateItemToCar = function (req, next) {
+var calculateItemToCar = function (req, product, next) {
     var parans = {
-        gradeCode: req.body.product.gradeCode,
-        quantity: req.body.product.quantity,
-        paymentFormCode: req.body.product.paymentFormCode
+        gradeCode: product.gradeCode,
+        quantity: product.quantity,
+        paymentFormCode: product.paymentFormCode
     };
 
-    var gradeCode = req.body.product.gradeCode;
-    var quantity = req.body.product.quantity;
-    var paymentFormCode = req.body.product.paymentFormCode;
+    var productCode = product.code;
+    var gradeCode = product.gradeCode;
+    var quantity = product.quantity;
+    var paymentFormCode = product.paymentFormCode;
 
     if (!gradeCode || !quantity || !paymentFormCode)
         next(null, {
@@ -362,7 +418,7 @@ var calculateItemToCar = function (req, next) {
         var product = new Product();
 
         product.getParansProduct({
-            code: req.body.product.code,
+            code: productCode,
             icmsCode: req.session.loggeduser.icmsCode,
             clientCode: req.session.loggeduser.clientCode,
             gradeCode: gradeCode,
@@ -379,10 +435,10 @@ var calculateItemToCar = function (req, next) {
                 var unitFinalValue = item.productValue - discountClient - discountGrade - discountPaymentForm;
 
                 next({
-                    productCode: req.body.product.code,
+                    productCode: productCode,
                     gradeCode: gradeCode,
                     quantity: quantity,
-                    unitValue: unitFinalValue,
+                    unitValue: parseFloat(unitFinalValue.toFixed(2)),
                     paymentForm: paymentFormCode
                 });
 

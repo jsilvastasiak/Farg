@@ -29,7 +29,11 @@
     margin-top: 5px;
 }
 
-.message-icon{
+.select-grade{
+    display: inline-block;
+    width: 85%;
+} 
+.message-icon {
     width: 25%;
     display: block;
 }

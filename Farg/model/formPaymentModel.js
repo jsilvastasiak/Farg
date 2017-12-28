@@ -32,11 +32,11 @@ function FormPayment() {
 FormPayment.prototype = {
 
     getDefinition: function () {
-        return this.definition.sync();
+        return formPaymentDefinition.sync();
     },
 
     getByCode: function (parans) {
-        return this.definition.findOne({
+        return formPaymentDefinition.findOne({
             where: { cdg_forma: parans.code }
         });
     },

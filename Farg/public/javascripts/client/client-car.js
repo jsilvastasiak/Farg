@@ -8,9 +8,21 @@
         if ($scope.dtCarItems.List.length > 0) {
             //$scope.totalItems = $scope.dtCarItems.List.length;
             $scope.dtCarItems.List.forEach(function (el) {
+                el.loadedGradeOptions = false; //Variável de controle para iniciar dropbox com algum valor na grid
                 el.gradeCode = el.gradeCode.toString();
             });
         }
+    });
+
+    $scope.dtGrades.addOnDataBound(function () {
+        if ($scope.dtGrades.List.length > 0) {
+            //Percorre lista do carrinho para colocar opção de grade escolhida
+            $scope.dtCarItems.List.forEach(function (item) {
+                item.gradesOptions = $scope.dtGrades.List.filter(function (grade) {
+                    return grade.gradeCode.toString() === item.gradeCode.toString();
+                });
+            });
+        };
     });
 
     $scope.dtPaymentForm.addOnDataBound(function () {
@@ -75,7 +87,35 @@
             return info;
         }
     };
-    
+
+    $scope.gradeOptionLoad = function (item, name, index) {
+        if (!item.gradesOptions || !item.loadedGradeOptions) {            
+            var $loadIcon = $("*[name='loadIcon']")[index];
+            $($loadIcon).show();
+
+            Utils.get('/client/products/getProductGradeOptions', {
+                product: {
+                    code: item.productCode
+                }
+            }, function (res) {
+                if (res.data) {
+                    var select = $("*[name='" + name + "']")[index];
+                    var $loadIcon = $("*[name='loadIcon']")[index];
+                    $(select).children("option[value='0']").remove();
+                    $($loadIcon).hide();
+
+                    item.gradesOptions = res.data.result;
+
+                    item.loadedGradeOptions = true;
+                }
+            });
+        }
+    };
+
+    $scope.alteredGrade = function (item) {
+        item.quantity = 1;
+    };
+
     $scope.dtGrades.dataBind();
     ClientCar.setGrades($scope.dtGrades);
 

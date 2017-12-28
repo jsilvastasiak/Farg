@@ -89,13 +89,13 @@ body.hold-transition.skin-blue.sidebar-mini(ng-app="currentApp", ng-controller="
                                 li
                                     a(href="/basicregistration/clients") Clientes
                                 li(ng-show="user.isAdmin")
-                                    a(href="/basicregistration/users") Grades
+                                    a(href="/basicregistration/grades") Grades
                                 li(ng-show="user.isAdmin")
-                                    a(href="/basicregistration/users") Formas Pagamento
+                                    a(href="/basicregistration/form-payments") Formas Pagamento
                                 li(ng-show="user.isAdmin")
-                                    a(href="/basicregistration/users") Categorias
+                                    a(href="/basicregistration/categorys") Categorias
                                 li(ng-show="user.isAdmin")
-                                    a(href="/basicregistration/users") Produtos
+                                    a(href="/basicregistration/products") Produtos
                         li.treeview
                             a(href="#") 
                                 i.fa.fa-search
@@ -116,7 +116,7 @@ body.hold-transition.skin-blue.sidebar-mini(ng-app="currentApp", ng-controller="
                 block content
 
         div
-            div.message-user(uib-alert, ng-repeat="alert in _alerts", dismiss-on-timeout="2000", ng-class="'alert-' + (alert.typeMessageUser || 'warning')", close="closeMessageUser($index)") {{alert.messageUser}}
+            div.message-user(uib-alert, ng-repeat="alert in _alerts", dismiss-on-timeout="{{alert.timeout}}", ng-class="'alert-' + (alert.typeMessageUser || 'warning')", close="closeMessageUser($index)") {{alert.messageUser}}
             
     //JQuery    
     script(type="text/javascript", src="/bower_components/jquery/dist/jquery.min.js")

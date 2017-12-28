@@ -118,7 +118,9 @@ Product.prototype = {
         var queryBuilder = new QueryBuilder(getSelectCarProducts(parans.codesList), false, parans);
 
         //Objeto de retorno
-        return queryBuilder.executeBuilder(Sequelize);
+        return queryBuilder.executeBuilder(Sequelize, {
+            "tip_icms": parans.icmsCode
+        });
     }
 };
 
@@ -176,6 +178,12 @@ var getSelectParansToProduct = function () {
 
 var getSelectCarProducts = function (codesList) {
     return "select prod.cdg_produto \"code\""
+        + ", case"
+        + " when :tip_icms IN (7,8) then prod.vlr_icms_8"
+        + " when :tip_icms = 12 then prod.vlr_icms_12"
+        + " when :tip_icms IN (17,18) then prod.vlr_icms_17"
+        + " else prod.vlr_icms_17"
+        + " end \"value\""
         + ", prod.nom_produto \"productName\""
         + ", (select ima.dsc_caminho"
         + " from \"Imagens_produtos\" ima"

@@ -34,10 +34,14 @@ block content
                                         img(ng-src="{{getProductInfo(item).filename}}")
                                         span(name="info") {{getProductInfo(item).productName}}
                                 td.align-center
-                                    select.form-control(id="dbGrades", name="dbGrades", ng-model="item.gradeCode", ng-required="!isFind")
-                                        option(ng-repeat="grade in dtGrades.List", value="{{grade.gradeCode}}") {{grade.descGrade}}
+                                    select.form-control.select-grade(name="dbGrades", ng-model="item.gradeCode", ng-required="!isFind",
+                                    ng-focus="gradeOptionLoad(item, 'dbGrades', $index)", ng-change="alteredGrade(item)")
+                                        option(value='0') Carregando
+                                        option(ng-repeat="grade in item.gradesOptions", value="{{grade.gradeCode}}") {{grade.descGrade}}
+                                    span(load-icon)
                                 td.align-center {{getMinQuantity(item)}}
-                                td.align-center {{item.quantity}}
+                                td.align-center 
+                                    input.form-control(type="number", name="iptQuantity", ng-model="item.quantity", min="1", ng-required)
                                 td.align-right {{toMoney(item.unitValue)}}
                                 td.align-right {{ toMoney(getTotalValue(item)) }}
                                 td

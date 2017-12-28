@@ -107,7 +107,8 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
     $scope.showMessageUser = function (args) {
         $scope._alerts.push({
             typeMessageUser: args.type,
-            messageUser: args.message
+            messageUser: args.message,
+            timeout: args.type === 'danger' ? 50000 : 2000
         });
     };
     
@@ -123,7 +124,7 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
             next(res);
         }).catch(function (res) {
             $scope.showMessageUser({
-                message: res.data,
+                message: res.message,
                 type: 'danger'
             });
             nextErr(res.data);
@@ -307,6 +308,18 @@ angular.module("currentApp").directive('selectableRow', function () {
                 element.closest('tbody').children('tr').removeClass("selected-row");
                 $(el.currentTarget).addClass("selected-row");
             });
+        }
+    }
+});
+
+angular.module("currentApp").directive('loadIcon', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            element.addClass("overlay");
+            element.attr("name", "loadIcon");
+            element.attr("style", "display:none");
+            element.append($("<i>").addClass("fa fa-refresh fa-spin"))
         }
     }
 });
@@ -510,7 +523,7 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
                 if (nextErr)
                     nextErr(res.data);
                 else {
-                    callMessagesListeners(res.data, 'danger');
+                    callMessagesListeners(res.data.message, res.data.type);
                 }
             });
         },

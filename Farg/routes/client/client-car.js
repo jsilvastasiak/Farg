@@ -58,17 +58,18 @@ router.get('/getCarItemInfo', auth.isAuthenticated, function (req, res) {
     }
     
     var parans = {
-        codesList: codesList.substring(0, codesList.length - 1)
+        codesList: codesList.substring(0, codesList.length - 1),
+        icmsCode: req.session.loggeduser.icmsCode
     };
 
     if (parans.codesList) {
-        product.getCarProducts(parans).then(function (result) {
+        paransBuilder.executePromise(req, res, product.getCarProducts, parans, function (result) {
             if (result) {
                 res.send(result);
             }
 
             res.end();
-        });
+        }, true);
     } else {
         res.end();
     }
@@ -264,12 +265,18 @@ router.post('/effetiveRequest', auth.isAuthenticated, function (req, res) {
     }
 });
 
-/* POST salva forma de pagamento selecionada na seção*/
-router.post('/setPaymentForm', auth.isAuthenticated, function (req, res) {
-    if (req.body.paymentForm) {
-        req.session.loggeduser.car.paymentForm = req.body.paymentForm;
+/* Tratamento de erro genérico */
+router.use(function (err, req, res, next) {
+    if (err) {
+        res.status(500);
+        res.send({
+            message: err.message,
+            type: 'danger'
+        });
+        res.end();
+    } else {
+        next();
     }
-    res.end();
 });
 
 module.exports = router;
@@ -278,7 +285,6 @@ module.exports = router;
  * Rotina manda emails após a efetivação do pedido
  * @param {Objeto da requisição} req
  */
-
 var sendEmailRequestEffectived = function (req, next) {
     var parameter = new Parameters();
     parameter.getByCode(req.session.loggeduser).then(function (parameter) {

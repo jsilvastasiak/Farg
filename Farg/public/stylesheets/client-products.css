@@ -39,7 +39,7 @@
     font-size: 11px;
     padding-left: 5px;
     float: left;
-    width: 75%;
+    width: 100%;
     display:inline;
 }
 .product-info > label[name="lblMin"] {
