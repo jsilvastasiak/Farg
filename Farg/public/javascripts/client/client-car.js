@@ -1,7 +1,6 @@
-﻿angular.module("currentApp").controller("clientCar", function ($scope, $http, $location, Utils, ClientCar) {
+﻿angular.module("currentApp").controller("clientCar", function ($scope, $http, $location, Utils, ClientCar, PaymentFormFact) {
 
     $scope.dtCarItems = new $scope.ObjectDataSource('dtCarItems', $scope, '/client/car/getCarItemList');
-    $scope.dtPaymentForm = new $scope.ObjectDataSource('dtPaymentForm', $scope, '/client/car/getPaymentFormList');
     $scope.dtGrades = new $scope.ObjectDataSource('dtGrades', $scope, '/client/products/getGradesOptions');
 
     $scope.dtCarItems.addOnDataBound(function () {
@@ -24,20 +23,7 @@
             });
         };
     });
-
-    $scope.dtPaymentForm.addOnDataBound(function () {
-        if ($scope.dtPaymentForm.List.length > 0) {
-            var selectedsForm = $scope.dtPaymentForm.List.filter(function (el) {
-                return el.isSelected;
-            });
-
-            if (selectedsForm.length > 0) {
-                $scope.paymentFormCode = selectedsForm[0].code.toString();
-                ClientCar.setPaymentForm(selectedsForm[0]);
-            }
-        }
-    });
-            
+    
     $scope.toMoney = function (value) {
         return value ? Utils.toMoney(value, "R$") : null;
     };
@@ -115,10 +101,15 @@
     $scope.alteredGrade = function (item) {
         item.quantity = 1;
     };
+    //Forma de pagamento alterada
+    PaymentFormFact.PaymentFormChangedListener(function () {
+        $scope.dtGrades.dataBind();
+        ClientCar.setGrades($scope.dtGrades);
+        $scope.dtCarItems.dataBind();
+    });
 
     $scope.dtGrades.dataBind();
     ClientCar.setGrades($scope.dtGrades);
 
-    $scope.dtCarItems.dataBind();
-    $scope.dtPaymentForm.dataBind();    
+    $scope.dtCarItems.dataBind();       
 });

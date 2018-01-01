@@ -137,7 +137,7 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
                 next(res);
         }).catch(function (res) {
             $scope.showMessageUser({
-                message: res.data,
+                message: res.message,
                 type: 'danger'
             });
             if (nextErr)
@@ -614,12 +614,14 @@ angular.module("currentApp").factory("ClientCar", ['Utils', function (Utils) {
         getGrades: function () {
             return dtGrades.List;
         },
-        setPaymentForm: function (paymentForm) {
+        setPaymentForm: function (paymentForm, next) {
             Utils.post('/client/products/setPaymentForm', {
                 paymentForm: paymentForm
             }, function (res) {
-                if (!res.data)
+                if (!res.data) {
                     _selectedPaymentForm = paymentForm;
+                    next(paymentForm);
+                }
             });
         },
         getPaymentForm: function (next) {
@@ -675,22 +677,28 @@ angular.module("currentApp").factory("ClientCar", ['Utils', function (Utils) {
             });
         },
 
-        addProduct: function (product) {
+        addProduct: function (product, next) {
             this._alterItem(product, '/client/products/addItem', function () {
+                if (next)
+                    next(product);
                 Utils.toMessage('Item adicionado ao carrinho com sucesso', 'success');
                 product.inSession = true;
             });
         },
 
-        editProduct: function (product) {
+        editProduct: function (product, next) {
             this._alterItem(product, '/client/products/editItem', function () {
+                if (next)
+                    next(product);
                 Utils.toMessage('Item atualizado com sucesso', 'success');                
                 product.inSession = true;
             });
         },
 
-        removeProduct: function (product) {
+        removeProduct: function (product, next) {
             this._alterItem(product, '/client/products/removeItem', function () {
+                if (next)
+                    next(product);
                 Utils.toMessage('Item removido do carrinho com sucesso', 'success');                
                 product.inSession = false;
             });

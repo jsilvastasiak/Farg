@@ -36,7 +36,8 @@ block content
                                     td Total: {{toMoney(getTotalGeneral())}}
                     div.icon
                         i.fa.fa-shopping-cart
-
+                    a.small-box-footer(href="/client/car") Finalizar Pedido&nbsp
+                        i.fa.fa-arrow-circle-right
                     //form.form-horizontal(name="frmPaymentForm")
                         div.form-group
                             div.col-sm-10
@@ -53,7 +54,7 @@ block content
                     div.col-sm-3.col-md-6.product-info
                         label(name="lblName") {{product.productName}}
                         br
-                        label(name="lblValue") Preço: {{ "R$ " + getProductValue(product).toString() }}
+                        label(name="lblValue") Preço: {{ getProductValue(product).toString() }}
                         br
                         label Grade:
                         select.form-control(id="{{ dbGradeId }}", name="dbGrade", ng-model="product.selectedGrade", ng-change="alteredGrade(product)"
@@ -66,7 +67,7 @@ block content
                         label Qtd. Grade:
                         input.form-control(type="number", name="iptQuantity", ng-model="product.quantity", min="1", ng-required)
                         br
-                        label(name="lblTotal") Preço Total: {{ "R$ " + getTotal(product)}}
+                        label(name="lblTotal") Preço Total: {{ getTotal(product)}}
 
                     div.col-sm-3.col-md-6.buttons
                         button.btn.btn-primary(type="button", ng-click="addProduct(product)", ng-show="!product.inSession", ng-disabled="!isValidItem(product)", title="Adicionar item ao carrinho") Adicionar

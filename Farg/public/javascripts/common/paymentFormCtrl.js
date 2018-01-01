@@ -1,4 +1,31 @@
-﻿angular.module("currentApp").controller("PaymentFormCtrl", function ($scope, Utils, ClientCar) {
+﻿angular.module("currentApp").factory("PaymentFormFact", function (Utils) {
+    //Métodos registrados para serem chamados quando o controle for alterado
+    var _paymentFormChangedlistener = [];
+    //Método responsável por atualizar controle de forma de pagamento
+    var _databindPaymentForm = null;
+    return {
+        PaymentFormChangedListener: function (action) {
+            _paymentFormChangedlistener.push(action);
+        },
+        PaymentFormChanged: function (parans) {
+            _paymentFormChangedlistener.forEach(function (action) {
+                action(parans);
+            });
+        },
+        DatabindPaymentForm: function (action) {
+            _databindPaymentForm = action;
+        },
+        RefreshPaymentFormCtrl: function () {
+            try {
+                _databindPaymentForm();
+            } catch (e) {
+                Utils.toMessage(e.message, 'danger');
+            }
+        }
+    }
+});
+
+angular.module("currentApp").controller("PaymentFormCtrl", function ($scope, Utils, ClientCar, PaymentFormFact) {
 
     $scope.dtPaymentForm = new $scope.ObjectDataSource('paymentFormCtrl_dtPaymentForm', $scope, '/client/car/getPaymentFormList');
     $scope.dtCarItems = new $scope.ObjectDataSource('paymentFormCtrl_dtCarItems', $scope, '/client/car/getCarItemList');
@@ -46,9 +73,13 @@
             return el.code.toString() === $scope.paymentFormCode;
         });
 
-        if (selected.length > 0)
+        if (selected.length > 0) {
             //ClientCar.setPaymentForm(selected[0]);
-            ClientCar.setPaymentForm(selected[0]);
+            ClientCar.setPaymentForm(selected[0], function (paymentForm) {
+                PaymentFormFact.PaymentFormChanged();
+                $scope.loadData();
+            });
+        }
         else {
             Utils.toMessage('Forma de pagamento não selecionada', 'danger');
         }
@@ -58,9 +89,14 @@
         return value ? Utils.toMoney(value, "R$") : null;
     };
 
-    $scope.dtGrades.dataBind();
-    $scope.dtCarItems.dataBind();
-    $scope.dtPaymentForm.dataBind();
+    $scope.loadData = function () {
+        $scope.dtGrades.dataBind();
+        $scope.dtCarItems.dataBind();
+        $scope.dtPaymentForm.dataBind();
+    };
+
+    $scope.loadData();
 
     ClientCar.setGrades($scope.dtGrades);
+    PaymentFormFact.DatabindPaymentForm($scope.loadData);
 });

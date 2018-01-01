@@ -30,7 +30,7 @@ angular.module("currentApp").controller("productCategorysCtrl", function ($scope
     $scope.dtCategorys.dataBind();
 });
 
-angular.module("currentApp").controller("clientProducts", function ($scope, Utils, $uibModal, $location, ClientCar, Bridge) {
+angular.module("currentApp").controller("clientProducts", function ($scope, Utils, $uibModal, $location, ClientCar, Bridge, PaymentFormFact) {
     const pagerProductsId = 'pgProducts';
     $scope.dbGradeId = 'dbGrade';
     //Função para carga de opções de grade para items já na sessão
@@ -60,18 +60,17 @@ angular.module("currentApp").controller("clientProducts", function ($scope, Util
             });
         };
     });
-    $scope.dtProducts.addOnDataBound(loadGradeOptions);
-        
+    $scope.dtProducts.addOnDataBound(loadGradeOptions);        
     $scope.dtGrades.addOnDataBound(loadGradeOptions);
 
     $scope.addPager(pagerProductsId, {
         changedCallback: $scope.dtProducts.dataBind
     });
-
+    
     /*Cálculo de descontos no produto*/
     $scope.getProductValue = function (product) {
         if (product) {
-            return ClientCar.getProductValue(product);
+            return Utils.toMoney(ClientCar.getProductValue(product), "R$");
         } else {
             return undefined;
         }
@@ -87,8 +86,8 @@ angular.module("currentApp").controller("clientProducts", function ($scope, Util
 
     $scope.getTotal = function (product) {
         //Total é quantidade de grades vezes, quantidade de produtos por grade * valor do produto com descontos
-        var total = product.quantity * ClientCar._getMinQuantity(product) * $scope.getProductValue(product);
-        return total ? total.toFixed(2) : "";
+        var total = product.quantity * ClientCar._getMinQuantity(product) * ClientCar.getProductValue(product);
+        return total ? Utils.toMoney(total, "R$") : "";
     };
 
     $scope.getQuantity = function (product) {
@@ -107,15 +106,21 @@ angular.module("currentApp").controller("clientProducts", function ($scope, Util
     }
     
     $scope.addProduct = function (product) {        
-        ClientCar.addProduct(product);
+        ClientCar.addProduct(product, function () {
+            PaymentFormFact.RefreshPaymentFormCtrl();
+        });
     };
 
-    $scope.editProduct = function (product) {        
-        ClientCar.editProduct(product);
+    $scope.editProduct = function (product) {
+        ClientCar.editProduct(product, function () {
+            PaymentFormFact.RefreshPaymentFormCtrl();
+        });
     };
 
     $scope.removeProduct = function (product) {        
-        ClientCar.removeProduct(product);
+        ClientCar.removeProduct(product, function () {
+            PaymentFormFact.RefreshPaymentFormCtrl();
+        });
     };
     
     $scope.gradeOptionLoad = function (product, name, index) {
