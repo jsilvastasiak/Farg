@@ -1,5 +1,6 @@
-﻿.div-content{
+﻿.div-content-product{
     clear: both;
+    min-width: 100%;    
 }
 .product-container {
     max-width: 280px;
@@ -61,7 +62,7 @@
 .product-container > .buttons {    
     position: absolute;
     bottom: 5px;
-    right: 0px;
+    right: 2px;
     text-align: right;
     padding-left: 0px;
 }
@@ -95,4 +96,7 @@
 
 .total-info-table > tbody > tr > td {
     padding: 4px;
+}
+.total-info-table > tbody > tr > td > select {
+   width: 150px;
 }

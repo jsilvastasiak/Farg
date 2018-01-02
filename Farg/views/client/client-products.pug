@@ -4,6 +4,7 @@ append infoPage
     title Produtos
 
 append scripts
+    script(src='/bower_components/javascript-detect-element-resize/jquery.resize.js')
     script(src='/javascripts/common/paymentFormCtrl.js')
     script(src='/javascripts/client/client-products.js')
 
@@ -21,7 +22,7 @@ block custom-sidebar
 block content
     div.panel.panel-default(ng-controller="clientProducts")
         div.row         
-            div.col-xs-6.col-lg-4.total-info-container(ng-controller="PaymentFormCtrl")
+            div.col-xs-12.col-lg-5.total-info-container(ng-controller="PaymentFormCtrl")
                 div.small-box.bg-aqua
                     div.inner
                         table.total-info-table
@@ -46,8 +47,8 @@ block content
                                 label.radio-inline(ng-repeat="paymentForm in dtPaymentForm.List")
                                     input(type="radio", name="iptPaymentForm", ng-click="paymentFormSelected(paymentForm)", ng-checked="$index === 0") 
                                     | {{paymentForm.descForm}}
-            div.div-content
-                div.col-lg-3.product-container(ng-repeat="product in dtProducts.List")
+            div.div-content-product
+                div.col-xs-12.col-lg-3.product-container(product-container, ng-repeat="product in dtProducts.List")
                     div.item-checked-container(ng-show="product.inSession", ng-click="removeProduct(product)")              
                     div.product-image
                         img(ng-src="{{product.filename}}", ng-click="showInfo(product)")
@@ -69,6 +70,6 @@ block content
                         br
                         label(name="lblTotal") Preço Total: {{ getTotal(product)}}
 
-                    div.col-sm-3.col-md-6.buttons
+                    div.buttons
                         button.btn.btn-primary(type="button", ng-click="addProduct(product)", ng-show="!product.inSession", ng-disabled="!isValidItem(product)", title="Adicionar item ao carrinho") Adicionar
                         button.btn.btn-success(type="button", ng-click="editProduct(product)", ng-show="product.inSession", ng-disabled="!isValidItem(product)", title="Salvar alterações no item") Salvar

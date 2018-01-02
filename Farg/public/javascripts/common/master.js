@@ -516,14 +516,16 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
                 if (next)
                     next(res);
             }).catch(function (res) {
-                //$scope.showMessageUser({
-                //    message: res.data,
-                //    type: 'danger'
-                //});
+                var err = null;
+                if (res.data)
+                    err = res.data;
+                else
+                    err = res;
+
                 if (nextErr)
-                    nextErr(res.data);
+                    nextErr(err);
                 else {
-                    callMessagesListeners(res.data.message, res.data.type);
+                    callMessagesListeners(err.message, err.type);
                 }
             });
         },

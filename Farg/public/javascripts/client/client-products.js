@@ -154,3 +154,37 @@ angular.module("currentApp").controller("clientProducts", function ($scope, Util
     //ClientCar.setGrades($scope.dtGrades);
     //$scope.dtPaymentForm.dataBind();
 });
+
+angular.module("currentApp").directive("productContainer", function () {
+    return {
+        restrict: 'EA',
+        link: function (scope, element, attrs) {
+            var setPosition = function () {
+                //Tamanho do container
+                var widthElementDefault = parseInt(element.css("width").replace("px", "")) + parseInt(element.css("margin-left").replace("px",""));
+                //Pega tamanho da div que contém o container
+                var widthParent = parseInt(element.parent("div").css("width").replace("px", ""));
+
+                var qtdElements = Math.floor(widthParent / widthElementDefault);
+                var widthElements = qtdElements * widthElementDefault;
+                var diff = (widthParent - widthElements) / qtdElements;
+
+                var valuePosition = (Math.round((diff / widthParent) * 100));
+
+                valuePosition = qtdElements === 1 ? Math.floor(valuePosition / 2) : valuePosition;
+
+                element.css("left", valuePosition + "%");
+
+            };
+            $(".main-sidebar").resize(function () {
+                setPosition();
+            });
+                        
+            $(window).resize(function () {
+                setPosition();
+            });
+
+            setPosition();
+        }
+    }
+});
