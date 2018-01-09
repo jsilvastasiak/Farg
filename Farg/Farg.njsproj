@@ -136,6 +136,9 @@
     <Compile Include="public\javascripts\consult\request-items.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="public\javascripts\consult\request-relatory.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="public\javascripts\consult\request.js">
       <SubType>Code</SubType>
     </Compile>
@@ -231,6 +234,9 @@
     <Content Include="public\stylesheets\login.css">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="public\stylesheets\relatory.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="views\basicregistration\grades-control.pug">
       <SubType>Code</SubType>
     </Content>
@@ -289,6 +295,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\consult\request-items.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\consult\request-relatory.pug">
       <SubType>Code</SubType>
     </Content>
     <Content Include="views\consult\request.pug">

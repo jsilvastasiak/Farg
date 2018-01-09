@@ -5,9 +5,12 @@ html
         meta(charset='utf-8')
         meta(name="viewport", content="width=device-width, initial-scale=1")
 
+    script(type="text/javascript", src="/bower_components/jquery/dist/jquery.min.js")
+    script(src="/bower_components/angular/angular.min.js")
+
     block styles
         link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.min.css')
-        link(rel="stylesheet", href="/bower_components/jquery-ui/themes/smoothness/jquery-ui.css")
+        link(rel="stylesheet", href="/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css")
         link(rel="stylesheet", href="/bower_components/Magnifier/magnifier.css")
 
         //AdminLTE
@@ -119,19 +122,18 @@ body.hold-transition.skin-blue.sidebar-mini(ng-app="currentApp", ng-controller="
             div.message-user(uib-alert, ng-repeat="alert in _alerts", dismiss-on-timeout="{{alert.timeout}}", ng-class="'alert-' + (alert.typeMessageUser || 'warning')", close="closeMessageUser($index)") {{alert.messageUser}}
             
     //JQuery    
-    script(type="text/javascript", src="/bower_components/jquery/dist/jquery.min.js")
-    script(type="text/javascript", src="/bower_components/jquery-ui/jquery-ui.js")
+    
+    script(type="text/javascript", src="/bower_components/jquery-ui/jquery-ui.min.js")
     script(type="text/javascript", src="/lib/jquery/jquery-config.js")
     script(type="text/javascript", src="/bower_components/popper.js/dist/umd/popper.min.js")
         
     //AngularJS
-    script(src="/bower_components/angular/angular.js")        
-    script(src="/bower_components/angular-animate/angular-animate.js")
-    script(src="/bower_components/angular-sanitize/angular-sanitize.js")
-    script(src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js")
-    script(src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js")
-    script(src="/bower_components/angular-touch/angular-touch.js")
-    script(src="/bower_components/angular-route/angular-route.js")
+            
+    script(src="/bower_components/angular-animate/angular-animate.min.js")
+    script(src="/bower_components/angular-sanitize/angular-sanitize.min.js")
+    script(src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js")
+    script(src="/bower_components/angular-touch/angular-touch.min.js")
+    script(src="/bower_components/angular-route/angular-route.min.js")
 
     //Boostrap
     script(src='/bower_components/bootstrap/dist/js/bootstrap.min.js')
@@ -173,15 +175,15 @@ body.hold-transition.skin-blue.sidebar-mini(ng-app="currentApp", ng-controller="
     script(src='/bower_components/admin-lte/dist/js/adminlte.min.js')
         
     //Componentes de terceiros
-    script(type="text/javascript", src="/bower_components/angular-ui-mask/dist/mask.js")
-    script(src='/bower_components/cpf_cnpj/build/cpf.js')
-    script(src='/bower_components/cpf_cnpj/build/cnpj.js')
+    script(type="text/javascript", src="/bower_components/angular-ui-mask/dist/mask.min.js")
+    script(src='/bower_components/cpf_cnpj/build/cpf.min.js')
+    script(src='/bower_components/cpf_cnpj/build/cnpj.min.js')
     script(src='/bower_components/ng-cpf-cnpj/lib/ngCpfCnpj.js')
     script(type="text/javascript", src='/bower_components/angular-ui-date/dist/date.js')
     script(type="text/javascript", src='/bower_components/ng-currency/dist/ng-currency.js')
     script(type="text/javascript", src='/bower_components/angular-percentage-filter/percentage.js')
     script(type="text/javascript", src='/bower_components/ng-percent/dist/ng-percent.min.js')
-    script(type="text/javascript", src='/bower_components/angular-ui-uploader/dist/uploader.js')
+    script(type="text/javascript", src='/bower_components/angular-ui-uploader/dist/uploader.min.js')
     script(type="text/javascript", src='/bower_components/Magnifier/Event.js')
     script(type="text/javascript", src='/bower_components/Magnifier/Magnifier.js')
 

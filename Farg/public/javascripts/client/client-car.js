@@ -47,7 +47,7 @@
     $scope.effetiveRequest = function () {
         Utils.post('/client/car/effetiveRequest', null, function (res) {
             if (res.data) {
-                if (res.data.status) {
+                if (!(res.data.status == undefined)) {
                     if (res.data.status === 0)
                         window.location = "/client/car/request-effetive";
                     else

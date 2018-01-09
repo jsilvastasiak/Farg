@@ -52,7 +52,10 @@ a {
 .tab-control, .tab-pane{
     height: 100%;
 }
-.tab-content{
+.tab-control-min{
+    height: 93%;
+}
+.tab-content {
     height: 93%;
 }
 .modal-content{
@@ -206,4 +209,9 @@ input.ng-invalid {
 
 .tr-vertical-align-middle > td{
     vertical-align: middle !important;
+}
+.div-buttons{
+    padding: 5px;
+    width: 100%;
+    text-align: right;
 }

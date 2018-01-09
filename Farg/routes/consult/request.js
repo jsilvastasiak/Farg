@@ -24,6 +24,10 @@ router.get('/request-control', auth.isAuthenticated, function (req, res) {
     res.render('consult/request-control');
 });
 
+router.get('/request-relatory', auth.isAuthenticated, function (req, res) {
+    res.render('consult/request-relatory', { code: req.query.requestCode });
+});
+
 /* GET request listing. */
 router.get('/getRequestList', auth.isAuthenticated, function (req, res) {
 
@@ -117,6 +121,31 @@ router.get('/getRequestStatusOptions', auth.isAuthenticated, function (req, res)
         res.send(domainValues);
     }).catch(function (err) {
         console.log(err.message);
+    });
+});
+
+router.get('/getRequestInfo', auth.isAuthenticated, function (req, res) {
+    var requestItem = new RequestItem();
+    var paransQuery = paransBuilder.createParansModel(req.query);
+
+    paransQuery.clientCode = req.query.clientCode;
+    paransQuery.requestCode = req.query.requestCode;
+
+    requestItem.getRequestInfo(paransQuery).then(function (requestItemList) {
+        var result = {};
+        if (requestItemList) {
+            result = paransBuilder.createParansResponse(requestItemList, req);
+        }
+
+        res.send(result);
+        res.end();
+    }).catch(function (err) {
+        console.log(err);
+        res.send({
+            message: err.message,
+            type: 'danger'
+        });
+        res.end();
     });
 });
 

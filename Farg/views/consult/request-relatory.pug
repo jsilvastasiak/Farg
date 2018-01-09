@@ -1,0 +1,73 @@
+﻿
+html
+    head
+        title Pedido Nº #{code}
+
+        link(rel="stylesheet", href="/stylesheets/relatory.css")
+
+        script(type="text/javascript", src="/bower_components/jquery/dist/jquery.min.js")
+        script(src="/bower_components/angular/angular.min.js")
+        script(src='/javascripts/consult/request-relatory.js')
+
+body(ng-app="relatoryApp")
+    div.container(ng-controller="requestRelatory")
+        div.header
+            div.info
+                span.emphasis {{request.clientName}}
+                br
+                span {{request.clientCnpjNumber}}
+                br
+                span {{request.clientAddress}}
+                br
+                span Tel: {{request.clientFone}} 
+                br 
+                span E-mail: {{request.clientMail}}
+            div.logo
+                img(src="/images/fargLogo.png")
+        div.content
+            h1 Pedido Nº {{request.code}}
+            table
+                tr
+                    td.td-title Forma de Pagamento:
+                    td {{request.paymentForm}}
+                tr
+                    td.td-title Data Pedido:
+                    td {{request.date}}
+            div.panel-info
+                span Resumo do Pedido
+            table.table-pedido(cellspacing="0")
+                thead
+                    tr
+                        th(style="width: 150px") Ref.
+                        th Produto
+                        th(style="min-width: 50px") Grade
+                        th(style="width: 125px") Qtd. Mínima
+                        th(style="width: 125px") Qtd. Grades
+                        th(style="width: 125px") Qtd. Grade X Qtd. Mínima
+                        th(style="min-width: 100px") Vlr. Unitário
+                        th(style="min-width: 100px") Vlr. Total
+                tbody
+                    tr(ng-repeat="items in request.requestItems")
+                        td {{items.ref}}
+                        td.align-left {{items.product}}
+                        td {{items.grade}}
+                        td {{items.minQuantity}}
+                        td {{items.minGrade}}
+                        td {{items.totalItems}}
+                        td {{items.unitValue}}
+                        td {{items.totalValue}}
+
+            div.panel-info
+                span Total Pedido
+
+            table.table-pedido(cellspacing="0")
+                thead
+                    tr
+                        th &nbsp                        
+                        th(style="width: 100px") Qtd. Total
+                        th(style="width: 100px") Vlr. Total
+                tbody
+                    tr
+                        td &nbsp
+                        td {{request.totalItemsRequest}}
+                        td {{request.totalRequest}}

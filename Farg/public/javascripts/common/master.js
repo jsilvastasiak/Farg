@@ -122,7 +122,7 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
 
         $http.get(path, config).then(function (res) {
             next(res);
-        }).catch(function (res) {
+        }, function (res) {
             $scope.showMessageUser({
                 message: res.message,
                 type: 'danger'
@@ -135,7 +135,7 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
         $http.post(path, data).then(function (res) {
             if(next)
                 next(res);
-        }).catch(function (res) {
+        }, function (res) {
             $scope.showMessageUser({
                 message: res.message,
                 type: 'danger'
@@ -284,10 +284,10 @@ angular.module("currentApp").directive('headerGrid', function () {
                 datasource.dataBind();
             });
 
-            var tagA = $('<a>', { href: "#", class: "header-text" }).text(attrs.headerText);
-            var spanAsc = $('<span>', { class: 'asc-direction' });
-            var spanDesc = $('<span>', { class: 'desc-direction' });
-            var mainSpan = $('<span>').append(spanAsc).append(spanDesc);
+            var tagA = $("<a>", { href: "#", "class": "header-text" }).text(attrs.headerText);
+            var spanAsc = $("<span>", { "class": "asc-direction" });
+            var spanDesc = $("<span>", { "class": "desc-direction" });
+            var mainSpan = $("<span>").append(spanAsc).append(spanDesc);
 
             tagA.append(mainSpan);
             element.append(tagA);
@@ -472,8 +472,8 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
                     b[p[0]] = "";
                 else
                     b[p[0]] = decodeURIComponent(p[1].replace('/\+/g', " "));
-                return b;
             }
+            return b;
         }($window.location.search.substr(1).split('&')),
 
         //Retira problema de undefined das variáveis
@@ -502,7 +502,7 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
             $http.get(path, config).then(function (res) {
                 if(next)
                     next(res);
-            }).catch(function (res) {                
+            }, function (res) {                
                 if (nextErr)
                     nextErr(res.data);
                 else {
@@ -515,7 +515,7 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
             $http.post(path, data).then(function (res) {
                 if (next)
                     next(res);
-            }).catch(function (res) {
+            }, function (res) {
                 var err = null;
                 if (res.data)
                     err = res.data;
@@ -569,7 +569,7 @@ angular.module("currentApp").factory("ClientCar", ['Utils', function (Utils) {
     
     //Força pegar a forma de pagamento no servidor
     Utils.get('/client/products/getPaymentForm', null, function (res) {
-        if (res.data) {
+        if (res.data && res.data !== "") {
             _selectedPaymentForm = res.data;
         }
     });
@@ -622,7 +622,8 @@ angular.module("currentApp").factory("ClientCar", ['Utils', function (Utils) {
             }, function (res) {
                 if (!res.data) {
                     _selectedPaymentForm = paymentForm;
-                    next(paymentForm);
+                    if(next)
+                        next(paymentForm);
                 }
             });
         },
@@ -714,7 +715,7 @@ angular.module("currentApp").directive("uploaderInput", ['UploadCtrl', function 
         link: function (scope, element, attrs) {
             element.addClass("input-wrapper");
 
-            var labelDescription = $('<label>', { for: 'input-file' }).text('Selecionar');
+            var labelDescription = $("<label>", { "for": 'input-file' }).text('Selecionar');
             var inputFile = $('<input>', { id: 'input-file', type: 'file', value: '' });
             var span = $('<span>', { id: 'file-name' });
 

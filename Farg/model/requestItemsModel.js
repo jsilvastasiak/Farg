@@ -85,6 +85,16 @@ ItemRequestDefinition.prototype = {
 
         //Objeto de retorno
         return queryBuilder.executeBuilder(Sequelize);
+    },
+
+    getRequestInfo: function (parans) {
+        var queryBuilder = new QueryBuilder(getSelecetRequestInfo(), false, parans);
+
+        //Objeto de retorno
+        return queryBuilder.executeBuilder(Sequelize, {
+            "cdg_cliente": parans.clientCode,
+            "cdg_pedido": parans.requestCode
+        });
     }
 };
 
@@ -92,16 +102,57 @@ module.exports = ItemRequestDefinition;
 
 var getSelecetRequestItem = function () {
     return "select ite.cdg_item \"itemCode\""
-       +   ", ite.cdg_produto \"productCode\""
-       +   ", pro.nom_produto \"productName\""
-       +   ", ite.vlr_atribuido \"productValue\""
-       +   ", ite.qtd_grade   \"quantity\""
-       +   ", ite.cdg_grade	 \"gradeCode\""
-       +   ", gra.dsc_grade	\"gradeDesc\""
-       +   ", gra.qtd_minima * ite.qtd_grade * ite.vlr_atribuido \"totalValue\""
-       +   " from \"Items_pedidos\" ite"
-       +   " inner join \"Produtos\" pro"
-       +   " on pro.cdg_produto = ite.cdg_produto"
-       +   " inner join \"Grades\" gra"
-       +   " on gra.cdg_grade = ite.cdg_grade";
+        + ", ite.cdg_produto \"productCode\""
+        + ", pro.nom_produto \"productName\""
+        + ", ite.vlr_atribuido \"productValue\""
+        + ", ite.qtd_grade   \"quantity\""
+        + ", ite.cdg_grade	 \"gradeCode\""
+        + ", gra.dsc_grade	\"gradeDesc\""
+        + ", gra.qtd_minima * ite.qtd_grade * ite.vlr_atribuido \"totalValue\""
+        + " from \"Items_pedidos\" ite"
+        + " inner join \"Produtos\" pro"
+        + " on pro.cdg_produto = ite.cdg_produto"
+        + " inner join \"Grades\" gra"
+        + " on gra.cdg_grade = ite.cdg_grade";
+};
+
+var getSelecetRequestInfo = function () {
+    return "select ite.cdg_pedido \"code\""
+          +" , ite.cdg_cliente \"clientCode\""
+          +" , (select pegadata(ped.dta_pedido)) \"data\""
+          +" , (select frm.dsc_forma "
+          +" from \"Formas_pagamentos\" frm"
+          +" where frm.cdg_forma = ped.cdg_forma) \"paymentForm\""
+          +" , cli.nom_cliente \"clientName\""
+          +" , cli.tip_pessoa \"clientPersonType\""
+          +" , case when cli.tip_pessoa = 'J' then cli.nro_cnpj else cli.nro_cpf end \"clientCnpjNumber\""        
+          +" , cli.end_email \"clientMail\""
+          +" , ende.nom_rua \"clientStreet\""
+          +" , ende.nro_end \"clientStreetNumber\""
+          +" , ende.nom_bairro \"clientDistrict\""
+          +" , ende.nom_cidade \"clientCity\""
+          +" , ende.sgl_estado \"clientUf\""
+          +" , ende.nro_cep \"clientCep\""
+          +" , ende.ddd_fon_pri || ende.nro_fon_pri \"clientFone\""
+          +" , ite.cdg_produto \"productCode\""
+          +" , gra.dsc_grade \"grade\""
+          +" , ite.qtd_grade \"minQuantity\""
+          +" , gra.qtd_minima \"minGrade\""
+          +" , prod.nom_produto \"product\""
+          +" , ite.vlr_atribuido \"unitValue\""
+          +" from \"Items_pedidos\" ite"
+          +" inner join \"Produtos\" prod"
+          +" on prod.cdg_produto = ite.cdg_produto"
+          +" inner join \"Grades\" gra"
+          +" on gra.cdg_grade = ite.cdg_grade"
+          +" inner join \"Pedidos\" ped"
+          +" on ped.cdg_pedido = ite.cdg_pedido"
+          +" and ped.cdg_cliente = ite.cdg_cliente"
+          +" inner join \"Clientes\" cli"
+          +" on cli.cdg_cliente = ite.cdg_cliente"
+          +" left outer join \"Enderecos\" ende"
+          +" on ende.cdg_cliente = cli.cdg_cliente"
+          +" and ende.tip_endereco = 'E'"
+          +" where ite.cdg_pedido = :cdg_pedido"
+          +" and ite.cdg_cliente = :cdg_cliente";
 }

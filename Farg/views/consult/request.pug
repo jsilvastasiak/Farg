@@ -10,8 +10,11 @@ append scripts
 
 block content
     div.panel.panel-default(ng-controller="tabManager")
-        uib-tabset.tab-control(active="activeForm")
+        uib-tabset.tab-control-min(active="activeForm")
             uib-tab(index="0", heading="Pedidos", disable="!TabManager.getTab('Request').status")
                 request-control
             uib-tab(index="1", heading="Items", disable="!TabManager.getTab('Items').status", select="onSelect()")        
                 request-items
+        div.div-buttons
+            button.btn.btn-warning.fa.fa-print(type="button", title="Imprimir relatório do pedido"
+                                , ng-click="generateRelatory()", ng-if="user.isAdmin", ng-disabled="!TabManager.getTab('Items').status")  Imprimir Pedido

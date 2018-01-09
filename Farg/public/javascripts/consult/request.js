@@ -13,7 +13,12 @@
 
     $scope.onSelect = function () {
         TabManager.ChangedSelection();
-    }
+    };
+
+    $scope.generateRelatory = function () {
+        var parans = "requestCode=" + TabManager.getDataKey('code') + "&client=" + TabManager.getDataKey('clientCode');
+        window.open("/consult/request/request-relatory/?" + parans, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
+    };
 });
 
 angular.module("currentApp").directive('requestControl', function () {

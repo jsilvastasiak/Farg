@@ -1,0 +1,86 @@
+﻿body {
+    background-color: white;
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0px;
+    font-size: 12px;
+}
+table{
+    font-size: 10px;
+}
+
+.container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    min-height: 200px;
+    min-width: 500px;
+}
+
+.content, .header {
+    padding: 0px;
+}
+
+.header {
+    min-height: 100px;
+}
+
+.info {
+    float: left;
+    min-width: 100px;
+    min-height: 100px;
+}
+
+.logo {
+    float: right;
+}
+
+.logo > img {
+    width: 110px;
+    height: 50px;
+}
+
+.content {
+    min-height: 500px;
+}
+
+.td-title {
+    text-align: right;
+}
+
+.panel-info {
+    display: inline-block;
+    background-color: #769ea5;
+    color: white;
+    text-transform: uppercase;
+    width: 100%;
+    min-height: 15px;
+    padding: 5px;
+    margin-top: 20px;
+}
+
+.table-pedido {
+    width: 101%;
+    margin-top: 20px;
+    border: 1px solid black;
+}
+
+.table-pedido > thead > tr > th, .table-pedido > tbody > tr > td {
+    border: 1px solid #808080;
+    border-spacing: 0;
+    text-align: center;
+}
+
+.table-pedido > thead > tr > th {
+    text-transform: uppercase;
+    font-weight: bold;    
+    border-bottom: 1px solid black;
+}
+
+.emphasis{
+    font-weight: bold;
+}
+.align-left{
+    text-align: left !important;
+}

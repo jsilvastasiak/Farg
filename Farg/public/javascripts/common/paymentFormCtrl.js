@@ -38,10 +38,7 @@ angular.module("currentApp").controller("PaymentFormCtrl", function ($scope, Uti
     });
 
     $scope.dtPaymentForm.addOnDataBound(function () {
-        if (!ClientCar.getPaymentForm() && $scope.dtPaymentForm.List.length > 0) {
-            $scope.paymentFormCode = $scope.dtPaymentForm.List[0].code.toString();
-            ClientCar.setPaymentForm($scope.dtPaymentForm.List[0]);
-        } else {
+        if (ClientCar.getPaymentForm()) {            
             $scope.paymentFormCode = ClientCar.getPaymentForm().code.toString();            
         }        
     });
