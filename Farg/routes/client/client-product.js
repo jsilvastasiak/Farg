@@ -86,9 +86,9 @@ router.get('/getGradesOptions', auth.isAuthenticated, function (req, res) {
 
 router.get('/getProductGradeOptions', auth.isAuthenticated, function (req, res) {
 
-    if (req.query.product) {
+    if (req.query.product || req.query.filters) {
         var grade = new Grade();
-        var paransQuery = JSON.parse(req.query.product);
+        var paransQuery = JSON.parse(req.query.product ? req.query.product : req.query.filters);
         paransQuery.idcActive = 'A';
     
         grade.getProductGrades(paransQuery).then(function (gradesList) {
@@ -108,6 +108,11 @@ router.get('/getProductGradeOptions', auth.isAuthenticated, function (req, res) 
             res.end();
         });
     } else {
+        console.log("Nenhum filtro informado");
+        res.send({
+            message: 'Nenhum filtro de produto informado',
+            type: 'danger'
+        });
         res.end();
     }
 });
@@ -247,31 +252,8 @@ router.get('/info/getInfo', auth.isAuthenticated, function (req, res) {
 /* GET informações da forma de pagamento selecionada. */
 router.get('/getPaymentForm', auth.isAuthenticated, function (req, res) {
     //Seta forma de pagamento caso ainda não exista para o carrinho do usuário
-    if (!req.session.loggeduser.car.paymentForm) {
-        var paymentForm = new PaymentForm();
-        var paransQuery = paransBuilder.createParansModel(req.query);
-        paransQuery.idcActive = 'A';
-
-        paymentForm.getFormPayments(paransQuery).then(function (paymentFormList) {
-            var data = null;
-            if (paymentFormList && paymentFormList.length > 0)
-                data = paransBuilder.createParansResponse(paymentFormList, req).result[0];
-
-            req.session.loggeduser.car.paymentForm = data;
-            res.send(req.session.loggeduser.car.paymentForm);
-            res.end();
-        }).catch(function (err) {
-            console.log(err);
-            res.send({
-                message: err.message,
-                type: 'danger'
-            });
-            res.end();
-        });
-    } else {
-        res.send(req.session.loggeduser.car.paymentForm);
-        res.end();
-    }
+    res.send(req.session.loggeduser.car.paymentForm);
+    res.end();    
 });
 
 /* POST adiciona item selecionado na tela para carrinho usuário*/

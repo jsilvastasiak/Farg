@@ -36,6 +36,12 @@ var productDefinition = Sequelize.define('Produtos', {
     },
     idc_ativo: {
         type: DataTypes.TEXT(1), allowNull: false
+    },
+    dsc_produto: {
+        type: DataTypes.TEXT(500)        
+    },
+    dsc_referencia: {
+        type: DataTypes.TEXT(20)
     }
 });
 
@@ -68,6 +74,7 @@ Product.prototype = {
                 queryBuilder.addFilter("prod", "cdg_produto", filters.code, queryBuilder.COLUMN_TYPE.NUMBER);
                 queryBuilder.addFilter("prod", "cdg_categoria", filters.categoryCode, queryBuilder.COLUMN_TYPE.NUMBER);
                 queryBuilder.addFilter("prod", "nom_produto", filters.productName);
+                queryBuilder.addFilter("prod", "dsc_referencia", filters.reference);
                 queryBuilder.addFilter("prod", "vlr_icms_8", filters.prodValIcm8, queryBuilder.COLUMN_TYPE.NUMBER);
                 queryBuilder.addFilter("prod", "vlr_icms_12", filters.prodValIcm12, queryBuilder.COLUMN_TYPE.NUMBER);
                 queryBuilder.addFilter("prod", "vlr_icms_17", filters.prodValIcm17, queryBuilder.COLUMN_TYPE.NUMBER);
@@ -130,6 +137,8 @@ var getSelectProducts = function () {
     return "select prod.cdg_produto \"code\""
         + "     , prod.cdg_categoria \"categoryCode\""
         + "     , cat.nom_categoria  \"categoryName\""
+        + "     , prod.dsc_referencia \"reference\""
+        + "     , prod.dsc_produto \"description\""
         + "     , prod.nom_produto \"productName\""
         + "     , prod.vlr_icms_8  \"prodValIcm8\""
         + "     , prod.vlr_icms_12  \"prodValIcm12\""
@@ -156,6 +165,8 @@ var getSelectClientProducts = function () {
         + ", (select cat.nom_categoria"
         + " from \"Categorias\" cat"
         + " where cat.cdg_categoria = prod.cdg_categoria) \"categoryName\""
+        + ", prod.dsc_produto \"description\""
+        + ", prod.dsc_referencia \"reference\""
         + " from \"Produtos\" prod"
         + " left outer join \"Imagens_produtos\" ima"
         + " on ima.cdg_produto = prod.cdg_produto"

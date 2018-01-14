@@ -3,6 +3,20 @@
     $scope.dtCarItems = new $scope.ObjectDataSource('dtCarItems', $scope, '/client/car/getCarItemList');
     $scope.dtGrades = new $scope.ObjectDataSource('dtGrades', $scope, '/client/products/getGradesOptions');
 
+    var refreshItemCar = function (item) {
+        var product = new ClientCar.Product();
+        product.productCode = item.productCode;
+        product.selectedGrade = item.gradeCode;
+        product.quantity = item.quantity;
+        product.unitValue = item.unitValue;
+        
+        ClientCar.editProduct(product, function () {
+            PaymentFormFact.RefreshPaymentFormCtrl();
+            $scope.dtCarItems.dataBind();
+            $scope.dtGrades.dataBind();
+        });
+    };
+
     $scope.dtCarItems.addOnDataBound(function () {
         if ($scope.dtCarItems.List.length > 0) {
             //$scope.totalItems = $scope.dtCarItems.List.length;
@@ -100,7 +114,13 @@
 
     $scope.alteredGrade = function (item) {
         item.quantity = 1;
+        refreshItemCar(item);
     };
+
+    $scope.alteredQuantity = function (item) {
+        refreshItemCar(item);
+    };
+
     //Forma de pagamento alterada
     PaymentFormFact.PaymentFormChangedListener(function () {
         $scope.dtGrades.dataBind();

@@ -48,7 +48,7 @@ block content
                                     input(type="radio", name="iptPaymentForm", ng-click="paymentFormSelected(paymentForm)", ng-checked="$index === 0") 
                                     | {{paymentForm.descForm}}
             div.div-content-product
-                div.col-xs-12.col-lg-3.product-container(product-container, ng-repeat="product in dtProducts.List")
+                div.col-xs-12.col-lg-4.product-container(product-container, ng-repeat="product in dtProducts.List")
                     div.item-checked-container(ng-show="product.inSession", ng-click="removeProduct(product)")              
                     div.product-image
                         img(ng-src="{{product.filename}}", ng-click="showInfo(product)")

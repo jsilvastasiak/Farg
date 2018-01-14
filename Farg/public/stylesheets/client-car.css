@@ -1,12 +1,16 @@
 ﻿.product-container > img{
-    width: 100px;
+    width: 80px;
     height: 100px;
 }
-.product-container > span[name="info"]{
-    position: relative;
-    display: inline-block;
+.product-container > span[name="info"] {
+    position: relative;   
     font-size: 18px;
+    overflow: hidden;
     top: -15px;
+    text-overflow: ellipsis;
+    width: 75%;
+    white-space: nowrap;
+    display: inline-block;
 }
 
 .car-item > td {
@@ -14,7 +18,7 @@
 }
 
 .car-items-table {
-    width: 95%;
+    width: 100%;
 }
 
 .total-info-container > table {

@@ -19,15 +19,22 @@ angular.module("currentApp").controller("clientProductInfo", function ($scope, U
         $scope._Index = index;
     };
         
-    $scope.dtGrades = new $scope.ObjectDataSource('dtGrades', $scope, '/client/products/getGradesOptions');
+    $scope.dtGrades = new $scope.ObjectDataSource('dtGrades', $scope, '/client/products/getProductGradeOptions');
     $scope.dtInfo = new $scope.ObjectDataSource('dtInfo', $scope, '/client/products/info/getInfo/?id=' + $scope.productId);
     $scope.dtImages = new $scope.ObjectDataSource('dtImages', $scope, '/client/products/info/getImages/?id=' + $scope.productId);
 
     $scope.product = {};
-
+        
     $scope.dtInfo.addOnDataBound(function () {
-        if ($scope.dtInfo.List.length > 0)
+        if ($scope.dtInfo.List.length > 0) {
             $scope.product = $scope.dtInfo.List[0];
+            $scope.dtGrades.setFilters({
+                code: $scope.product.productCode
+            });
+            $scope.dtGrades.dataBind();
+
+            ClientCar.setGrades($scope.dtGrades);
+        }
     });
         
     $scope.getProductValue = function (product) {
@@ -87,12 +94,9 @@ angular.module("currentApp").controller("clientProductInfo", function ($scope, U
             });
         }
     };
-
-    $scope.dtGrades.dataBind();
+       
     $scope.dtImages.dataBind();
-    $scope.dtInfo.dataBind();
-
-    ClientCar.setGrades($scope.dtGrades);
+    $scope.dtInfo.dataBind();    
 });
 
 angular.module("currentApp").directive("sliderImage", function () {

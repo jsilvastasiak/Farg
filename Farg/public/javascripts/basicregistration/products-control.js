@@ -31,6 +31,8 @@
                     var _product = {
                         code: productToUpdate.iptCode.$modelValue,
                         productName: productToUpdate.iptProductName.$modelValue,
+                        reference: productToUpdate.iptProductRef.$modelValue,
+                        description: productToUpdate.iptProductDesc.$modelValue,
                         categoryCode: productToUpdate.dbCategory.$modelValue,
                         prodValIcm8: productToUpdate.iptProdValIcm8.$modelValue,
                         prodValIcm12: productToUpdate.iptProdValIcm12.$modelValue,
@@ -75,6 +77,8 @@
                 var _product = {
                     code: productToInsert.iptCode.$modelValue,
                     productName: productToInsert.iptProductName.$modelValue,
+                    reference: productToInsert.iptProductRef.$modelValue,
+                    description: productToInsert.iptProductDesc.$modelValue,
                     categoryCode: productToInsert.dbCategory.$modelValue,
                     prodValIcm8: productToInsert.iptProdValIcm8.$modelValue,
                     prodValIcm12: productToInsert.iptProdValIcm12.$modelValue,
@@ -118,10 +122,11 @@
                 var _filter = {
                     code: productToFind.iptCode.$modelValue,
                     productName: productToFind.iptProductName.$modelValue,
+                    reference: productToFind.iptProductRef.$modelValue,                    
                     categoryCode: productToFind.dbCategory.$modelValue,
-                    prodValIcm8: productToUpdate.iptProdValIcm8.$modelValue,
-                    prodValIcm12: productToUpdate.iptProdValIcm12.$modelValue,
-                    prodValIcm17: productToUpdate.iptProdValIcm17.$modelValue,
+                    prodValIcm8: productToFind.iptProdValIcm8.$modelValue,
+                    prodValIcm12: productToFind.iptProdValIcm12.$modelValue,
+                    prodValIcm17: productToFind.iptProdValIcm17.$modelValue,
                     idcActive: productToFind.dbStatus.$modelValue
                 };
 
@@ -186,6 +191,8 @@ angular.module("currentApp").controller('ProductModalCtrl', function ($scope, $h
         if (parans.productEdit) {
             $scope.code = parans.productEdit.code;
             $scope.productName = parans.productEdit.productName;
+            $scope.reference = parans.productEdit.reference;
+            $scope.description = parans.productEdit.description;
             $scope.categoryCode = parans.productEdit.categoryCode.toString();
             $scope.prodValIcm8 = parseFloat(parans.productEdit.prodValIcm8);
             $scope.prodValIcm12 = parseFloat(parans.productEdit.prodValIcm12);

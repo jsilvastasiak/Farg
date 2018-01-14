@@ -32,7 +32,7 @@ block content
                                 td
                                     div.product-container
                                         img(ng-src="{{getProductInfo(item).filename}}")
-                                        span(name="info") {{getProductInfo(item).productName}}
+                                        span(name="info", title="{{getProductInfo(item).productName}}") {{getProductInfo(item).productName}}
                                 td.align-center
                                     select.form-control.select-grade(name="dbGrades", ng-model="item.gradeCode", ng-required="!isFind",
                                     ng-focus="gradeOptionLoad(item, 'dbGrades', $index)", ng-change="alteredGrade(item)")
@@ -41,7 +41,7 @@ block content
                                     span(load-icon)
                                 td.align-center {{getMinQuantity(item)}}
                                 td.align-center 
-                                    input.form-control(type="number", name="iptQuantity", ng-model="item.quantity", min="1", ng-required)
+                                    input.form-control(type="number", name="iptQuantity", ng-model="item.quantity", min="1", ng-required, ng-blur="alteredQuantity(item)")
                                 td.align-right {{toMoney(item.unitValue)}}
                                 td.align-right {{ toMoney(getTotalValue(item)) }}
                                 td

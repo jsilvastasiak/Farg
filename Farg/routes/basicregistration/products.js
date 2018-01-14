@@ -45,6 +45,8 @@ router.post('/updateProduct', auth.isAuthenticated, function (req, res) {
         product.updateAttributes({
             cdg_categoria: req.body.product.categoryCode,
             nom_produto: req.body.product.productName,
+            dsc_referencia: req.body.product.reference,
+            dsc_produto: req.body.product.description,
             vlr_icms_8: req.body.product.prodValIcm8,
             vlr_icms_12: req.body.product.prodValIcm12,
             vlr_icms_17: req.body.product.prodValIcm17,
@@ -68,6 +70,8 @@ router.post('/insertProduct', auth.isAuthenticated, function (req, res) {
         product.create({
             cdg_categoria: req.body.product.categoryCode,
             nom_produto: req.body.product.productName,
+            dsc_referencia: req.body.product.reference,
+            dsc_produto: req.body.product.description,
             vlr_icms_8: req.body.product.prodValIcm8,
             vlr_icms_12: req.body.product.prodValIcm12,
             vlr_icms_17: req.body.product.prodValIcm17,

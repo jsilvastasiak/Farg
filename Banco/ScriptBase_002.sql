@@ -57,3 +57,15 @@ COMMENT ON COLUMN "Parametros_gerais".email_remetente
 INSERT INTO "Parametros_gerais"(
 	cdg_empresa, cdg_filial, nom_fantasia, nom_host_email, nro_port_email, nom_usuario_email, snh_usuario_email, email_remetente, "createdAt", "updatedAt")
 	VALUES (1, 1, null, null, null, null, null, null, current_date, current_date);
+	
+ALTER TABLE "Produtos"
+    ADD COLUMN dsc_produto character varying(500) COLLATE pg_catalog."default";
+
+COMMENT ON COLUMN public."Produtos".dsc_produto
+    IS 'Descrição do produto';
+    
+ALTER TABLE "Produtos"
+    ADD COLUMN dsc_referencia character varying(20) COLLATE pg_catalog."default";
+
+COMMENT ON COLUMN "Produtos".dsc_referencia
+    IS 'Descrição da refrência produto controle usuário fábrica';

@@ -40,6 +40,11 @@ div.modal-demo
                     div.col-sm-7
                         input.form-control(type="text", name="iptProductName", ng-model="productName", ng-required="!isFind")
                         span(ng-show="frmProduct.iptProductName.$touched && frmProduct.iptProductName.$invalid") 'Nome' é um campo de preenchimento obrigatório
+                
+                div.form-group
+                    label.control-label.col-sm-4 Referência
+                    div.col-sm-7
+                        input.form-control(type="text", name="iptProductRef", ng-model="reference")
 
                 div.form-group
                     label.control-label.col-sm-4(for="dbCategory") Categoria
@@ -65,7 +70,12 @@ div.modal-demo
                     div.col-sm-7
                         input.form-control(type="text", ng-currency, currency-symbol="R$", name="iptProdValIcm17", ng-model="prodValIcm17", min="0", ng-required="!isFind")
                         span(ng-show="frmProduct.iptProdValIcm17.$touched && frmProduct.iptProdValIcm17.$invalid") 'Vlr. no Icms 17' é um campo de preenchimento obrigatório
-
+                
+                div.form-group
+                    label.control-label.col-sm-4 Descrição
+                    div.col-sm-7
+                        textarea.form-control(name="iptProductDesc", rows="3", placeholder="Descrição ...", ng-model="description")
+                
                 div.form-group
                     label.control-label.col-sm-4(for="dbStatus") Situação
                     div.col-sm-7

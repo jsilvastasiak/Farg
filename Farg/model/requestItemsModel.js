@@ -140,6 +140,7 @@ var getSelecetRequestInfo = function () {
           +" , gra.qtd_minima \"minGrade\""
           +" , prod.nom_produto \"product\""
           +" , ite.vlr_atribuido \"unitValue\""
+          +" , prod.dsc_referencia \"reference\""
           +" from \"Items_pedidos\" ite"
           +" inner join \"Produtos\" prod"
           +" on prod.cdg_produto = ite.cdg_produto"

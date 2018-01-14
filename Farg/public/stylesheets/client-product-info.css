@@ -177,8 +177,7 @@
     /*width: 48%;*/
 }
 .product-container > .product-categorys {
-    float: right;
-    height: 50px;    
+    float: right;    
     /*width: 48%;*/
 }
 
@@ -222,4 +221,13 @@
     .col-md-4 {
         height: 250px;
     }
+}
+.lbl-product-name {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.select-grade {
+    width: 100px;
+    display: inline-block;
+    margin-right: 5px;
 }

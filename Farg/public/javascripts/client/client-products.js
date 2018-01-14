@@ -140,7 +140,7 @@ angular.module("currentApp").controller("clientProducts", function ($scope, Util
                     $(select).blur();
                     $(select).focus();
                     $($loadIcon).hide();
-
+                     
                     product.gradesOptions = res.data.result;
                     product.loadedGradeOptions = true;
                 }

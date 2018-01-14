@@ -559,6 +559,7 @@ angular.module("currentApp").factory("ClientCar", ['Utils', function (Utils) {
     var product = function () {
         this.selectedGrade = null;
         this.unitValue = null;
+        this.productCode = null;
         this.code = null;
         this.quantity = null;
         this.inSession = false;
@@ -570,7 +571,8 @@ angular.module("currentApp").factory("ClientCar", ['Utils', function (Utils) {
     //Força pegar a forma de pagamento no servidor
     Utils.get('/client/products/getPaymentForm', null, function (res) {
         if (res.data && res.data !== "") {
-            _selectedPaymentForm = res.data;
+            if (!res.data.message)
+                _selectedPaymentForm = res.data;
         }
     });
 

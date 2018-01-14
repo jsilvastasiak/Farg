@@ -28,16 +28,16 @@ block content
             div.col-xs-12.col-sm-6.col-lg-6.product-info
                 form.form-horizontal
                     div.form-group
-                        label.col-sm-5(name="lblName") {{product.productName}}
+                        label.lbl-product-name(name="lblName") {{product.productName}}
                     div.form-group  
                         label.col-sm-5(name="lblValue") Preço: 
                             span.span-content {{ "R$ " + getProductValue(product).toString() }}
                     div.form-group
                         label.control-label.col-sm-1 Grade:
-                        div.col-sm-3
-                            select.form-control(id="dbGrade", name="dbGrade", ng-model="product.selectedGrade", ng-change="alteredGrade(product)"
-                                , ng-focus="gradeOptionLoad(product)")
-                                option(ng-repeat="grade in gradesOptions", value="{{grade.gradeCode}}") {{grade.descGrade}}
+                        div.col-sm-6
+                            select.form-control.select-grade(id="{{ dbGradeId }}", name="dbGrade", ng-model="product.selectedGrade", ng-change="alteredGrade(product)"
+                                , ng-focus="gradeOptionLoad(product, dbGradeId, $index)")                                
+                                option(ng-repeat="grade in dtGrades.List", value="{{grade.gradeCode}}") {{grade.descGrade}}
                             span(name="lblMin", ng-show="hasSelectedGrade(product)", style="display: inline") Items por grade {{ getQuantity(product) }}
                     div.form-group
                         label.control-label.col-sm-2 Quantidade:
@@ -55,3 +55,7 @@ block content
                 label.title Categoria:
                 br
                 label {{product.categoryName}}
+                br
+                label.title Descrição:
+                br
+                label {{product.description}}

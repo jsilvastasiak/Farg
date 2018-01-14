@@ -3,8 +3,8 @@
     min-width: 100%;    
 }
 .product-container {
-    max-width: 280px;
-    height: 275px;
+    max-width: 290px;
+    height: 400px;
     float: left;
     margin: 0;
     margin-left: 10px;
@@ -32,8 +32,8 @@
         text-align: center;
     }
 .product-image > img {
-    width: 200px;
-    height: 150px;
+    width: 280px;
+    height: 300px;
 }
 
 .product-info {
