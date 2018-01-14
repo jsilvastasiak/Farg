@@ -14,3 +14,5 @@ exception
     return null;
     --result_message := 'Erro genérico na stored procedure InsereCliente -> ' || MESSAGE_TEXT || ' ' || PG_EXCEPTION_DETAIL;
 end;
+
+$BODY$;

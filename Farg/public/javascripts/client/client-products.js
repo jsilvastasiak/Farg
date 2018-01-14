@@ -137,6 +137,8 @@ angular.module("currentApp").controller("clientProducts", function ($scope, Util
                     var select = $("*[name='" + name + "']")[index];
                     var $loadIcon = $("*[name='loadIcon']")[index];
                     $(select).children("option[value='0']").remove();
+                    $(select).blur();
+                    $(select).focus();
                     $($loadIcon).hide();
 
                     product.gradesOptions = res.data.result;

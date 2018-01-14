@@ -213,5 +213,5 @@ input.ng-invalid {
 .div-buttons{
     padding: 5px;
     width: 100%;
-    text-align: right;
+    margin-top: 3px;
 }

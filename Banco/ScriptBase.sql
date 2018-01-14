@@ -411,15 +411,6 @@ INSERT INTO cg_ref_codes(
 INSERT INTO cg_ref_codes(
 	dsc_dominio, sgl_dominio, dsc_significado)
 	VALUES ('TIPO_ENDERECO', 'E', 'Entrega');
-
-INSERT INTO cg_ref_codes(dsc_dominio, sgl_dominio, dsc_significado)
-	  VALUES ('STATUS_PEDIDO', 'A', 'Análise');
-INSERT INTO cg_ref_codes(dsc_dominio, sgl_dominio, dsc_significado)
-	  VALUES ('STATUS_PEDIDO', 'E', 'Entregue');
-INSERT INTO cg_ref_codes(dsc_dominio, sgl_dominio, dsc_significado)
-	  VALUES ('STATUS_PEDIDO', 'P', 'Em produção');
-INSERT INTO cg_ref_codes(dsc_dominio, sgl_dominio, dsc_significado)
-	  VALUES ('STATUS_PEDIDO', 'R', 'Recusado');
 	
 -- Inclusão de constantes
 INSERT INTO "Constantes"(
