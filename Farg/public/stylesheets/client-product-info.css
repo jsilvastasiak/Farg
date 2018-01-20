@@ -156,9 +156,7 @@
     border: 1px solid #ccc;    
     border-radius: 4px
 }
-.product-container > .product-info {
-    height: 250px;
-}
+
 .product-container > .product-info > form > .form-group > label[name="lblName"]{
     font-size: 25px;
     font-weight: bold;

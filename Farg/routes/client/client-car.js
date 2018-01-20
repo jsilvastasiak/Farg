@@ -172,12 +172,7 @@ router.post('/effetiveRequest', auth.isAuthenticated, function (req, res) {
 
     //Função de manipulação caso sucesso da efetivação
     var successHandler = function (mailErr) {
-        if (mailErr) {
-            res.send({
-                message: mailErr.message,
-                type: 'danger'
-            });
-        }
+        console.error(mailErr);
 
         var clientSession = new ClientSession(req);
         clientSession.clearCarItems();

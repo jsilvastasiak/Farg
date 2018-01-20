@@ -31,7 +31,7 @@ block content
                         label.lbl-product-name(name="lblName") {{product.productName}}
                     div.form-group  
                         label.col-sm-5(name="lblValue") Preço: 
-                            span.span-content {{ "R$ " + getProductValue(product).toString() }}
+                            span.span-content {{ getProductValue(product) }}
                     div.form-group
                         label.control-label.col-sm-1 Grade:
                         div.col-sm-6
@@ -45,7 +45,7 @@ block content
                             input.form-control(type="number", name="iptQuantity", ng-model="product.quantity", min="1", ng-required)
                     div.form-group
                         label.col-sm-5(name="lblTotal") Preço Total: 
-                            span.span-content {{ "R$ " + getTotal(product)}}
+                            span.span-content {{ getTotal(product)}}
                 div.buttons
                     button.btn.btn-primary(type="button", ng-click="addProduct(product)", ng-show="!product.inSession", ng-disabled="!isValidItem(product)", title="Adicionar item ao carrinho") Adicionar
                     button.btn.btn-success(type="button", ng-click="editProduct(product)", ng-show="product.inSession", ng-disabled="!isValidItem(product)", title="Salvar alterações no item") Salvar

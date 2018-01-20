@@ -6,6 +6,9 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
     $scope._listsToPage = [];
     $scope._datasources = [];
     $scope.itemsPerPage = 30;
+    $scope.overlayState = "overlay-div-show";
+    $scope._countRequests = 0;
+
     /**Informações do usuário logado*/
     $scope.user = {
         isAdmin: false,
@@ -120,22 +123,31 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
         var parameters = data;
         var config = { params: parameters };
 
+        overlayListener(true);
+        
         $http.get(path, config).then(function (res) {
+            overlayListener(false);
             next(res);
         }, function (res) {
+            overlayListener(false);
             $scope.showMessageUser({
                 message: res.message,
                 type: 'danger'
             });
-            nextErr(res.data);
+            if (nextErr)
+                nextErr(res.data);
         });
     };
 
     $scope.post = function (path, data, next, nextErr) {
+        overlayListener(true);
+
         $http.post(path, data).then(function (res) {
+            overlayListener(false);
             if(next)
                 next(res);
         }, function (res) {
+            overlayListener(false);
             $scope.showMessageUser({
                 message: res.message,
                 type: 'danger'
@@ -178,14 +190,23 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
             return el["id"] = idPager;
         });
 
-        if (filter)
+        if (filter.length == 1)
             return filter[0];
+
+        if (filter.length > 1) {
+            $scope.showMessageUser({
+                message: 'Pager ' + idPager + ' está registrado mais de uma vez na mesma página',
+                type: 'danger'
+            });
+        }
         else {
             $scope.showMessageUser({
                 message: 'Pager ' + idPager + ' não está registrado nesta página',
                 type: 'danger'
             });
-        }       
+        }
+
+        return {};
     };
 
     /*Pega informações da instância paginador*/
@@ -232,6 +253,18 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
     Utils.addMessageListener(function (message, type) {
         $scope.showMessageUser({ message: message, type: type });
     });
+
+    var overlayListener = function (flag) {
+        $scope._countRequests += flag ? 1 : -1;
+
+        if ($scope._countRequests > 0)
+            $scope.overlayState = "overlay-div-show";
+        else
+            $scope.overlayState = "overlay-div-hide";
+    };
+
+    Utils.addOverlayListener(overlayListener);
+
     //Busca informações do usuário logado
     Utils.get('/getProfile', null, function (res) {
         if (res.data) {
@@ -454,10 +487,17 @@ angular.module("currentApp").factory("UploadCtrl", ['uiUploader', '$log', functi
 
 angular.module("currentApp").factory("Utils", function ($window, $http) {
     var messageListener = [];
+    var overlayListener = [];
 
     var callMessagesListeners = function (message, type) {
         messageListener.forEach(function (el) {
             el(message, type);
+        });
+    }
+
+    var callOverlayListeners = function (flag) {
+        overlayListener.forEach(function (el) {
+            el(flag);
         });
     }
 
@@ -495,14 +535,19 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
             callMessagesListeners(message, type);
         },
 
-        get: function (path, data, next, nextErr) {
+        get: function (path, data, next, nextErr, hideOverlay) {
             var parameters = data;
             var config = { params: parameters };
 
+            if (!hideOverlay)
+                callOverlayListeners(true);
+
             $http.get(path, config).then(function (res) {
+                if(!hideOverlay) callOverlayListeners(false);
                 if(next)
                     next(res);
-            }, function (res) {                
+            }, function (res) {
+                if (!hideOverlay) callOverlayListeners(false);
                 if (nextErr)
                     nextErr(res.data);
                 else {
@@ -511,11 +556,16 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
             });
         },
 
-        post: function (path, data, next, nextErr) {
+        post: function (path, data, next, nextErr, hideOverlay) {
+            if (!hideOverlay)
+                callOverlayListeners(true);
+
             $http.post(path, data).then(function (res) {
+                if (!hideOverlay) callOverlayListeners(false);
                 if (next)
                     next(res);
             }, function (res) {
+                if (!hideOverlay) callOverlayListeners(false);
                 var err = null;
                 if (res.data)
                     err = res.data;
@@ -532,6 +582,10 @@ angular.module("currentApp").factory("Utils", function ($window, $http) {
 
         addMessageListener: function (listener) {
             messageListener.push(listener);
+        },
+
+        addOverlayListener: function (listener) {
+            overlayListener.push(listener);
         },
 
         toMoney: function (value, symbol) {
@@ -666,20 +720,24 @@ angular.module("currentApp").factory("ClientCar", ['Utils', function (Utils) {
         },
 
         _alterItem: function (product, path, next) {
-            Utils.post(path, {
-                product: {
-                    code: product.productCode,
-                    gradeCode: this._getGradeItem(product.selectedGrade).gradeCode,
-                    paymentFormCode: _selectedPaymentForm.code,
-                    quantity: product.quantity
-                }
-            }, function (res) {
-                if (res.data.message) {
-                    Utils.toMessage(res.data.message, res.data.type);                    
-                } else {
-                    next();
-                }
-            });
+            if (_selectedPaymentForm) {
+                Utils.post(path, {
+                    product: {
+                        code: product.productCode,
+                        gradeCode: this._getGradeItem(product.selectedGrade).gradeCode,
+                        paymentFormCode: _selectedPaymentForm.code,
+                        quantity: product.quantity
+                    }
+                }, function (res) {
+                    if (res.data.message) {
+                        Utils.toMessage(res.data.message, res.data.type);                    
+                    } else {
+                        next();
+                    }
+                });
+            } else {
+                Utils.toMessage("Forma de pagamento não selecionada", "alert");
+            }
         },
 
         addProduct: function (product, next) {

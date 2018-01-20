@@ -9,6 +9,12 @@
     margin: 0;
     width: 100%;    
 }
+.content{    
+    padding-bottom: 0px;
+}
+.box{
+    margin-bottom: 0px;
+}
 .table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>td, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>thead>tr>th{
     padding: 0px !important;
     padding-left: 2px !important;
@@ -70,6 +76,13 @@ footer {
     background-color: #f2f2f2;
     padding: 25px;
 }
+.overlay-div-show{
+    display: block;
+}
+.overlay-div-hide{
+    display: none;
+}
+
 .btn-edit-min, .btn-dele-min, .btn-add-min, .btn-find-min {
     width: 23px;
     height: 20px;

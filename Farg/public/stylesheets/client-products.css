@@ -16,7 +16,7 @@
 .product-container:hover {
     border: 1px solid #AAAAAA;
     border-radius: 5px;
-    cursor: pointer;   
+    cursor: pointer;
 }
 
 .product-container > .item-checked-container {
@@ -99,4 +99,17 @@
 }
 .total-info-table > tbody > tr > td > select {
    width: 150px;
+}
+.pager-style{
+    clear: both;
+    margin-top: 50px;
+    margin-left: 40%;
+    float: left;
+}
+.div-buttons {
+    padding: 5px;
+    width: auto;
+    margin-top: 50px;
+    float: right;
+    margin-right: 20px;
 }

@@ -8,6 +8,6 @@ angular.module("currentApp").controller("titleCtrl", function ($scope, $http) {
 
     getProfile($http).then(function (res) {
         if (res)
-            $scope.profile = res.data.profile;
+            $scope.profile = res.data;
     });
 });

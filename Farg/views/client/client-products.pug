@@ -39,14 +39,7 @@ block content
                         i.fa.fa-shopping-cart
                     a.small-box-footer(href="/client/car") Finalizar Pedido&nbsp
                         i.fa.fa-arrow-circle-right
-                    //form.form-horizontal(name="frmPaymentForm")
-                        div.form-group
-                            div.col-sm-10
-                                label.control-label.col-sm-3 Formas de Pagamento
-                            div.col-sm-10                
-                                label.radio-inline(ng-repeat="paymentForm in dtPaymentForm.List")
-                                    input(type="radio", name="iptPaymentForm", ng-click="paymentFormSelected(paymentForm)", ng-checked="$index === 0") 
-                                    | {{paymentForm.descForm}}
+                    
             div.div-content-product
                 div.col-xs-12.col-lg-4.product-container(product-container, ng-repeat="product in dtProducts.List")
                     div.item-checked-container(ng-show="product.inSession", ng-click="removeProduct(product)")              
@@ -73,3 +66,10 @@ block content
                     div.buttons
                         button.btn.btn-primary(type="button", ng-click="addProduct(product)", ng-show="!product.inSession", ng-disabled="!isValidItem(product)", title="Adicionar item ao carrinho") Adicionar
                         button.btn.btn-success(type="button", ng-click="editProduct(product)", ng-show="product.inSession", ng-disabled="!isValidItem(product)", title="Salvar alterações no item") Salvar
+
+            
+            ul.pagination-sm.pager-style(uib-pagination, total-items="getPagerInfo('pgClientProduct').bigTotalItems", ng-model="getPagerInfo('pgClientProduct').bigCurrentPage"
+            , max-size="5", boundary-links="true", force-ellipses="true", boundary-link-numbers="true", items-per-page="getPagerInfo('pgClientProduct').itemsPerPage", ng-change="pageChanged('pgClientProduct')")
+            div.div-buttons
+                a.btn.btn-success.fa.fa-shopping-cart(type="button", href="/client/car" title="Finalizar pedido"
+                    , ng-click="generateRelatory()")  Finalizar Pedido

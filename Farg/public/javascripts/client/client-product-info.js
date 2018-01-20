@@ -38,8 +38,8 @@ angular.module("currentApp").controller("clientProductInfo", function ($scope, U
     });
         
     $scope.getProductValue = function (product) {
-        if(product)
-            return ClientCar.getProductValue(product);
+        if (product)
+            return Utils.toMoney(ClientCar.getProductValue(product), "R$");
         else {
             return undefined;
         }
@@ -62,8 +62,11 @@ angular.module("currentApp").controller("clientProductInfo", function ($scope, U
     };
 
     $scope.getTotal = function (product) {
-        var total = product.quantity * ClientCar._getMinQuantity(product) * $scope.getProductValue(product);
-        return total ? total.toFixed(2) : "";
+        if (product) {
+            var total = product.quantity * ClientCar._getMinQuantity(product) * ClientCar.getProductValue(product);
+            return total ? Utils.toMoney(total, "R$") : "";
+        } else
+            return "";
     };
 
     $scope.isValidItem = function (product) {

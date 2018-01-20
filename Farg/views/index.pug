@@ -1,12 +1,85 @@
 ﻿extends master/master.pug
 
 append infoPage
-    title Home
+    title Farg Camisaria
 
 append scripts
     script(src='/javascripts/index.js')
 
+append styles
+    style.
+        .box-body > p, .box-body > h2, .box-body > h3{
+            text-align: center;
+        }
+        .box-body{
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
 append content
     div.panel.panel-default
-        div
-            h1(ng-controller="titleCtrl") Bem-vindo {{profile}}
+        div.box.box-widget
+            h1(ng-controller="titleCtrl") Bem-vindo {{profile.clientName}}
+            div.box-body
+                p.
+                    A Farg Camisaria agradece a você cliente por acessar nosso sistema online de vendas, esperamos atender suas
+                    necessidades, e desde já formar um grande parceiro!
+                h2(style="color: red; text-transform: uppercase") Informações importantes, leia antes de continuar!!!
+                p.
+                    Nossos produtos estão listados em categorias, para acessar basta selecionar a categoria desejada.
+                p.
+                    Os valores de cada produto estão fixados como forma de pagamento de 90 dias. Ao reduzir a forma de pagamento,
+                    serão concedidos descontos.
+                p.
+                    Todos nossos produtos são vendidos em grades fechadas, cada produto tem sua grade definida, não vendemos peças
+                    avulsas ou com grade furada.
+                h3(style="color: red;") Passo a Passo:
+                p.
+                    Para simular os valores, basta selecionar a grade do produto e inserir a quantidade de grades desejada (NÃO  A
+                    QUANTIDADE DE PEÇAS, POIS O SISTEMA MULTIPLICA A GRADE FECHADA).
+                p.
+                    Após adicionar a quantidade de grade, o sistema mostrará o valor total do produto selecionado.
+                p.
+                    Para adicionar o produto ao pedido, basta clicar no botão adicionar, que esta ao lado do produto desejado.
+                p.
+                    OBS.: Sistema somente permite adicionar produtos a partir do momento que se tem o prazo de pagamento selecionado.
+                p.
+                    Após selecionar os produtos e quantidades desejadas, cliente deverá clicar em finalizar pedido, que esta logo abaixo das
+                    formas de pagamento.
+                p.
+                    Ao adicionar os produtos o cliente ainda poderá alterar o prazo de pagamento (alterando assim automaticamente o
+                    valor do produto, devido aos descontos concedidos pelo prazo de pagamento).
+                p.
+                    Após clicar em finalizar pedido, cliente será direcionado para a tela que mostrará todos os produtos adicionados e 
+                    com suas respectivas quantidades. Nessa tela, cliente ainda poderá confirmar a quantidade de grades e alterar a
+                    forma de pagamento ou mesmo excluir alguns itens. Confirmando todos os itens, quantidade e valor, é só clicar em efetivar pedido.
+                p.
+                    Cliente poderá visualizar a situação do seu pedido em "Consultas > Pedidos".
+                p.
+                    OBS.: Valores financeiros de cobranças são emitidos pela fábrica , sistema não emite cobranças no ato da finalização do pedido.
+                    
+                p. 
+                    Para compras acima de R$ 5.000,00, oferecemos descontos diferenciados. Solicitar orçamento através do
+                    Whatapp (47) 9 8802-8615.
+                p.
+                    Prazo de entrega dos produtos são de 30 a 45 dias. Ao finalizar o pedido no sistema, entraremos em contato para confirmar
+                    o pedido e a data para faturamento.
+
+                h3(style="color: red;") Forma de pagamento:
+
+                p À Vista: Boleto Bancário
+                p
+                    Parcelamento: Boleto Bancário, Cartão de Crédito, Mercado Pago.
+
+                h3(style="color: red;") FRETE:
+                p.
+                    Nossos produtos tem frete grátis para compras acima de R$ 1.000,00 (um mil reais).
+                
+                h3(style="text-align: center; color: red;") Demais Informações:
+
+                p.
+                    Contato Whatsapp (47) 9 8802-8615<br />
+                    comercial@farg.ind.br
+
+                    

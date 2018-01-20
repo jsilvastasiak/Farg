@@ -31,7 +31,7 @@ angular.module("currentApp").controller("productCategorysCtrl", function ($scope
 });
 
 angular.module("currentApp").controller("clientProducts", function ($scope, Utils, $uibModal, $location, ClientCar, Bridge, PaymentFormFact) {
-    const pagerProductsId = 'pgProducts';
+    const pagerProductsId = 'pgClientProduct';
     $scope.dbGradeId = 'dbGrade';
     //Função para carga de opções de grade para items já na sessão
     var loadGradeOptions = function () {
@@ -64,9 +64,12 @@ angular.module("currentApp").controller("clientProducts", function ($scope, Util
     $scope.dtGrades.addOnDataBound(loadGradeOptions);
 
     $scope.addPager(pagerProductsId, {
-        changedCallback: $scope.dtProducts.dataBind
+        changedCallback: function () {
+            $scope.dtProducts.dataBind();
+        },
+        itemsPerPage: 12
     });
-    
+
     /*Cálculo de descontos no produto*/
     $scope.getProductValue = function (product) {
         if (product) {
@@ -144,7 +147,7 @@ angular.module("currentApp").controller("clientProducts", function ($scope, Util
                     product.gradesOptions = res.data.result;
                     product.loadedGradeOptions = true;
                 }
-            });
+            }, null, true);
         }
     };
         

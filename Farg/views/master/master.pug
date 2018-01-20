@@ -115,8 +115,10 @@ body.hold-transition.skin-blue.sidebar-mini(ng-app="currentApp", ng-controller="
                     block custom-sidebar
                         
         div.content-wrapper
-            section.content
+            section.content.box
                 block content
+                div.overlay(ng-class="overlayState")
+                    i.fa.fa-refresh.fa-spin
 
         div
             div.message-user(uib-alert, ng-repeat="alert in _alerts", dismiss-on-timeout="{{alert.timeout}}", ng-class="'alert-' + (alert.typeMessageUser || 'warning')", close="closeMessageUser($index)") {{alert.messageUser}}
