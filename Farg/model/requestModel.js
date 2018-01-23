@@ -55,6 +55,8 @@ RequestDefinition.prototype = {
     },
 
     getRequest: function (parans) {
+        parans.orderByDirection = parans.orderByDirection ? parans.orderByDirection : "desc";
+        parans.orderByField = parans.orderByField ? parans.orderByField : "code";
         var queryBuilder = new QueryBuilder(getSelectRequest(), false, parans);
 
         if (parans.filters) {

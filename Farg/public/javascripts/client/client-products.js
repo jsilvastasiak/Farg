@@ -17,20 +17,35 @@ angular.module("currentApp").factory("Bridge", function ($window, $http) {
     };
 });
 
-angular.module("currentApp").controller("productCategorysCtrl", function ($scope, Bridge) {
+angular.module("currentApp").controller("productCategorysCtrl", ["$scope", "$window", "Bridge", function ($scope, $window, Bridge) {
     $scope.dtCategorys = new $scope.ObjectDataSource('dtCategorys', $scope, '/client/products/getCategorys');
+
+    $scope.dtCategorys.addOnDataBound(function () {
+        var lastCategory = $window.sessionStorage.getItem("lastCategory");
+        if ($scope.dtCategorys.List.filter && lastCategory) {
+            $scope.dtCategorys.List.map(function (el, index) {
+                //Recupera filtro do usuário nesta sessão
+                $scope.dtCategorys.List[index].isSelected = el.code.toString() === lastCategory;
+            });
+        }
+    });
 
     $scope.filterCategory = function (category) {
         $scope.dtCategorys.List.forEach(function (el) { el.isSelected = false; });
-        category.isSelected = true;
+        if (category) {
+            category.isSelected = true;
+            $window.sessionStorage.setItem("lastCategory", category.code);
+        } else {
+            $window.sessionStorage.setItem("lastCategory", null);
+        }
         
-        Bridge.dataBind({ categoryCode: category.code });
+        Bridge.dataBind({ categoryCode: category ? category.code : null });
     };
 
     $scope.dtCategorys.dataBind();
-});
+}]);
 
-angular.module("currentApp").controller("clientProducts", function ($scope, Utils, $uibModal, $location, ClientCar, Bridge, PaymentFormFact) {
+angular.module("currentApp").controller("clientProducts", function ($scope, $window, Utils, $uibModal, $location, ClientCar, Bridge, PaymentFormFact) {
     const pagerProductsId = 'pgClientProduct';
     $scope.dbGradeId = 'dbGrade';
     //Função para carga de opções de grade para items já na sessão
@@ -56,7 +71,7 @@ angular.module("currentApp").controller("clientProducts", function ($scope, Util
         if ($scope.dtProducts.List.forEach) {
             //Percorre lista do carrinho para colocar opção de grade escolhida
             $scope.dtProducts.List.forEach(function (item) {
-                item.loadedGradeOptions = false;                                
+                item.loadedGradeOptions = false;                
             });
         };
     });
@@ -150,7 +165,11 @@ angular.module("currentApp").controller("clientProducts", function ($scope, Util
             }, null, true);
         }
     };
-        
+
+    //Chama dataBind verificando se existe categoria filtrada na sessão
+    $scope.dtProducts.setFilters({
+        categoryCode: $window.sessionStorage.getItem("lastCategory") ? parseInt($window.sessionStorage.getItem("lastCategory")) : null
+    });
     $scope.dtProducts.dataBind();    
     $scope.dtGrades.dataBind();
     //Adiciona dataSource para ser chamado no Evento da Bridge

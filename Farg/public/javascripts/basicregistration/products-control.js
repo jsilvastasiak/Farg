@@ -157,7 +157,9 @@
     }
     
     $scope.addPager(pagerProductsId, {
-        changedCallback: $scope.dtProducts.dataBind
+        changedCallback: function () {
+            $scope.dtProducts.dataBind();
+        }
     });
 
 

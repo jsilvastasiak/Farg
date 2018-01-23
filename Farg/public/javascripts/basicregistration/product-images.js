@@ -156,7 +156,9 @@ angular.module("currentApp").controller("tblProductImages", function ($scope, $h
     };
 
     $scope.addPager(pagerProductImageId, {
-        changedCallback: $scope.dtProductImages.dataBind
+        changedCallback: function () {
+            $scope.dtProductImages.dataBind();
+        }
     });
 });
 

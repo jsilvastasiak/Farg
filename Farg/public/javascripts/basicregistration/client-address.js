@@ -176,7 +176,9 @@ angular.module("currentApp").controller("tblAddress", function ($scope, $http, $
     };
     
     $scope.addPager(pagerClientAddressId, {
-        changedCallback: $scope.dtClientAddress.dataBind
+        changedCallback: function () {
+            $scope.dtClientAddress.dataBind();
+        }
     });    
 });
 
@@ -241,7 +243,7 @@ angular.module("currentApp").controller('AddressClientModalCtrl', function ($sco
                     $scope.districtName = response.data.bairro;
                     $scope.streetName = response.data.logradouro + response.data.complemento;
                 }
-            }).catch(function (res) {
+            }, function (res) {
                 window.alert(res.message);
 
                 return null;

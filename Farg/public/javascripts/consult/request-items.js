@@ -50,7 +50,9 @@ angular.module("currentApp").controller("tblRequestItems", function ($scope, $ht
     }
 
     $scope.addPager(pagerRequestItemsId, {
-        changedCallback: $scope.dtRequestItems.dataBind
+        changedCallback: function () {
+            $scope.dtRequestItems.dataBind();
+        }
     });
 });
 

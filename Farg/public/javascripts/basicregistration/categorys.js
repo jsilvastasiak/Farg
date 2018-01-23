@@ -131,7 +131,9 @@ angular.module("currentApp").controller("tblCategorys", function ($scope, $http,
     };
 
     $scope.addPager(pagerCategoryId, {
-        changedCallback: $scope.dtCategorys.dataBind
+        changedCallback: function(){
+            $scope.dtCategorys.dataBind();
+        }
     });
 
     $scope.dtCategorys.dataBind();

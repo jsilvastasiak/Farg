@@ -8,13 +8,13 @@ body
     div(ng-app="loginFormApp")
         div.login-page
             div.form       
-                form.login-form(ng-controller="frmLoginCtrl", name="frmLogin")
+                form.login-form(ng-controller="frmLoginCtrl", name="frmLogin", ng-init="{{ frmLogin.focus() }}")
                     div.panel.panel-default.logoFarg
                         img.img-responsive(src="/images/fargLogo.png", alt="Logo Farg")
-                    input.input-login(name="userName", type="text", placeholder="usuário", ng-model="userName", required)
+                    input.input-login(name="userName", type="text", placeholder="usuário", ng-model="userName", ng-required)
                     span.messageForm(ng-show="frmLogin.userName.$touched && frmLogin.userName.$invalid") "Usuário" é um campo de preenchimento obrigatório
 
-                    input(name="password", type="password", placeholder="SENHA", ng-model="password", required)
+                    input(name="password", type="password", placeholder="SENHA", ng-model="password", ng-required)
                     span.messageForm(ng-show="frmLogin.password.$touched && frmLogin.password.$invalid") "Senha" é um campo de preenchimento obrigatório
 
                     button.btn.btn-primary(ng-click="doLogin(frmLogin)", ng-disabled="frmLogin.$invalid") login

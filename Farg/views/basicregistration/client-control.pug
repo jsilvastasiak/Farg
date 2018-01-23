@@ -65,7 +65,7 @@ div.modal-demo
                 div.form-group
                     label.control-label.col-sm-4 E-mail
                     div.col-sm-7
-                        input.form-control(type="text", name="iptEmail", ng-model="email", ng-required="!isFind")
+                        input.form-control(type="text", name="iptEmail", ng-model="email", ng-required="!isFind", ng-disabled="isEdit")
                         span(ng-show="frmClient.iptLogin.$touched && frmUser.iptEmail.$invalid") 'E-mail' é um campo de preenchimento obrigatório
                 div.form-group
                     label.control-label.col-sm-4 Percentual Desconto

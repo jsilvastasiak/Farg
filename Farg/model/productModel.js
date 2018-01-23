@@ -87,6 +87,8 @@ Product.prototype = {
     },
 
     getClientProducts: function (parans) {
+        parans.orderByDirection = parans.orderByDirection ? parans.orderByDirection : "asc";
+        parans.orderByField = parans.orderByField ? parans.orderByField : "reference";
         var queryBuilder = new QueryBuilder(getSelectClientProducts(), true, parans);
 
         if (parans.filters) {

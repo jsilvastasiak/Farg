@@ -42,6 +42,8 @@ FormPayment.prototype = {
     },
 
     getFormPayments: function (parans) {
+        parans.orderByDirection = parans.orderByDirection ? parans.orderByDirection : "asc";
+        parans.orderByField = parans.orderByField ? parans.orderByField : "code";
         var queryBuilder = new QueryBuilder(getSelectFormPayments(), false, parans);
 
         if (parans.filters) {

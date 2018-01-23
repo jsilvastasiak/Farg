@@ -13,11 +13,17 @@ append styles
 
 block custom-sidebar
     ul.sidebar-menu(ng-controller="productCategorysCtrl", data-widget="tree")
-        li.header CATEGORIAS
-        li(ng-repeat="category in dtCategorys.List", ng-click="filterCategory(category)", ng-class="{ 'active': category.isSelected }")
+        li.treeview
             a(href="#")
                 i.fa.fa-filter
-                span {{category.categoryName}}
+                span Categorias
+                span.pull-right-container
+                    i.fa.fa-angle-left.pull-right
+            ul.treeview-menu
+                li(ng-click="filterCategory()")                    
+                    a(href="#") Sem Filtro
+                li(ng-repeat="category in dtCategorys.List", ng-click="filterCategory(category)", ng-class="{ 'active': category.isSelected }")
+                    a(href="#") {{category.categoryName}}
 
 block content
     div.panel.panel-default(ng-controller="clientProducts")
@@ -46,7 +52,8 @@ block content
                     div.product-image
                         img(ng-src="{{product.filename}}", ng-click="showInfo(product)")
                     div.col-sm-3.col-md-6.product-info
-                        label(name="lblName") {{product.productName}}
+                        label(name="lblName") {{product.productName}} 
+                        label.product-reference(name="lblRefernce") &nbsp(Réf: {{product.reference}})
                         br
                         label(name="lblValue") Preço: {{ getProductValue(product).toString() }}
                         br
@@ -56,7 +63,7 @@ block content
                             option(value='0') Carregando
                             option(ng-repeat="grade in product.gradesOptions", value="{{grade.gradeCode}}") {{grade.descGrade}}
                         span(load-icon)
-                        label(name="lblMin", ng-show="hasSelectedGrade(product)")  Items por grade {{ getQuantity(product) }}
+                        label(name="lblMin", ng-show="hasSelectedGrade(product)")  Itens por grade {{ getQuantity(product) }}
                         br
                         label Qtd. Grade:
                         input.form-control(type="number", name="iptQuantity", ng-model="product.quantity", min="1", ng-required)
@@ -72,4 +79,5 @@ block content
             , max-size="5", boundary-links="true", force-ellipses="true", boundary-link-numbers="true", items-per-page="getPagerInfo('pgClientProduct').itemsPerPage", ng-change="pageChanged('pgClientProduct')")
             div.div-buttons
                 a.btn.btn-success.fa.fa-shopping-cart(type="button", href="/client/car" title="Finalizar pedido"
-                    , ng-click="generateRelatory()")  Finalizar Pedido
+                    , ng-click="generateRelatory()")  Finalizar Pedido                   
+                    

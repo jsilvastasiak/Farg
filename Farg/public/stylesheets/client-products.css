@@ -43,6 +43,10 @@
     width: 100%;
     display:inline;
 }
+.product-reference {
+    font-size: 10px;
+    color: #949494;
+}
 .product-info > label[name="lblMin"] {
     display: inline;
     position: absolute;

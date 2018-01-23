@@ -70,7 +70,9 @@
     };
 
     $scope.addPager(pagerRequestId, {
-        changedCallback: $scope.dtRequest.dataBind
+        changedCallback: function () {
+            $scope.dtRequest.dataBind();
+        }
     });
         
     $scope.dtRequest.dataBind();

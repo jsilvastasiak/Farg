@@ -178,7 +178,9 @@ angular.module("currentApp").controller("tblClient", function ($scope, $http, $u
     };
 
     $scope.addPager(pagerClientId, {
-        changedCallback: $scope.dtClient.dataBind
+        changedCallback: function () {
+            $scope.dtClient.dataBind();
+        }
     });
 
 

@@ -20,7 +20,8 @@ append styles
 append content
     div.panel.panel-default
         div.box.box-widget
-            h1(ng-controller="titleCtrl") Bem-vindo {{profile.clientName}}
+            h1(ng-controller="titleCtrl") Bem-vindo 
+                span(style="text-transform: capitalize") {{profile.clientName}}
             div.box-body
                 p.
                     A Farg Camisaria agradece a você cliente por acessar nosso sistema online de vendas, esperamos atender suas

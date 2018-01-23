@@ -1,5 +1,12 @@
 ﻿angular.module("currentApp", ['ngAnimate', 'ngTouch', 'ngRoute', 'ngSanitize', 'ui.bootstrap','ngCpfCnpj', 'ui.mask', 'ui.date','ng-currency', 'percentage', 'ng-percent', 'ui.uploader']);
 
+angular.module("currentApp").config(['uibPaginationConfig', function (uibPaginationConfig) {
+    uibPaginationConfig.firstText = "Primeiro";
+    uibPaginationConfig.lastText = "Último";
+    uibPaginationConfig.previousText = "Anterior";
+    uibPaginationConfig.nextText = "Próximo";    
+}]);
+
 angular.module("currentApp").controller("masterCtrl", function ($scope, $http, Utils) {
     $scope.messageUser = undefined;
     $scope._alerts = [];
@@ -187,26 +194,17 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
     /*Seleciona pager pelo id*/
     $scope._getPager = function (idPager) {
         var filter = $scope._listsToPage.filter(function (el) {
-            return el["id"] = idPager;
+            return el["id"] === idPager;
         });
 
-        if (filter.length == 1)
-            return filter[0];
-
-        if (filter.length > 1) {
-            $scope.showMessageUser({
-                message: 'Pager ' + idPager + ' está registrado mais de uma vez na mesma página',
-                type: 'danger'
-            });
-        }
+        if (filter.length > 0)
+            return filter[0];        
         else {
             $scope.showMessageUser({
                 message: 'Pager ' + idPager + ' não está registrado nesta página',
                 type: 'danger'
             });
         }
-
-        return {};
     };
 
     /*Pega informações da instância paginador*/

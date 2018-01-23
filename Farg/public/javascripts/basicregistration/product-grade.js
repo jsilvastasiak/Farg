@@ -58,7 +58,9 @@ angular.module("currentApp").controller("tblProductGrade", function ($scope, Uti
     };
 
     $scope.addPager(pagerProductGradeId, {
-        changedCallback: $scope.dtProductGrade.dataBind
+        changedCallback: function () {
+            $scope.dtProductGrade.dataBind();
+        }
     });    
 });
 

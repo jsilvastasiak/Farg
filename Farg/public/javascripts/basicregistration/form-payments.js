@@ -134,7 +134,9 @@ angular.module("currentApp").controller("tblFormPayments", function ($scope, $ht
     };
 
     $scope.addPager(pagerFormPaymentId, {
-        changedCallback: $scope.dtFormPayment.dataBind
+        changedCallback: function () {
+            $scope.dtFormPayment.dataBind();
+        }
     });
 
     $scope.dtFormPayment.dataBind();

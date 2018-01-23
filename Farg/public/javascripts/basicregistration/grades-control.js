@@ -147,7 +147,9 @@ angular.module("currentApp").controller("tblGrades", function ($scope, $http, $u
     }
 
     $scope.addPager(pagerGradeId, {
-        changedCallback: $scope.dtGrades.dataBind
+        changedCallback: function () {
+            $scope.dtGrades.dataBind();
+        }
     });
 
     $scope.dtGrades.dataBind();

@@ -119,6 +119,14 @@ body.hold-transition.skin-blue.sidebar-mini(ng-app="currentApp", ng-controller="
                 block content
                 div.overlay(ng-class="overlayState")
                     i.fa.fa-refresh.fa-spin
+        footer.main-footer
+            div.pull-right.hidden-xs.
+                design by Jonas Stasiak
+            strong Copyright &copy; Farg Camisaria.                
+            span  All rights reserved.&nbsp
+                i.fa.fa-whatsapp  
+                strong &nbsp(47) 9 8802-8615
+                
 
         div
             div.message-user(uib-alert, ng-repeat="alert in _alerts", dismiss-on-timeout="{{alert.timeout}}", ng-class="'alert-' + (alert.typeMessageUser || 'warning')", close="closeMessageUser($index)") {{alert.messageUser}}
