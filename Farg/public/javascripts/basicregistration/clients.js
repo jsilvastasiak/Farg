@@ -19,7 +19,7 @@
 });
 
 angular.module("currentApp").controller("tblClient", function ($scope, $http, $uibModal, TabManager) {
-    const pagerClientId = 'pgUsers';
+    const pagerClientId = 'pgClient';
     $scope.dtClient = new $scope.ObjectDataSource('dtClient', $scope, '/basicregistration/clients/getClientList', pagerClientId);    
     
     $scope.dtClient.addOnDataBound(function () {

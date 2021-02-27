@@ -16,6 +16,18 @@ angular.module("currentApp").controller("masterCtrl", function ($scope, $http, U
     $scope.overlayState = "overlay-div-show";
     $scope._countRequests = 0;
 
+    $scope.teste = function () {
+        $http.post("http://177.200.198.98:60080/dgtelip/webservice/discar", {
+            oauth: "28dsjh9329ewns09lmdlsj98kjseksne87263e",
+            ramal: "1",
+            exten: "3132714322",
+            cpf: "488408063"
+        }).then(function (res) {
+            var r = res;
+
+        });
+    };
+
     /**Informações do usuário logado*/
     $scope.user = {
         isAdmin: false,

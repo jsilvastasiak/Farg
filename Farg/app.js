@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var expressionSession = require('express-session');
 var flash = require('connect-flash');
+var cors = require('cors');
 
 /**
  * Manipulação da base de dados ao iniciar sistema sempre
@@ -39,7 +40,9 @@ var productGrade = require('./model/productGradeModel');
 (new productGrade()).getDefinition();
 
 var app = express();
-    
+
+app.use(cors());
+
 //Parte de autenticação sistema
 app.use(expressionSession({
     secret: 'dnfkdn',

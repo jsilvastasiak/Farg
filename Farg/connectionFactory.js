@@ -1,7 +1,6 @@
 ﻿var pg = require('pg');
 var Sequelize = require('sequelize');
-var connection = new Sequelize('postgres://postgres:1234@localhost:1234/Farg');
-//var connection = new Sequelize('postgres://farg@factoring-meupedido:JSjones978675@factoring-meupedido.postgres.database.azure.com:5432/postgres');
+var connection = new Sequelize('postgres://farg@factoring-meupedido:JSjones978675@factoring-meupedido.postgres.database.azure.com:5432/postgres');
 
 connection.authenticate().then(function () {
     console.log('Conexão estabelecida com sucesso.');

@@ -127,3 +127,16 @@ form > .messageForm, form > .form-group > .messageForm {
     position: relative;
     margin-top: -15px;
 }
+.message-user {
+    position: absolute;
+    bottom: 0px;
+    width: 96%;
+    z-index: 1000;
+}
+.alert-alert {
+    background-color: #cac300;
+}
+.alert-danger {
+    background-color: #dd4b39 !important;
+    color: white;
+}

@@ -5,10 +5,10 @@ link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.min.
 link(rel='stylesheet', href='/stylesheets/login.css')
 
 body
-    div(ng-app="loginFormApp")
+    div(ng-app="loginFormApp", ng-controller="frmLoginCtrl")
         div.login-page
             div.form       
-                form.login-form(ng-controller="frmLoginCtrl", name="frmLogin", ng-init="{{ frmLogin.focus() }}")
+                form.login-form(name="frmLogin")
                     div.panel.panel-default.logoFarg
                         img.img-responsive(src="/images/fargLogo.png", alt="Logo Farg")
                     input.input-login(name="userName", type="text", placeholder="usuário", ng-model="userName", ng-required)
@@ -17,10 +17,15 @@ body
                     input(name="password", type="password", placeholder="SENHA", ng-model="password", ng-required)
                     span.messageForm(ng-show="frmLogin.password.$touched && frmLogin.password.$invalid") "Senha" é um campo de preenchimento obrigatório
 
-                    button.btn.btn-primary(ng-click="doLogin(frmLogin)", ng-disabled="frmLogin.$invalid") login
+                    button.btn.btn-primary(ng-click="doLogin(frmLogin)", ng-disabled="frmLogin.$invalid", ng-init="setFormFocus(frmLogin)") login
+        div
+            div.message-user(uib-alert, ng-repeat="alert in _alerts", dismiss-on-timeout="{{alert.timeout}}", ng-class="'alert-' + (alert.typeMessageUser || 'warning')", close="closeMessageUser($index)") {{alert.messageUser}}
 
     //AngularJS
-    script(src="/bower_components/angular/angular.min.js")  
+    script(src="/bower_components/angular/angular.min.js")
+    script(src="/bower_components/angular-animate/angular-animate.min.js")
+    script(src="/bower_components/angular-sanitize/angular-sanitize.min.js")
+    script(src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js")
     script(src='/javascripts/login.js')
 
     //Boostrap
